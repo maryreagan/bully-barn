@@ -4,13 +4,14 @@ const AWS = require("aws-sdk")
 const multer = require("multer")
 const multerS3 = require("multer-s3");
 
+    const s3 = new AWS.S3()
+
     // AWS S3 Configuration 
     AWS.config.update({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         region: process.env.AWS_REGION,
     });
-    const s3 = new AWS.S3();
 
 
     // Multer middleware tohandle file uploads 
@@ -27,11 +28,15 @@ const upload = multer({
 
 
 //POST a new dog 
-router.post("/create", upload.single("image"), async (req,res) => {
+router.post("/create", async (req,res) => {
     try{
-        let {name, age, kids} = req.body
-        const imageURL = req.file.location; // AWS S3 image URL
-        const newDog = new Dog(req.body, {image: imageURL})
+        let {name, age, kids, image} = req.body
+        const newDog = new Dog({
+            name,
+            age,
+            kids,
+            image,
+        })
         await newDog.save()
 
         res.status(201).json({
@@ -47,3 +52,7 @@ router.post("/create", upload.single("image"), async (req,res) => {
 })
 
 module.exports = router;
+
+
+
+// want user to upload a photo that is stored in S3. S3 then sends a response which contains the URL to the photo and we use the id param to find the user in Mongo to store the URL photo 
