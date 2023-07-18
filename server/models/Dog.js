@@ -107,3 +107,5 @@ const Dog = new mongoose.Schema(
 )
 
 module.exports = mongoose.model("dog", Dog)
+
+//dog model 
