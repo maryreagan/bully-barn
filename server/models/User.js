@@ -16,15 +16,7 @@ const User = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    validate: {
-      validator: function(value) {
-        // Ensures the password is at least 7 characters long + contains at least 1 letter & 1 number
-        return /^(?=.*[A-Za-z])(?=.*\d).{7,}$/.test(value)
-      },
-      // Error message if validation fails
-      message: 'Password must be at least 7 characters with at least one letter and one number'
-    }
+    required: true
   },
   isAdmin: {
     type: Boolean,
@@ -32,4 +24,4 @@ const User = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model("user", User)
+module.exports = mongoose.model("users", User)
