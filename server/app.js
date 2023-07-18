@@ -19,10 +19,14 @@ const dogController = require("./controllers/dog-route");
 const formController = require("./controllers/form-route");
 const authController = require("./controllers/auth");
 
-// middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+// middleware
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 app.use("/dog", dogController);
 app.use("/form", formController);
@@ -32,7 +36,3 @@ app.listen(PORT, HOST, () => {
     dbConnect();
     console.log(`[server] listening on ${HOST} ${PORT}`);
 });
-
-// comment for develop branch
-// comment from Angelina's branch
-// comment for amanda branch
