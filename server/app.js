@@ -17,6 +17,7 @@ const s3 = new AWS.S3()
 
 
 const dogController = require("./controllers/dog-route")
+const authController = require("./controllers/auth")
 
 // middleware
 app.use(express.json())
@@ -25,6 +26,7 @@ app.use(cors())
 
 
 app.use("/dog", dogController)
+app.use("/auth", authController)
 
 
 app.listen(PORT, HOST, () => {
