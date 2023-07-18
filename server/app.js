@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const { dbConnect } = require("./db");
 const AWS = require("aws-sdk");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 const PORT = process.env.PORT || 4000;
 const HOST = process.env.HOST || "127.0.0.1";
