@@ -30,19 +30,7 @@ router.post("/register", async (req, res) => {
             message: 'Password must be at least 7 characters with at least one letter and one number'
           })
         }
-
-        if (!isValidEmail(email)) {
-          return res.status(400).json({
-            message: 'Please enter a valid email address'
-          })
-        }
-
-        if (!isValidPwd(password)) {
-          return res.status(400).json({
-            message: 'Password must be at least 7 characters with at least one letter and one number'
-          })
-        }
-
+        
         const hashedPwd = await bcrypt.hash(password, SALT);
         const createdUser = new User({
             firstName,
@@ -58,6 +46,7 @@ router.post("/register", async (req, res) => {
         }
 
         const validationLink = "http://localhost:5173/valid-email"
+
         try {
           await sendValidationEmail(createdUser.email, validationLink)
         } catch (err) {
