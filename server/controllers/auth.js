@@ -114,7 +114,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// Forgot=password route
+// Forgot-password route
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body
@@ -134,13 +134,43 @@ router.post('/forgot-password', async (req, res) => {
     user.passwordResetToken = resetToken
     user.passwordResetExpires = Date.now() + 3600000 // Expires in one hour
     await user.save()
-    
+
     try {
       await sendForgotPwdEmail(user.email, resetPwdLink)
       res.status(200).json({ message: 'Email sent successfully' })
     } catch (err) {
       res.status(500).json({ message: 'Error sending password reset email'})
     }
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error'})
+  }
+})
+
+router.put('/reset-password/:token', async (req, res) => {
+  try {
+    const { token } = req.params
+    const { newPwd } = req.body
+   
+    if (!newPwd) {
+      return res.status(400).json({ message: 'Please enter a new password'})
+    }
+
+    const user = await User.findOne({
+      passwordResetToken: token,
+      passwordResetExpires: { $gt: Date.now() } // Check if token is not expired
+    })
+
+    if (!user) {
+      return res.status(404).json({ message: 'Password reset token is invalid or has expired' })
+    }
+
+    const hashedPwd = await bcrypt.hash(newPwd, SALT)
+    user.password = hashedPwd
+    user.passwordResetToken = null
+    user.passwordResetExpires = null
+    await user.save()
+
+    res.status(200).json({ message: 'Password reset successfully'})
   } catch (err) {
     res.status(500).json({ message: 'Internal server error'})
   }
