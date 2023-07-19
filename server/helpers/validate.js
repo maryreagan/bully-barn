@@ -3,4 +3,9 @@ const isValidPwd = (password) => {
   return pwdRegex.test(password)
 }
 
-module.exports = isValidPwd
+const isValidEmail = (email) => {
+  const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/
+  return emailRegex.test(email)
+}
+
+module.exports = {isValidPwd, isValidEmail}

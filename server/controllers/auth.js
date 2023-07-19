@@ -3,7 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const SALT = Number(process.env.SALT);
 const jwt = require("jsonwebtoken");
-const isValidPwd  = require("../helpers/validate");
+const {isValidPwd, isValidEmail}  = require("../helpers/validate");
 const JWT_KEY = process.env.JWT_KEY;
 
 
@@ -18,6 +18,12 @@ router.post("/register", async (req, res) => {
                 .json({
                     message: "Please provide all the required information",
                 });
+        }
+
+        if (!isValidEmail(email)) {
+          return res.status(400).json({
+            message: 'Please enter a valid email address'
+          })
         }
 
         if (!isValidPwd(password)) {
