@@ -57,9 +57,14 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ message: validationError.message });
         }
 
-        await createdUser.save();
         const validationLink = "http://localhost:5173/valid-email"
-        await sendValidationEmail(createdUser.email, validationLink)
+        try {
+          await sendValidationEmail(createdUser.email, validationLink)
+        } catch (err) {
+          res.status(500).json({ message: 'Error sending validation email'})
+        }
+
+        await createdUser.save();
 
         const token = jwt.sign({ _id: createdUser._id }, JWT_KEY, {
             expiresIn: 60 * 60 * 24,
@@ -146,6 +151,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 })
 
+// Reset-password route
 router.put('/reset-password/:token', async (req, res) => {
   try {
     const { token } = req.params
