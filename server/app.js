@@ -24,6 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+app.use('/auth', authController)
+
 // Create a Checkout Session
 // Every time a customer initiates the checkout process 
 // this endpoint will generate a unique session for the transaction
