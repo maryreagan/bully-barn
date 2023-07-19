@@ -82,7 +82,7 @@ const Dog = new mongoose.Schema(
                 },
                 description: {
                     type: String,
-                    required: true
+                    required: false
                 },
             },
         },
@@ -94,12 +94,12 @@ const Dog = new mongoose.Schema(
                 },
                 description: {
                     type: String,
-                    required: true
+                    required: false
                 },
             },
             medication: {
                 type: String,
-                required: true
+                required: false
             },
 
         },

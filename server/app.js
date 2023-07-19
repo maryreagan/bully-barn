@@ -20,10 +20,6 @@ const dogController = require("./controllers/dog-route");
 const formController = require("./controllers/form-route");
 const authController = require("./controllers/auth");
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
