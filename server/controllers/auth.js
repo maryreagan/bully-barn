@@ -14,11 +14,21 @@ router.post("/register", async (req, res) => {
         const { firstName, lastName, email, password } = req.body;
 
         if (!firstName || !lastName || !email || !password) {
-            return res
-                .status(400)
-                .json({
-                    message: "Please provide all the required information",
-                });
+            return res.status(400).json({
+                message: "Please provide all the required information",
+            });
+        }
+
+        if (!isValidEmail(email)) {
+          return res.status(400).json({
+            message: 'Please enter a valid email address'
+          })
+        }
+
+        if (!isValidPwd(password)) {
+          return res.status(400).json({
+            message: 'Password must be at least 7 characters with at least one letter and one number'
+          })
         }
 
         if (!isValidEmail(email)) {
@@ -79,13 +89,13 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(401).json({ message: "Invalid credentials" });
+            return res.status(404).json({ message: "Email does not exist" });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid credentials" });
+            return res.status(401).json({ message: "Incorrect Password" });
         }
 
         const token = jwt.sign({ _id: user._id }, JWT_KEY, {
