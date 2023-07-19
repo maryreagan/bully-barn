@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Auth.css";
 
 const LoginComponent = () => {
     const [email, setEmail] = useState("");
@@ -115,10 +116,12 @@ const LoginComponent = () => {
     };
 
     return (
-        <div>
+        <div className="login-container">
             {isLoggedIn ? (
                 <>
-                    <h2>Welcome! You are logged in.</h2>
+                    <h2 className="login-success">
+                        Welcome! You are logged in.
+                    </h2>
                     <button onClick={handleLogout}>Log Out</button>
                 </>
             ) : (
@@ -164,7 +167,7 @@ const LoginComponent = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    {error && <div style={{ color: "red" }}>{error}</div>}
+                    {error && <div className="error-message">{error}</div>}
                     {isLoginMode ? (
                         <>
                             <button onClick={handleLogin} disabled={isLoading}>
