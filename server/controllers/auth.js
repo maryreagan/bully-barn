@@ -3,6 +3,9 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const SALT = Number(process.env.SALT);
 const jwt = require("jsonwebtoken");
+const { isValidPwd, isValidEmail }  = require("../helpers/validate");
+const { sendValidationEmail } = require("../helpers/validationEmail")
+const validationLink = "!!!(Validation link here)"
 const JWT_KEY = process.env.JWT_KEY;
 
 // Register route
@@ -16,6 +19,18 @@ router.post("/register", async (req, res) => {
             });
         }
 
+        if (!isValidEmail(email)) {
+          return res.status(400).json({
+            message: 'Please enter a valid email address'
+          })
+        }
+
+        if (!isValidPwd(password)) {
+          return res.status(400).json({
+            message: 'Password must be at least 7 characters with at least one letter and one number'
+          })
+        }
+
         const hashedPwd = await bcrypt.hash(password, SALT);
         const createdUser = new User({
             firstName,
@@ -26,12 +41,12 @@ router.post("/register", async (req, res) => {
         });
 
         const validationError = createdUser.validateSync();
-
         if (validationError) {
             return res.status(400).json({ message: validationError.message });
         }
 
         await createdUser.save();
+        await sendValidationEmail(createdUser.email, validationLink)
 
         const token = jwt.sign({ _id: createdUser._id }, JWT_KEY, {
             expiresIn: 60 * 60 * 24,
