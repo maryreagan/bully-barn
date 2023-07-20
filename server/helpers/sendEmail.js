@@ -15,7 +15,7 @@ const sendValidationEmail = async (userEmail, validationLink)  => {
     })
 
     const emailContent = {
-      from: "bullybarntest@gmail.com",
+      from: "noreply@bullybarn.com",
       to: userEmail,
       subject: "Verify Your Email",
       html: `<p>Hello, please click the following link to verify your email:</p><a href="${validationLink}">Verify Email</a>`,
@@ -41,7 +41,7 @@ const sendForgotPwdEmail = async (userEmail, resetPwdLink)  => {
     })
 
     const emailContent = {
-      from: "bullybarntest@gmail.com",
+      from: "noreply@bullybarn.com",
       to: userEmail,
       subject: "Forgot Password",
       html: `<p>Hello, please click the following link to reset your password:</p><a href="${resetPwdLink}">Reset Password</a>`,
