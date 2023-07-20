@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ApplicationForm = require("../models/Form");
 
+// Submit Application Route
 router.post("/create", async (req, res) => {
     try {
         const newApplicationForm = new ApplicationForm(req.body);
@@ -21,6 +22,22 @@ router.post("/create", async (req, res) => {
                 message: `${err}`,
             });
         }
+    }
+});
+
+// Fetch All Applications Route
+router.get("/applications", async (req, res) => {
+    try {
+        const applications = await ApplicationForm.find();
+        res.status(200).json({
+            message: "Fetched all applications",
+            applications,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Failed to fetch applications",
+        });
     }
 });
 
