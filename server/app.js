@@ -41,13 +41,13 @@ app.post("/create-checkout-session", async (req, res) => {
                 },
             ],
             mode: "payment",
-            success_url: "https://localhost:4000?success=true",
-            cancel_url: "https://localhost:4000?canceled=true",
-        });
-        res.redirect(303, session.url); // Redirect customer to the URL for the checkout
-    } catch (err) {
+            success_url: "http://localhost:5173/payment-status?success=true",
+            cancel_url: "http://localhost:5173/payment-status?canceled=true",
+        })
+        res.redirect(303, session.url)  // Redirect customer to the URL for the checkout
+    } catch(err) {
         res.status(500).json({
-            error: err.message,
+            error: err.message
         });
     }
 });
