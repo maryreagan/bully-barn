@@ -1,14 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-
+import { useState } from "react";
+import "./App.css";
+import Auth from "./components/Auth/Auth";
 function App() {
-
-
-  return (
-    <>
-
-    </>
-  )
+    return (
+        <>
+            <Auth />
+        </>
+    );
 }
 
-export default App
+export default App;
