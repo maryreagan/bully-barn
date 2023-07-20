@@ -22,20 +22,31 @@ function Dog() {
     getDogs()
   }, [])
 
+  const displayDogs = () => {
+    return (
+      dogs && dogs.map((dog) => (
+        <div id='dog-card' key={dog._id}>
+          <div id='img-container'>
+          <img src='https://i.pinimg.com/736x/1f/84/9f/1f849f60cdd1456a46b6cc3a5977adbc.jpg'/>
+          </div> 
+          <div id='dog-details'>
+          <h2>{dog.dogInfo.name}</h2>
+          <p>
+            <span>{dog.dogInfo.gender}</span>
+             Age: {dog.dogInfo.age}
+          </p>
+          </div> 
+        </div>
+      ))
+    )
+  }
+
   return (
     <>
     <div id='container'>
-    <h1>Welcome to Bully Barn</h1>
+    <h1 id='welcome-msg'>Meet Our Dogs</h1>
     <div id='dog-container'>
-    {dogs && dogs.map((dog) => (
-      <div id='dog-card' key={dog._id}>
-        <h2>{dog.dogInfo.name}</h2>
-        <p>
-          <span>{dog.dogInfo.gender}</span>
-           Age: {dog.dogInfo.age}
-        </p>
-      </div>
-    ))}
+    {displayDogs()}
     </div>
     </div>
     </>

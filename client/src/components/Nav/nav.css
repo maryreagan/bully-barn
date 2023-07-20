@@ -1,0 +1,24 @@
+nav {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: black;
+  padding: 1.2rem 0;
+  z-index: 9999;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 2em 0 2em;
+  font-size: large;
+}
+
+#bb-logo {
+  font-size: x-large;
+  font-weight: bold;
+}
