@@ -4,22 +4,24 @@ import "./App.css";
 import Auth from "./components/Auth/Auth";
 import Dog from './components/Dog/Dog'
 import Nav from "./components/Nav/Nav";
-
-const renderNav = (Component) => {
-  return (
-    <>
-    <Nav />
-    <Component />
-    </>
-  )
-}
+import ForgotPwd from "./components/Auth/ForgotPwd";
 
 function App() {
+  const renderNav = (Component) => {
+    return (
+      <>
+      <Nav />
+      <Component />
+      </>
+    )
+  }
+
     return (
       <Router>
     <Routes>
       <Route path='/' element={renderNav(Dog)}/>
       <Route path="/auth" element={<Auth />} />
+      <Route path="/forgot-password" element={<ForgotPwd />} />
       </Routes>
   </Router>
   
