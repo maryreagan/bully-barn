@@ -119,6 +119,7 @@ const LoginComponent = () => {
 
     return (
         <div className="auth-container">
+        <div className="auth-container">
         <div className="login-container">
             {isLoggedIn ? (
                 <>
@@ -166,6 +167,7 @@ const LoginComponent = () => {
                         <input
                             type="password"
                             id="password-input"
+                            id="password-input"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -203,6 +205,7 @@ const LoginComponent = () => {
                     )}
                 </>
             )}
+        </div>
         </div>
         </div>
     );
