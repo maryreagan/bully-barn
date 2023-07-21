@@ -81,10 +81,9 @@ function AddDog() {
             });
 
             if(!response.ok){
-                throw new Error("error ocurred!")
-            } else {alert('dog addedd successfully')}
-
-
+                alert("Error Occured. Dog not added to database")
+            } else {
+                alert('Dog Addedd Successfully')}
         } catch (err) {
             console.log(err)
         }
