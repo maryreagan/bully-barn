@@ -17,7 +17,19 @@ const renderNav = (Component) => {
   )
 }
 
+import ForgotPwd from "./components/Auth/ForgotPwd";
+
+
 function App() {
+  const renderNav = (Component) => {
+    return (
+      <>
+      <Nav />
+      <Component />
+      </>
+    )
+  }
+
     return (
       <Router>
     <Routes>
@@ -25,6 +37,7 @@ function App() {
       <Route path="/auth" element={<Auth />} />
       <Route path="/adoption-fee" element={<AdoptionFeePage />} />
           <Route path="/payment-status" element={<PaymentStatusPage />} />
+      <Route path="/forgot-password" element={<ForgotPwd />} />
       </Routes>
   </Router>
   

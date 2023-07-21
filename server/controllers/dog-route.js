@@ -1,36 +1,48 @@
 const router = require("express").Router()
 const Dog = require("../models/Dog")
-const AWS = require("aws-sdk")
-const multer = require("multer")
-const multerS3 = require("multer-s3");
-
-    const s3 = new AWS.S3()
-
-    // AWS S3 Configuration 
-    AWS.config.update({
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_REGION,
-    });
+const multer = require('multer')
+const multerS3 = require('multer-s3')
+const AWS = require('aws-sdk')
 
 
-    // Multer middleware tohandle file uploads 
+const s3 = new AWS.S3(
+    {accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION}
+);
+
 const upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: process.env.S3_BUCKET_NAME,
-        acl: "public-read",
-        key: function (req, file, cb) {
-        cb(null, Date.now().toString() + "-" + file.originalname);
-        },
-    }),
-});
-
+    storage: multer.memoryStorage(),
+})
 
 //POST a new dog 
-router.post("/create", async (req,res) => {
+router.post("/create", upload.single('image'), async (req,res) => {
     try{
-        const newDog = new Dog(req.body)
+        const imageBuffer = req.file.buffer.toString("base64")
+        const {name, age, bio, gender, weight, energyLevel, goodwDog, goodwCat, goodwKid, crateTrained, houseTrained, objAggression, objAggressionDesc, specialNeeds, specialNeedsDesc, medication, caseworker, adoptionStatus, sponsorshipStatus, intakeType, intakeDate, adoptionFee} = req.body
+
+
+        const s3Params = {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: `${Date.now()} ${req.file.originalname}`,
+            Body: Buffer.from(imageBuffer, "base64"),
+            acl: 'public-read',
+            ContentType: req.file.mimetype,
+        }
+
+        const data = await s3.upload(s3Params).promise()
+
+        const newDog = new Dog({
+            image: data.Location,
+            name, age, bio, gender, weight, energyLevel,
+            goodwDog, goodwCat, goodwKid, crateTrained, houseTrained,
+            objAggression, objAggressionDesc,
+            specialNeeds, specialNeedsDesc, medication,
+            caseworker, adoptionStatus, sponsorshipStatus, 
+            intakeType, intakeDate, adoptionFee
+        })
+
+        console.log(newDog)
         await newDog.save()
 
         res.status(201).json({
@@ -44,6 +56,7 @@ router.post("/create", async (req,res) => {
         })
     }
 })
+
 
 // get all dogs from database 
 router.get("/", async (req,res)=> {
