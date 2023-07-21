@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
+
 import "./Auth.css";
 
 const LoginComponent = () => {
@@ -116,6 +118,7 @@ const LoginComponent = () => {
     };
 
     return (
+        <div className="auth-container">
         <div className="login-container">
             {isLoggedIn ? (
                 <>
@@ -162,10 +165,12 @@ const LoginComponent = () => {
                     <div>
                         <input
                             type="password"
+                            id="password-input"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        { isLoginMode && <Link to={'/forgot-password'}>Forgot Password?</Link>}
                     </div>
                     {error && <div className="error-message">{error}</div>}
                     {isLoginMode ? (
@@ -198,6 +203,7 @@ const LoginComponent = () => {
                     )}
                 </>
             )}
+        </div>
         </div>
     );
 };

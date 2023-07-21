@@ -27,13 +27,13 @@ function Dog() {
       dogs && dogs.map((dog) => (
         <div id='dog-card' key={dog._id}>
           <div id='img-container'>
-          <img src='https://i.pinimg.com/736x/1f/84/9f/1f849f60cdd1456a46b6cc3a5977adbc.jpg'/>
+          <img src={dog.image}/>
           </div> 
           <div id='dog-details'>
-          <h2>{dog.dogInfo.name}</h2>
+          <h2>{dog.name}</h2>
           <p>
-            <span>{dog.dogInfo.gender}</span>
-             Age: {dog.dogInfo.age}
+            <span>{dog.gender}</span>
+             Age: {dog.age}
           </p>
           </div> 
         </div>
@@ -43,7 +43,7 @@ function Dog() {
 
   return (
     <>
-    <div id='container'>
+    <div id='contain-home'>
     <h1 id='welcome-msg'>Meet Our Dogs</h1>
     <div id='dog-container'>
     {displayDogs()}
