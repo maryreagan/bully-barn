@@ -120,7 +120,7 @@ router.post("/forgot-password", async (req, res) => {
         if (!email) {
             return res
                 .status(400)
-                .json({ message: "Please provide your email address" });
+                .json({ message: "Please enter your email address" });
         }
 
         const user = await User.findOne({ email });
@@ -137,10 +137,10 @@ router.post("/forgot-password", async (req, res) => {
 
         try {
             await sendForgotPwdEmail(user.email, resetPwdLink);
-            res.status(200).json({ message: "Email sent successfully" });
+            res.status(200).json({ message: "Email sent" });
         } catch (err) {
             res.status(500).json({
-                message: "Error sending password reset email",
+                message: "Error sending email",
             });
         }
     } catch (err) {
@@ -173,13 +173,20 @@ router.put("/reset-password/:token", async (req, res) => {
                 });
         }
 
+        if (!isValidPwd(newPwd)) {
+            return res.status(400).json({
+                message:
+                    "Password must be at least 7 characters with at least one letter and one number",
+            });
+        }
+
         const hashedPwd = await bcrypt.hash(newPwd, SALT);
         user.password = hashedPwd;
         user.passwordResetToken = null;
         user.passwordResetExpires = null;
         await user.save();
 
-        res.status(200).json({ message: "Password reset successfully" });
+        res.status(200).json({ message: "Password reset successful" });
     } catch (err) {
         res.status(500).json({ message: "Internal server error" });
     }
