@@ -1,0 +1,74 @@
+/* CSS Reset to remove default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: #fff;
+    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    max-width: 320px;
+    width: 100%;
+}
+
+.login-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #d9d9d9;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-container p {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-container p button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.login-success {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-container > div {
+    margin-bottom: 15px;
+}

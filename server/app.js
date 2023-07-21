@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { dbConnect } = require("./db");
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)  // Private key used to interact to the Stripe API
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY); // Private key used to interact to the Stripe API
 
 
 const PORT = process.env.PORT || 4000;
@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use('/auth', authController)
-app.use('/dog', dogController)
-
+app.use("/auth", authController);
+app.use("/dog", dogController);
+app.use("/form", formController);
 
 // Create a Checkout Session
-// Every time a customer initiates the checkout process 
+// Every time a customer initiates the checkout process
 // this endpoint will generate a unique session for the transaction
 app.post("/create-checkout-session", async (req, res) => {
     try {
@@ -34,17 +34,16 @@ app.post("/create-checkout-session", async (req, res) => {
                 },
             ],
             mode: "payment",
-            success_url: "https://localhost:4000?success=true",
-            cancel_url: "https://localhost:4000?canceled=true",
+            success_url: "http://localhost:5173/payment-status?success=true",
+            cancel_url: "http://localhost:5173/payment-status?canceled=true",
         })
         res.redirect(303, session.url)  // Redirect customer to the URL for the checkout
     } catch(err) {
         res.status(500).json({
             error: err.message
-        })
+        });
     }
-    
-})
+});
 
 
 app.listen(PORT, HOST, () => {
