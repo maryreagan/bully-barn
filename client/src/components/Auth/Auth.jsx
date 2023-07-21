@@ -167,7 +167,6 @@ const LoginComponent = () => {
                         <input
                             type="password"
                             id="password-input"
-                            id="password-input"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}

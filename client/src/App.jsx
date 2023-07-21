@@ -10,6 +10,7 @@ import Form from "./components/Form/Form";
 import AdminDash from "./components/Admin-Dash/Admin-Dash";
 import AdoptionFeePage from "./components/Adoption-Fee/AdoptionFee";
 import PaymentStatusPage from "./components/Adoption-Fee/PaymentStatusPage";
+import AddDog from "./components/Dog/AddDog";
 
 const renderNav = (Component) => {
     return (
@@ -22,8 +23,7 @@ const renderNav = (Component) => {
     );
 };
 
-import ForgotPwd from "./components/Auth/ForgotPwd";
-import AddDog from "./components/Dog/AddDog";
+
 
 function App() {
     return (
