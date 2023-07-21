@@ -28,6 +28,10 @@ const ApplicationFormSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
+        dogId: {
+            type: String,
+            required: true,
+        },
     },
     employmentInformation: {
         currentEmploymentStatus: {
