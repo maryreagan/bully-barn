@@ -6,6 +6,7 @@ import Dog from './components/Dog/Dog'
 import Nav from "./components/Nav/Nav";
 import AdoptionFeePage from "./components/Adoption-Fee/AdoptionFee"
 import PaymentStatusPage from './components/Adoption-Fee/PaymentStatusPage'
+import ForgotPwd from "./components/Auth/ForgotPwd";
 
 
 const renderNav = (Component) => {
@@ -16,9 +17,6 @@ const renderNav = (Component) => {
     </>
   )
 }
-
-import ForgotPwd from "./components/Auth/ForgotPwd";
-
 
 function App() {
   const renderNav = (Component) => {
