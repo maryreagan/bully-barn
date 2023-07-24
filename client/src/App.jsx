@@ -6,11 +6,25 @@ import Dog from "./components/Dog/Dog";
 import Nav from "./components/Nav/Nav";
 import PaymentStatusPage from './components/Adoption-Fee/PaymentStatusPage'
 import ForgotPwd from "./components/Auth/ForgotPwd";
+
+
+
+const renderNav = (Component) => {
+  return (
+    <>
+    <Nav />
+    <Component />
+    </>
+  )
+}
+
+
 import ResetPwd from "./components/Auth/ResetPwd";
 import Form from "./components/Form/Form";
 import AdminDash from "./components/Admin-Dash/Admin-Dash";
 import AdoptionFeePage from "./components/Adoption-Fee/AdoptionFee";
 import AddDog from "./components/Dog/AddDog";
+
 
 
 const renderNav = (Component) => {

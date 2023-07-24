@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import './AddDog.css'
+import ImageCropper from './ImageCropper'
+import getCroppedImg from './getCroppedImg'
 
 
 function AddDog() {
@@ -27,8 +29,25 @@ function AddDog() {
         intakeDate: '',
         adoptionFee: '',
         image: null,
+        croppedImage: null,
     })
 
+    // define states for handling image cropping
+    const [crop, setCrop] = useState({ x: 0, y: 0 })
+    const [zoom, setZoom] = useState(1);
+    const [croppedImage, setCroppedImage] = useState(null);
+
+    // Function to update the crop state when the user modifies the crop area
+    const onCropChange = (crop) => {
+        setCrop(crop);
+    };
+
+    // function updates zoom state when user modifies zoom levels
+    const onZoomChange = (zoom) => {
+        setZoom(zoom);
+    };
+
+    // function handles changes to form fields and updates dogData
     const handleChange = (e) => {
         const { name, value } = e.target;
         setDogData((prevDogData) => ({
@@ -37,12 +56,27 @@ function AddDog() {
         }));
         };
 
+    // handles the image upload and updates dogData
     const handleImageChange = (e) => {
         setDogData({
             ...dogData,
             image: e.target.files[0],
         });
     };
+
+    // Function to handle the completion of image cropping and set the croppedImage state
+    const handleCropComplete = (croppedArea, croppedAreaPixels) => {
+        // This function is triggered when the user finishes cropping the image
+        //  use the 'getCroppedImg' function to get the cropped image
+        const croppedImagePromise = getCroppedImg(dogData.image, croppedAreaPixels);
+        croppedImagePromise.then((croppedImage) => {
+            setCroppedImage(croppedImage);
+            setDogData((prevDogData) => ({
+            ...prevDogData,
+            croppedImage: croppedImage,           
+            }));
+        });
+        };
 
 
     const handleSubmit = async (e) => {
@@ -73,6 +107,8 @@ function AddDog() {
         formData.append('intakeDate', dogData.intakeDate)
         formData.append('adoptionFee', dogData.adoptionFee)
         formData.append('image', dogData.image);
+
+
 
         try{
             const response = await fetch(url, {
@@ -311,12 +347,23 @@ function AddDog() {
                 name="image"
                 onChange={handleImageChange}
             />
+
+        {dogData.image && (
+            <ImageCropper
+                image={dogData.image}
+                crop={crop}
+                zoom={zoom}
+                onCropChange={onCropChange}
+                onZoomChange={onZoomChange}
+                onCropComplete={handleCropComplete}
+            />
+            )}
+
         <button 
             id="add-dog-btn"
             type="submit"
             >Submit</button>
         </form>
-
         )
         
     }
@@ -325,9 +372,10 @@ function AddDog() {
     return (
     <>
     {renderFormInputs()}
+
     </>
 
     )
     }
 
-export default AddDog
+export default AddDog;
