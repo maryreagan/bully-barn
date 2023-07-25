@@ -17,8 +17,8 @@ function Dog() {
     '{"goodwKid": true}': 'Kid Friendly',
     '{"minAge": 3, "maxAge": 5}': '3-5 years old',
     '{"minAge": 1, "maxAge": 2}': '1-2 years old',
-    '{"minAge": 5, "maxAge": 8}': '5-8 years old',
-    '{"minAge": 9, "maxAge": 50}': '9+ years old',
+    '{"minAge": 6, "maxAge": 10}': '6-10 years old',
+    '{"minAge": 11, "maxAge": 50}': '11+ years old',
     '{"minWeight": 1, "maxWeight": 10}': '1-10 lbs',
     '{"minWeight": 11, "maxWeight": 25}': '11-25 lbs',
     '{"minWeight": 26, "maxWeight": 50}': '25-50 lbs',
@@ -45,7 +45,7 @@ function Dog() {
   }, [])
 
   useEffect(() => { // Filtering + updating the dog data
-    const filtered = dogs.filter((dog) => {
+    const filtered = dogs && dogs.filter((dog) => {
       return filters.every((filter) => {
         const filterObj = JSON.parse(filter) // Turns the string into an object
         if (filterObj.minAge && filterObj.maxAge) {
@@ -65,7 +65,7 @@ function Dog() {
 
   const displayDogs = () => {
     return (
-      filteredDogs && filteredDogs.map((dog) => ( 
+      dogs && filteredDogs.map((dog) => ( 
         <div id='dog-card' key={dog._id}>
           <div id='img-container'>
           <img src={dog.image}/>
@@ -175,22 +175,22 @@ function Dog() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={filters.includes('{"minAge": 5, "maxAge": 8}')}
+                    checked={filters.includes('{"minAge": 6, "maxAge": 10}')}
                     onChange={handleFilterChange}
-                    value='{"minAge": 5, "maxAge": 8}'
+                    value='{"minAge": 6, "maxAge": 10}'
                   />
                 }
-                label="5-8 yrs"
+                label="6-10 yrs"
               />
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={filters.includes('{"minAge": 9, "maxAge": 50}')}
+                    checked={filters.includes('{"minAge": 11, "maxAge": 50}')}
                     onChange={handleFilterChange}
-                    value='{"minAge": 9, "maxAge": 50}'
+                    value='{"minAge": 11, "maxAge": 50}'
                   />
                 }
-                label="9+ yrs"
+                label="11+ yrs"
               />
             </MenuItem>
 
@@ -289,7 +289,6 @@ function Dog() {
       <div id='dog-container'>
       {displayDogs()}
       </div>
-
     </div>
     </>
   )
