@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './AddDog.css'
 import ImageCropper from './ImageCropper'
 import getCroppedImg from './getCroppedImg'
+import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button} from '@mui/material'
 
 
 function AddDog() {
@@ -65,17 +66,18 @@ function AddDog() {
     };
 
     // Function to handle the completion of image cropping and set the croppedImage state
-    const handleCropComplete = (croppedArea, croppedAreaPixels) => {
-        // This function is triggered when the user finishes cropping the image
-        //  use the 'getCroppedImg' function to get the cropped image
-        const croppedImagePromise = getCroppedImg(dogData.image, croppedAreaPixels);
-        croppedImagePromise.then((croppedImage) => {
-            setCroppedImage(croppedImage);
+    const handleCropComplete = async (croppedArea, croppedAreaPixels) => {
+        const croppedImageBlob = await getCroppedImg(dogData.image, croppedAreaPixels);
+        const reader = new FileReader();
+        reader.readAsDataURL(croppedImageBlob);
+        reader.onloadend = () => {
+            //const croppedImageBase64 = reader.result;
+            //console.log('Cropped Image Base64:', croppedImageBase64); // Add this console log to check the cropped image data
             setDogData((prevDogData) => ({
             ...prevDogData,
-            croppedImage: croppedImage,           
+            croppedImage: reader.result,
             }));
-        });
+        };
         };
 
 
@@ -107,7 +109,7 @@ function AddDog() {
         formData.append('intakeDate', dogData.intakeDate)
         formData.append('adoptionFee', dogData.adoptionFee)
         formData.append('image', dogData.image);
-
+        formData.append('croppedImage', dogData.croppedImage)
 
 
         try{
@@ -127,224 +129,401 @@ function AddDog() {
     
     function renderFormInputs() {
 
+        const genderOptions = [
+            {value: 'Male', label: 'Male'},
+            {value: 'Female', label: 'Female'}
+        ]
+
+        const energyOptions= [
+            {value: 'Low', label: 'Low'},
+            {value: 'Medium', label: 'Medium'},
+            {value: 'High', label: 'High'}
+        ]
+
+        const trueFalseOptions= [
+            {value: 'true', label: 'Yes'},
+            {value: 'false', label: 'No'}
+            
+        ]
+
+        const adoptionOptions = [
+            {value: 'available', label: "Available For Adoption"},
+            {value:'pending', label:'Pending Adoption'},
+            {value:'adopted', label:'Adopted'}
+        ]
+
+        const sponsorshipOptions = [
+            {value:'true', label:'Sponsored'},
+            {value:'false', label:'Not Sponsored'}
+        ]
+
         return (
             <form id="add-dog-form" onSubmit={handleSubmit}>
             
-            <h4>Dog Information</h4>
-            <input
+            <h3 className='form-header'>Please Enter All Necessary Information</h3>
+            <h4 className='form-header'> Note: once the form is submitted the dog will be added to the site for adoption</h4>
+
+            <h4 className='form-header'>GENERAL DETAILS</h4>
+            <TextField
                 className='form-input'
                 type="text"
-                name = 'name'
-                placeholder="Name"
+                name ='name'
+                label="Name"
+                size="small"
+                required
                 value={dogData.name}
                 onChange={handleChange}
             />
 
-            <input
+            <TextField
                 className='form-input'
                 type="number"
                 name = 'age'
-                placeholder="Age"
+                label="Age"
+                size='small'
+                required
                 value={dogData.age}
                 onChange={handleChange}
             />
             
-            <input
+            <TextField
                 className='form-input'
                 type="text"
                 name='bio'
-                placeholder="Bio"
+                label="Bio"
+                style={{width:600}}
+                required
+                multiline
+                size='large'
                 value={dogData.bio}
                 onChange={handleChange}
             />
 
-            <input
+            <TextField
+                select
                 className='form-input'
-                type="text"
-                placeholder="Gender"
+                label="Gender"
                 name='gender'
+                style={{width:223}}
+                size='small'
+                required
                 value={dogData.gender}
                 onChange={handleChange}
-            />              
+                >
+                {genderOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>              
 
-            <input
+            <TextField
                 className='form-input'
-                type="number"
                 name="weight"
-                placeholder="Weight"
+                label="Weight"
+                size='small'
+                required
+                style={{width:223}}
                 value={dogData.weight}
                 onChange={handleChange}
+                InputProps={{
+                    endAdornment: <InputAdornment position="end">lbs</InputAdornment>
+                }}
             />
 
-            <input
+            <TextField
+                select
                 className='form-input'
                 type="text"
                 name="energyLevel"
-                placeholder="Energy Level"
+                label="Energy Level"
                 value={dogData.energyLevel}
                 onChange={handleChange}
-            />
+                style={{width:223}}
+                size='small'
+                required
+                >
+                {energyOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
 
-            <select
-                className='form-dropdown'
-                name="goodwDog"
-                value={dogData.goodwDog}
-                onChange={handleChange}>
-                <option value="">Good with Dogs</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+            <h4 className='form-header'>BEHAVIOR TRAITS</h4>
+            <FormControl component='fieldset'>
+                <FormLabel>Good with other Dogs?*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="goodwDog"
+                    value={dogData.goodwDog}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <select
-                className='form-dropdown'
-                name="goodwCat"
-                value={dogData.goodwCat}
-                onChange={handleChange}>
-                <option value="">Good with Cats</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+            <FormControl component='fieldset'>
+                <FormLabel>Good with Cats?*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="goodwCat"
+                    value={dogData.goodwCat}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <select
-                className='form-dropdown'
-                name="goodwKid"
-                value={dogData.goodwKid}
-                onChange={handleChange}>
-                <option value="">Good with Kids</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+            <FormControl component='fieldset'>
+                <FormLabel>Good with Kids?*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="goodwKid"
+                    value={dogData.goodwKid}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <select
-                className='form-dropdown'
-                name="crateTrained"
-                value={dogData.crateTrained}
-                onChange={handleChange}>
-                <option value="">Crate Trained</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+            <FormControl component='fieldset'>
+                <FormLabel>Crate Trained?*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="crateTrained"
+                    value={dogData.crateTrained}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <select
-                className='form-dropdown'
-                name="houseTrained"
-                value={dogData.houseTrained}
-                onChange={handleChange}>
-                <option value="">House Trained</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+            <FormControl component='fieldset'>
+                <FormLabel>House Trained?*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="houseTrained"
+                    value={dogData.houseTrained}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <h5>Does the dog have object aggression? If yes, please explain.</h5>
-            <select
-                className='form-dropdown'
-                name="objAggression"
-                value={dogData.objAggression}
-                onChange={handleChange}>
-                <option value="">Object Aggression</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+            <FormControl component='fieldset'>
+                <FormLabel>Object Aggression*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="objAggression"
+                    value={dogData.objAggression}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <input
+            <TextField
                 className='form-input'
                 type="text"
-                name="objAggressionDesc"
-                placeholder="Object Aggression..."
+                name='objAggressionDesc'
+                label="Object Aggression.."
+                multiline
+                helperText='Does the dog have object aggression? If yes, please explain.'
+                size='small'
                 value={dogData.objAggressionDesc}
                 onChange={handleChange}
             />
 
-        <h5>Does the dog have special needs? If yes, please explain.</h5>
-            <select
-                className='form-dropdown'
-                name="specialNeeds"
-                value={dogData.specialNeeds}
-                onChange={handleChange}>
-                <option value="">Special Needs</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
+        <FormControl component='fieldset'>
+                <FormLabel>Special Needs*</FormLabel>
+                <RadioGroup
+                    row
+                    required
+                    className='form-dropdown'
+                    name="specialNeeds"
+                    value={dogData.specialNeeds}
+                    onChange={handleChange}
+                >
+                {trueFalseOptions.map((option) => (
+                    <FormControlLabel
+                        key={option.value}
+                        value={option.value}
+                        control={<Radio />}
+                        label={option.label}
+                    />
+                ))}
+                </RadioGroup>
+            </FormControl>
 
-            <input
+            <TextField
                 className='form-input'
                 type="text"
-                name="specialNeedsDesc"
-                placeholder="Special Needs..."
+                name='specialNeedsDesc'
+                label="Special Needs.."
+                multiline
+                helperText='Does the dog have special needs? If yes, please explain.'
+                size='small'
                 value={dogData.specialNeedsDesc}
+                style={{width:375}}
                 onChange={handleChange}
             />
 
-            <input
+            <TextField
                 className='form-input'
                 type="text"
-                name="medication"
-                placeholder="Medication"
+                name='medication'
+                label="Medication"
+                multiline
+                helperText='List all relevant medication dog is taking or will need to take.'
+                size='small'
                 value={dogData.medication}
                 onChange={handleChange}
-            />  
+            />
 
-            <input
+            <h4 className='form-header'>ADMINISTRATIVE</h4>
+            <TextField
                 className='form-input'
                 type="text"
-                name="caseworker"
-                placeholder="Caseworker Name"
+                name='caseworker'
+                label="Caseworker Name"
+                size='small'
                 value={dogData.caseworker}
-                onChange={handleChange}
-            />  
-
-            <select
-                className='form-dropdown'
-                name="adoptionStatus"
-                value={dogData.adoptionStatus}
-                onChange={handleChange}>
-                <option value="">Adoption Status</option>
-                <option value="available">Available For Adoption</option>
-                <option value="pending">Pending Adoption</option>
-                <option value="adopted">Adopted</option>
-            </select>
-
-            <select
-                className='form-dropdown'
-                name="sponsorshipStatus"
-                value={dogData.sponsorshipStatus}
-                onChange={handleChange}>
-                <option value="">Sponsorship Status</option>
-                <option value="true">Sponsored</option>
-                <option value="false">Not Sponsored</option>
-            </select>
-
-            <input
-                className='form-input'
-                type="text"
-                name="intakeType"
-                placeholder="Intake Type"
-                value={dogData.intakeType}
-                onChange={handleChange}
-            />  
-
-            <h5>Intake Date:</h5>
-            <input
-                className='form-input'
-                type="date"
-                name="intakeDate"
-                value={dogData.intakeDate}
+                required
                 onChange={handleChange}
             />
 
-            <input
+            <TextField
+                select
                 className='form-input'
-                type="number"
-                name="adoptionFee"
-                placeholder= 'Adoption Fee'
-                value={dogData.adoptionFee}
+                label="Adoption Status"
+                name='adoptionStatus'
+                style={{width:223}}
+                size='small'
+                required
+                value={dogData.adoptionStatus}
+                onChange={handleChange}
+                >
+                {adoptionOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
+
+            <TextField
+                select
+                className='form-input'
+                label="Sponsorship Status"
+                name='sponsorshipStatus'
+                style={{width:223}}
+                size='small'
+                required
+                value={dogData.sponsorshipStatus}
+                onChange={handleChange}
+                >
+                {sponsorshipOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
+
+            <TextField
+                className='form-input'
+                type="text"
+                name='intakeType'
+                label="Intake Type"
+                size='small'
+                value={dogData.intakeType}
+                required
                 onChange={handleChange}
             />  
 
-            <input
+            <TextField
                 className='form-input'
+                type="date"
+                name='intakeDate'
+                value={dogData.intakeDate}
+                required
+                helperText="Intake Date"
+                onChange={handleChange}
+            />
+
+            <TextField
+                className='form-input'
+                name="adoptionFee"
+                label="Adoption Fee"
+                size='small'
+                required
+                style={{width:223}}
+                value={dogData.adoptionFee}
+                onChange={handleChange}
+                InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>
+                }}
+            />
+
+            <TextField
+                className='form-input'
+                id='image-input'
                 type="file"
                 name="image"
+                helperText='Image Upload'
                 onChange={handleImageChange}
             />
 
@@ -359,10 +538,11 @@ function AddDog() {
             />
             )}
 
-        <button 
+        <Button 
             id="add-dog-btn"
             type="submit"
-            >Submit</button>
+            variant='contained'
+            >Submit</Button>
         </form>
         )
         

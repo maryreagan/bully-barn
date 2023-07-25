@@ -92,6 +92,9 @@ const Dog = new mongoose.Schema(
             image: {
                 type: String,
             },
+            croppedImage:{
+                type: String,
+            },
         },
 )
 

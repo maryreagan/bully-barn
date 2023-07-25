@@ -20,12 +20,16 @@ const imageFilter = (req, file, cb) => {
 const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: imageFilter,
+    limits: {
+        fileSize: 4 * 1024 * 1024 //4MB
+    },
 })
 
 //POST a new dog 
 router.post("/create", upload.single('image'), async (req,res) => {
     try{
         const imageBuffer = req.file.buffer.toString("base64")
+        const croppedImageBase64 = req.body.croppedImage;
         const {name, age, bio, gender, weight, energyLevel, goodwDog, goodwCat, goodwKid, crateTrained, houseTrained, objAggression, objAggressionDesc, specialNeeds, specialNeedsDesc, medication, caseworker, adoptionStatus, sponsorshipStatus, intakeType, intakeDate, adoptionFee} = req.body
 
 
@@ -37,10 +41,20 @@ router.post("/create", upload.single('image'), async (req,res) => {
             ContentType: req.file.mimetype,
         }
 
+        const croppedImageS3Params = {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: `cropped_${Date.now()} ${req.file.originalname}`,
+            Body: Buffer.from(croppedImageBase64, 'base64'),
+            acl: "public-read",
+            ContentType: req.file.mimetype,
+        }
+
         const data = await s3.upload(s3Params).promise()
+        const croppedImageData = await s3.upload(croppedImageS3Params).promise()
 
         const newDog = new Dog({
             image: data.Location,
+            croppedImage: croppedImageData.Location,
             name, age, bio, gender, weight, energyLevel,
             goodwDog, goodwCat, goodwKid, crateTrained, houseTrained,
             objAggression, objAggressionDesc,
