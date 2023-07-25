@@ -24,24 +24,33 @@ app.use("/form", formController);
 // Create a Checkout Session
 // Every time a customer initiates the checkout process
 // this endpoint will generate a unique session for the transaction
-app.post("/create-checkout-session", async (req, res) => {
+app.post('/create-checkout-session', async (req, res) => {
     try {
+        const { fee } = req.body; // Get the selected fee from the request body
+        const feeInCents = fee * 100; // Convert the fee to cents for Stripe
+
+        // Create the checkout session with the selected fee
         const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
-                    price: "price_1NVKZhBdWFnJREXP270ocdUr",
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: `Adoption Fee: $${fee.toFixed(2)}`,
+                        },
+                        unit_amount: feeInCents,
+                    },
                     quantity: 1,
                 },
             ],
-            mode: "payment",
-            success_url: "http://localhost:5173/payment-status?success=true",
-            cancel_url: "http://localhost:5173/payment-status?canceled=true",
-        })
-        res.redirect(303, session.url)  // Redirect customer to the URL for the checkout
-    } catch(err) {
-        res.status(500).json({
-            error: err.message
+            mode: 'payment',
+            success_url: 'http://localhost:5173/payment-status?success=true',
+            cancel_url: 'http://localhost:5173/payment-status?canceled=true',
         });
+
+        res.json({ url: session.url }); // Return the checkout session URL to the frontend
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
