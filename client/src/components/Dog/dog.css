@@ -24,6 +24,11 @@
   margin: 1em;
   border-radius: 1em;
   position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+#dog-card:hover {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.41);
 }
 
 #dog-card #dog-details {
