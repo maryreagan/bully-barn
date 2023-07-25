@@ -5,7 +5,7 @@ const ProductDisplay = () => (
     <div className='container'>
         <h1>Adoption Fee</h1>
         <h4>Please use this link to pay your adoption fee.</h4>
-        <h4>If you cannot make an adoption but still would like to help make a donation and become one of our sponsors!</h4>
+        <h4>If you cannot make an adoption but still would like to help, make a donation and become one of our sponsors!</h4>
         <div className="product">
             <img
                 src="https://sugarplumnannies.com/wp-content/uploads/2015/11/dog-placeholder.jpg"

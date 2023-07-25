@@ -21,8 +21,6 @@ const renderNav = (Component) => {
     );
 };
 
-
-
 function App() {
     return (
         <Router>

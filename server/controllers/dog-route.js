@@ -1,7 +1,6 @@
 const router = require("express").Router()
 const Dog = require("../models/Dog")
 const multer = require('multer')
-const multerS3 = require('multer-s3')
 const AWS = require('aws-sdk')
 
 
@@ -11,8 +10,16 @@ const s3 = new AWS.S3(
     region: process.env.AWS_REGION}
 );
 
+const imageFilter = (req, file, cb) => {
+    if(!file.originalname.match(/\.(jpg|jpeg)$/)){
+        return cb(new Error('Only JPG files are allowed'), false)
+    }
+    cb(null, true);
+}
+
 const upload = multer({
     storage: multer.memoryStorage(),
+    fileFilter: imageFilter,
 })
 
 //POST a new dog 
@@ -41,8 +48,6 @@ router.post("/create", upload.single('image'), async (req,res) => {
             caseworker, adoptionStatus, sponsorshipStatus, 
             intakeType, intakeDate, adoptionFee
         })
-
-        console.log(newDog)
         await newDog.save()
 
         res.status(201).json({
