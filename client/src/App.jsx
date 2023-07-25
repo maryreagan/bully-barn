@@ -8,8 +8,6 @@ import ForgotPwd from "./components/Auth/ForgotPwd";
 import ResetPwd from "./components/Auth/ResetPwd";
 import Form from "./components/Form/Form";
 import AdminDash from "./components/Admin-Dash/Admin-Dash";
-import AdoptionFeePage from "./components/Adoption-Fee/AdoptionFee";
-import PaymentStatusPage from "./components/Adoption-Fee/PaymentStatusPage";
 import AddDog from "./components/Dog/AddDog";
 
 const renderNav = (Component) => {
@@ -27,8 +25,6 @@ function App() {
             <Routes>
                 <Route path="/" element={renderNav(Dog)} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/adoption-fee" element={<AdoptionFeePage />} />
-                <Route path="/payment-status" element={<PaymentStatusPage />} />
                 <Route path="/forgot-password" element={<ForgotPwd />} />
                 <Route path="/add-dog" element={<AddDog />} />
                 <Route path="/reset-password/:token" element={<ResetPwd />} />

@@ -7,7 +7,6 @@ function Nav() {
     <nav>
     <Link to="/" id='bb-logo'>Bully Barn</Link>
     <Link to='/auth'>Login</Link>
-    <Link to="/adoption-fee">Adoption Fee</Link>
     <Link to= "/add-dog">Add Dog</Link>
 
   </nav>
