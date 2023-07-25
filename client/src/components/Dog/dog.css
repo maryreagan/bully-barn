@@ -57,3 +57,36 @@
 #dog-card p span {
   margin-right: 10px;
 }
+
+#chip-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#chip-box .MuiFormControlLabel-root {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+#chip-box .MuiCheckbox-root {
+  color: black;
+}
+
+#chip-box .MuiButtonBase-root {
+  color: #000;
+  margin: 0;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  font-weight: bold;
+  padding-left: 2em;
+}
+
+.attr-label {
+  color: #007bff;
+  margin-right: 1.2em;
+}

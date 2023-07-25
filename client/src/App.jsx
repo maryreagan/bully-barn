@@ -15,10 +15,8 @@ import AddDog from "./components/Dog/AddDog";
 const renderNav = (Component) => {
     return (
         <>
-            <Nav />
-            <Component />
-            <AdminDash />
-            <Form />
+          <Nav />
+          <Component />
         </>
     );
 };
@@ -35,9 +33,8 @@ function App() {
                 <Route path="/payment-status" element={<PaymentStatusPage />} />
                 <Route path="/forgot-password" element={<ForgotPwd />} />
                 <Route path="/add-dog" element={<AddDog />} />
-            <Route path="/forgot-password" element={<ForgotPwd />} />
-      <Route path="/reset-password/:token" element={<ResetPwd />} />
-      </Routes>
+                <Route path="/reset-password/:token" element={<ResetPwd />} />
+            </Routes>
         </Router>
     );
 }

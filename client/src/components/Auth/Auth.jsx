@@ -118,7 +118,8 @@ const LoginComponent = () => {
     };
 
     return (
-        <div className="auth-container">
+        <>
+        <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
         <div className="auth-container">
         <div className="login-container">
             {isLoggedIn ? (
@@ -206,7 +207,7 @@ const LoginComponent = () => {
             )}
         </div>
         </div>
-        </div>
+        </>
     );
 };
 
