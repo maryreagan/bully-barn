@@ -182,6 +182,10 @@ span {
   padding-left: 2em;
 }
 
+span {
+  font-family: 'Comfortaa', cursive;
+  font-size: 14px;
+}
 .attr-label {
   color: #007bff;
   margin-right: 1.2em;

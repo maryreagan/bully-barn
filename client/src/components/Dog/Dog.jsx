@@ -348,13 +348,13 @@ function Dog() {
   return (
     <>
       <div id='contain-home'>
-        {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
-    <div className='filter-label'>{displayFilters()} Filter</div> 
+    {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
+    <div className='filter-label'>{!selectedDog && displayFilters()} Filter</div> 
     <div id='chip-box'>
-     {displayChips()}
+     {!selectedDog && displayChips()}
       </div>
           <div id='dog-container'>
-            {renderDogDetails()}
+            {selectedDog && renderDogDetails()}
           {!selectedDog && displayDogs()}
           </div>
       </div>
