@@ -173,7 +173,6 @@ const LoginComponent = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         { isLoginMode && <Link id="forgot-pwd-link" to={'/forgot-password'}>Forgot Password?</Link>}
-                        { isLoginMode && <Link id="forgot-pwd-link" to={'/forgot-password'}>Forgot Password?</Link>}
                     </div>
                     {error && <div className="error-message">{error}</div>}
                     {isLoginMode ? (
