@@ -32,7 +32,6 @@
 }
 
 #dog-card #dog-details {
-  background-color: black;
   color: white;
   position: absolute;
   bottom: 0;
@@ -154,7 +153,7 @@
   margin-top: 1em;
 }
 
-span {
+#one-dog-container span {
   font-family: 'Comfortaa', cursive;
   font-size: 14px;
 }
@@ -187,10 +186,29 @@ span {
   padding-left: 2em;
 }
 
-span {
-  font-family: 'Comfortaa', cursive;
-  font-size: 14px;
+#sponsored-dog {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  overflow: hidden;
+  color: #fff;
+  width: 100%;
+  height: auto;
+  border-top-left-radius: .6em;
+  border-top-right-radius: .6em;
+  padding: .2em;
+  object-fit: cover;
 }
+
+/* rgba(0, 0, 0, 0.8) */
+
+.sponsored-card {
+  border: solid 3px black;
+}
+
 .attr-label {
   color: #007bff;
   margin-right: 1.2em;
