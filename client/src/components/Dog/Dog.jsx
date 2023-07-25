@@ -349,7 +349,7 @@ function Dog() {
     <>
       <div id='contain-home'>
     {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
-    <div className='filter-label'>{!selectedDog && displayFilters()} Filter</div> 
+    {!selectedDog && <div className='filter-label'>{displayFilters()} Filter</div> }
     <div id='chip-box'>
      {!selectedDog && displayChips()}
       </div>
