@@ -12,6 +12,7 @@ import AdoptionFeePage from "./components/Adoption-Fee/AdoptionFee";
 import AddDog from "./components/Dog/AddDog";
 import PaymentStatusPage from './components/Adoption-Fee/PaymentStatusPage'
 import Footer from "./components/Nav/Footer";
+import EditForm from "./components/Dog/EditForm";
 
 
 
@@ -41,10 +42,11 @@ function App() {
                 <Route path="/" element={renderNav(Dog)} />
                 <Route path="/auth" element={renderFooter(Auth)} />
                 <Route path="/adoption-fee" element={renderFooter(AdoptionFeePage)} />
-                <Route path="/payment-status" element={<PaymentStatusPage />} />
+                {/* <Route path="/payment-status" element={<PaymentStatusPage />} /> */}
                 <Route path="/forgot-password" element={renderFooter(ForgotPwd)} />
                 <Route path="/add-dog" element={renderFooter(AddDog)} />
                 <Route path="/reset-password/:token" element={renderFooter(ResetPwd)} />
+                <Route path= "/edit-form/:dogId" element= {<EditForm />} />
             </Routes>
         </Router>
     );

@@ -4,6 +4,8 @@ import MaleIcon from '@mui/icons-material/Male';
 import { Chip, Menu, MenuItem, IconButton, FormControlLabel, Checkbox } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import './dog.css';
+import DeleteDog from './DeleteDog';
+import EditDog from './EditDog';
 
 function Dog() {
   const [dogs, setDogs] = useState([]);
@@ -64,6 +66,8 @@ function Dog() {
     if (selectedDog) {
       return (
         <div id='one-dog-container'>
+          <DeleteDog selectedDog={selectedDog}/>
+          <EditDog selectedDog={selectedDog} />
           <div id='button-container'>
             <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
           </div>
@@ -106,6 +110,7 @@ function Dog() {
               </section>
             </div>
           </div>
+          
         </div>
 
       );
@@ -386,6 +391,7 @@ function Dog() {
           {!selectedDog && displayDogs()}
           </div>
       </div>
+      
     </>
   );
 }
