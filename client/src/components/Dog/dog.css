@@ -1,11 +1,11 @@
 #welcome-msg {
   text-align: center;
-  margin: 3em 0 .7em 0;
-  font-size: 2.5em;
+  margin: 1.8em 0 1em 0;
+  font-size: 3em;
 }
 
 #contain-home {
-  margin-top: 5em;
+  margin-top: 0;
 }
 
 #dog-container {

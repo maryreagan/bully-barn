@@ -4,6 +4,8 @@ import MaleIcon from '@mui/icons-material/Male';
 import { Chip, Menu, MenuItem, IconButton, FormControlLabel, Checkbox } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import './dog.css';
+import DeleteDog from './DeleteDog';
+import EditDog from './EditDog';
 
 function Dog() {
   const [dogs, setDogs] = useState([]);
@@ -18,6 +20,7 @@ function Dog() {
     '{"gender": "Male"}': 'Male',
     '{"gender": "Female"}': 'Female',
     '{"goodwKid": true}': 'Kid Friendly',
+    '{"minAge": 0, "maxAge": 0.9999}': '<1 yr',
     '{"minAge": 3, "maxAge": 5}': '3-5 years old',
     '{"minAge": 1, "maxAge": 2}': '1-2 years old',
     '{"minAge": 6, "maxAge": 10}': '6-10 years old',
@@ -79,6 +82,8 @@ function Dog() {
     if (selectedDog) {
       return (
         <div id='one-dog-container'>
+          <DeleteDog selectedDog={selectedDog}/>
+          <EditDog selectedDog={selectedDog} />
           <div id='button-container'>
             <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
           </div>
@@ -132,6 +137,7 @@ function Dog() {
             </div>
 
           </div>
+          
         </div>
 
       );
@@ -143,7 +149,7 @@ function Dog() {
     const filtered = dogs && dogs.filter((dog) => {
       return filters.every((filter) => {
         const filterObj = JSON.parse(filter) // Turns the string into an object
-        if (filterObj.minAge && filterObj.maxAge) {
+        if (filterObj.hasOwnProperty('minAge') && filterObj.hasOwnProperty('maxAge')) {
           // Handle age range filters
           return dog.age >= filterObj.minAge && dog.age <= filterObj.maxAge
         } else if (filterObj.minWeight && filterObj.maxWeight) {
@@ -162,7 +168,7 @@ function Dog() {
     if (dog.adoptionStatus === 'pending') return 'pending-card'
     if (dog.adoptionStatus === 'adopted') return 'adopted-card'
     if (dog.sponsorshipStatus) return 'sponsored-card' 
-    return false
+    return undefined
   }
 
   const displayBanner = (dog) => {
@@ -262,6 +268,17 @@ function Dog() {
           {/* Age: ------------------------------------------------ */}
           <MenuItem>
             <div className='attr-label'>Age:</div>
+
+            <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filters.includes('{"minAge": 0, "maxAge": 0.9999}')}
+                    onChange={handleFilterChange}
+                    value='{"minAge": 0, "maxAge": 0.9999}'
+                  />
+                }
+                label="<1 yr"
+              />
             <FormControlLabel
               control={
                 <Checkbox
@@ -401,6 +418,7 @@ function Dog() {
           {!selectedDog && displayDogs()}
         </div>
       </div>
+      
     </>
   );
 }
