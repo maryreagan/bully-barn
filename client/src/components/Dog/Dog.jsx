@@ -84,17 +84,23 @@ function Dog() {
     if (selectedDog) {
       return (
         <div id='one-dog-container'>
+
           <DeleteDog selectedDog={selectedDog} navigate={navigate}/>
+
           <EditDog selectedDog={selectedDog} />
           <div id='button-container'>
             <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
           </div>
-          
-          <div id='dog-details-container'>
-            <div id='img-dog-container'>
-              <img src={selectedDog.image} alt={selectedDog.name} />
-            </div> 
-            <div id='dog-details-and-adoption'>
+
+
+          <div id='all-details-wrapper'>
+            
+            <div id='dog-details-container'>
+              <div id='img-dog-container'>
+                <img src={selectedDog.image} alt={selectedDog.name} />
+              </div>
+              <p id='adoption-status'>Available{selectedDog.adoptionSatus}</p>
+
               <div id='dog-details'>
                 <h1>{selectedDog.name}</h1>
                 <section id='basic-info'>
@@ -106,8 +112,9 @@ function Dog() {
                 </section>
                 <section id='additional-info'>
                   <p>Bio: <span>{selectedDog.bio}</span></p>
-                  <p>Energy Level: <span>{selectedDog.energyLevel}</span></p>
                   <div>
+                    <h4>Energy Level</h4>
+                    <p><span>{selectedDog.energyLevel}</span></p>
                     <h4>Family-Friendly Traits</h4>
                     <p>Other dogs: <span>{selectedDog.goodwDog ? 'yes' : '-'}</span></p>
                     <p>Cats: <span>{selectedDog.goodwCat ? 'yes' : '-'}</span></p>
@@ -129,17 +136,15 @@ function Dog() {
                   <h4>Adoption Fee <span>{selectedDog.adoptionFee}</span></h4>
                 </section>
               </div>
-              <div id='adoptionStatus-and-payments'>
-                <p>Available{selectedDog.adoptionSatus}</p>
-                <div id='payments'>
-                  <button onClick={handleDonateClick} className='donate-btn'>Adoption Fee</button>
-                  <button onClick={handleDonateClick} className='donate-btn'>Sponsor</button>
-                </div>
-              </div>
+            </div>
+
+            <div id='payments'>
+              <button onClick={handleDonateClick} className='donate-btn'>Adoption Fee</button>
+              <button onClick={handleDonateClick} className='donate-btn'>Sponsor</button>
             </div>
 
           </div>
-          
+
         </div>
 
       );
@@ -169,20 +174,20 @@ function Dog() {
   const bannerSwitch = (dog) => {
     if (dog.adoptionStatus === 'pending') return 'pending-card'
     if (dog.adoptionStatus === 'adopted') return 'adopted-card'
-    if (dog.sponsorshipStatus) return 'sponsored-card' 
+    if (dog.sponsorshipStatus) return 'sponsored-card'
     return undefined
   }
 
   const displayBanner = (dog) => {
     if (dog.adoptionStatus === "pending") return 'PENDING'
     if (dog.adoptionStatus === 'adopted') return 'ADOPTED'
-    if (dog.sponsorshipStatus) return 'SPONSORED!' 
+    if (dog.sponsorshipStatus) return 'SPONSORED!'
   }
-  
+
 
   const displayDogs = () => {
     return (
-      dogs && filteredDogs.map((dog) => ( 
+      dogs && filteredDogs.map((dog) => (
         <div id='dog-card' className={bannerSwitch(dog)} key={dog._id} onClick={() => displayDogDetails(dog)}>
           {bannerSwitch(dog) && <div id={`head-${bannerSwitch(dog)}`}>{displayBanner(dog)}</div>}
           <div id='img-container'>
@@ -272,15 +277,15 @@ function Dog() {
             <div className='attr-label'>Age:</div>
 
             <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minAge": 0, "maxAge": 0.9999}')}
-                    onChange={handleFilterChange}
-                    value='{"minAge": 0, "maxAge": 0.9999}'
-                  />
-                }
-                label="<1 yr"
-              />
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minAge": 0, "maxAge": 0.9999}')}
+                  onChange={handleFilterChange}
+                  value='{"minAge": 0, "maxAge": 0.9999}'
+                />
+              }
+              label="<1 yr"
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -327,56 +332,56 @@ function Dog() {
           <MenuItem>
             <div className='attr-label'>Weight:</div>
             <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 1, "maxWeight": 10}'
-                  />
-                }
-                label="1-10 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 11, "maxWeight": 25}'
-                  />
-                }
-                label="11-25 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 26, "maxWeight": 50}'
-                  />
-                }
-                label="26-50 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 51, "maxWeight": 70}'
-                  />
-                }
-                label="51-70 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 71, "maxWeight": 400}'
-                  />
-                }
-                label="70+ lbs"
-              />
-            </MenuItem>
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 1, "maxWeight": 10}'
+                />
+              }
+              label="1-10 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 11, "maxWeight": 25}'
+                />
+              }
+              label="11-25 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 26, "maxWeight": 50}'
+                />
+              }
+              label="26-50 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 51, "maxWeight": 70}'
+                />
+              }
+              label="51-70 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 71, "maxWeight": 400}'
+                />
+              }
+              label="70+ lbs"
+            />
+          </MenuItem>
 
           {/* Friendly With: ------------------------------------------------ */}
           <MenuItem>
@@ -410,17 +415,17 @@ function Dog() {
   return (
     <>
       <div id='contain-home'>
-    {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
-    {!selectedDog && <div className='filter-label'>{displayFilters()} Filter</div> }
-    <div id='chip-box'>
-     {!selectedDog && displayChips()}
-      </div>
-          <div id='dog-container'>
-            {selectedDog && renderDogDetails()}
+        {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
+        {!selectedDog && <div className='filter-label'>{displayFilters()} Filter</div>}
+        <div id='chip-box'>
+          {!selectedDog && displayChips()}
+        </div>
+        <div id='dog-container'>
+          {selectedDog && renderDogDetails()}
           {!selectedDog && displayDogs()}
         </div>
       </div>
-      
+
     </>
   );
 }
