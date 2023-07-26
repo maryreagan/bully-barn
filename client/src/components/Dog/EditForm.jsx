@@ -8,7 +8,12 @@ import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, For
 function EditForm({selectedDog, handleUpdate}) {
 
     const {dogId} = useParams();
-    const [editedDog, setEditedDog] = useState([])
+    const [editedDog, setEditedDog] = useState({
+        adoptionStatus: 'available',
+        energyLevel: 'Low',
+        intakeDate: new Date().toISOString().substring(0,10) // set today's date as default value
+        
+    })
 
     useEffect(() => {
         let url = `http://127.0.0.1:4000/dog/${dogId}`
@@ -22,6 +27,7 @@ function EditForm({selectedDog, handleUpdate}) {
         .then(res => res.json())
         .then(data => {
             setEditedDog(data)
+            console.log(data.intakeDate)
         })
         .catch(err => {
             console.log(err)
@@ -35,7 +41,24 @@ function EditForm({selectedDog, handleUpdate}) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        handleUpdate(editedDog)
+
+        let url = `https://127.0.0.1:4000/dog/update/${dogId}`
+        fetch (url, {
+            method: 'PUT',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                // "authorization": sessionToken
+            }),
+            body: JSON.stringify(editedDog)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     const genderOptions = [
@@ -111,7 +134,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 style={{width:223}}
                 size='small'
                 required
-                value={editedDog.gender}
+                value={editedDog.gender === 'Female' ? 'Female' : 'Male'}
                 onChange={handleChange}
                 >
                 {genderOptions.map((option) => (
@@ -162,7 +185,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="goodwDog"
-                    value={editedDog.goodwDog}
+                    value={editedDog.goodwDog ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -183,7 +206,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="goodwCat"
-                    value={editedDog.goodwCat}
+                    value={editedDog.goodwCat ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -204,7 +227,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="goodwKid"
-                    value={editedDog.goodwKid}
+                    value={editedDog.goodwKid ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -225,7 +248,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="crateTrained"
-                    value={editedDog.crateTrained}
+                    value={editedDog.crateTrained ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -246,7 +269,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="houseTrained"
-                    value={editedDog.houseTrained}
+                    value={editedDog.houseTrained ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -267,7 +290,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="objAggression"
-                    value={editedDog.objAggression}
+                    value={editedDog.objAggression ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -299,7 +322,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="specialNeeds"
-                    value={editedDog.specialNeeds}
+                    value={editedDog.specialNeeds ? 'true' : 'false'}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -374,7 +397,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 style={{width:223}}
                 size='small'
                 required
-                value={editedDog.sponsorshipStatus}
+                value={editedDog.sponsorshipStatus === 'Sponsored' ? 'true' : 'false' }
                 onChange={handleChange}
                 >
                 {sponsorshipOptions.map((option) => (
@@ -395,7 +418,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 onChange={handleChange}
             />  
 
-            <TextField
+            {/* <TextField
                 className='form-input'
                 type="date"
                 name='intakeDate'
@@ -403,7 +426,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 required
                 helperText="Intake Date"
                 onChange={handleChange}
-            />
+            /> */}
 
             <TextField
                 className='form-input'
@@ -419,14 +442,14 @@ function EditForm({selectedDog, handleUpdate}) {
                 }}
             />
 
-            <TextField
+            {/* <TextField
                 className='form-input'
                 id='image-input'
                 type="file"
                 name="image"
                 helperText='Image Upload'
                 //onChange={handleImageChange}
-            />
+            /> */}
 
 
             <Button type="submit" variant="contained">

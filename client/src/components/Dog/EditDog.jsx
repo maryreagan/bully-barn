@@ -6,27 +6,6 @@ import { Link } from 'react-router-dom'
 
 function EditDog({selectedDog}) {
 
-    const handleUpdate = (editedDog) => {
-        let url = `https://127.0.0.1:4000/dog/update/${selectedDog._id}`
-        fetch (url, {
-            method: 'PUT',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                // "authorization": sessionToken
-            }),
-            body: JSON.stringify(editedDog)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
-    <EditForm handleUpdate={handleUpdate} />
 
 return (
     <>
