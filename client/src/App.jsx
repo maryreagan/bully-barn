@@ -10,6 +10,7 @@ import AdminDash from "./components/Admin-Dash/Admin-Dash";
 import AddDog from "./components/Dog/AddDog";
 import Footer from "./components/Nav/Footer";
 import EditForm from "./components/Dog/EditForm";
+import DisplayOne from "./components/Dog/DisplayOne";
 
 
 const renderNav = (Component) => {
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/add-dog" element={renderFooter(AddDog)} />
                 <Route path="/reset-password/:token" element={renderFooter(ResetPwd)} />
                 <Route path= "/edit-form/:dogId" element= {<EditForm />} />
+                <Route path= "/display-one" element = {<DisplayOne />} />
                 
             </Routes>
         </Router>

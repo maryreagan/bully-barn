@@ -53,11 +53,13 @@ function EditForm({selectedDog, handleUpdate}) {
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             if(data.message === 'Dog successfully updated'){
                 alert('Dog Updated Successfully!')
             } else {
                 alert("Error Occured. Dog Not Updated.")
             }
+            navigate('/')
 
         })
         .catch(err => {
@@ -436,7 +438,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 }}
             />
 
-            <Button type="submit" variant="contained" onClick={() => navigate(-1)}>
+            <Button type="submit" variant="contained">
             Update
             </Button>
 

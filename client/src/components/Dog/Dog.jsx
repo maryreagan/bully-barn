@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import FemaleIcon from '@mui/icons-material/Female';
-import MaleIcon from '@mui/icons-material/Male';
+import { useNavigate } from 'react-router-dom';
 import { Chip, Menu, MenuItem, IconButton, FormControlLabel, Checkbox } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import './dog.css';
-import DeleteDog from './DeleteDog';
-import EditDog from './EditDog';
-import { useNavigate } from 'react-router-dom';
+
 
 function Dog() {
   const [dogs, setDogs] = useState([]);
-  const [selectedDog, setSelectedDog] = useState(null);
+  const [selectedDog, setSelectedDog] = useState([]);
   const [filters, setFilters] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [filteredDogs, setFilteredDogs] = useState([])
   const navigate = useNavigate();
+
 
   const admin = localStorage.getItem('administrator')
 
@@ -54,100 +52,6 @@ function Dog() {
     getDogs();
   }, []);
 
-  const displayDogDetails = (dog) => {
-    setSelectedDog(dog);
-  };
-
-  const handleBackToAllDogs = () => {
-    setSelectedDog(null);
-  }
-
-  const handleDonateClick = async () => {
-    try {
-      const response = await fetch('http://localhost:4000/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fee: selectedDog.adoptionFee }), // Send the selected dog's adoption fee to the backend
-      });
-      const session = await response.json();
-      window.location = session.url; // Redirect to the Stripe checkout page
-    } catch (error) {
-      console.error('Error initiating payment:', error);
-    }
-  };
-
-  const renderGenderIcon = (gender) => {
-    return gender === "Female" ? <FemaleIcon /> : <MaleIcon />
-  }
-
-  const renderDogDetails = () => {
-    if (selectedDog) {
-      return (
-        <div id='one-dog-container'>
-          <DeleteDog selectedDog={selectedDog} navigate={navigate}/>
-          <EditDog selectedDog={selectedDog} />
-          <div id='button-container'>
-            <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
-          </div>
-          
-          <div id='dog-details-container'>
-            <div id='img-dog-container'>
-              <img src={selectedDog.image} alt={selectedDog.name} />
-            </div> 
-            <div id='dog-details-and-adoption'>
-              <div id='dog-details'>
-                <h1>{selectedDog.name}</h1>
-                <section id='basic-info'>
-                  <p>Age {selectedDog.age}</p>
-                  <div id='dog-gender'>
-                    {renderGenderIcon(selectedDog.gender)}
-                    <p>{selectedDog.gender}</p>
-                  </div> 
-                </section>
-                <section id='additional-info'>
-                  <p>Bio: <span>{selectedDog.bio}</span></p>
-                  <p>Energy Level: <span>{selectedDog.energyLevel}</span></p>
-                  <div>
-                    <h4>Family-Friendly Traits</h4>
-                    <p>Other dogs: <span>{selectedDog.goodwDog ? 'yes' : '-'}</span></p>
-                    <p>Cats: <span>{selectedDog.goodwCat ? 'yes' : '-'}</span></p>
-                    <p>Children: <span>{selectedDog.goodwKid ? 'yes' : '-'}</span></p>
-                  </div>
-                  <div>
-                    <h4>Training and Behavior</h4>
-                    <p>Crate Trained: <span>{selectedDog.crateTrained ? 'yes' : 'No'}</span></p>
-                    <p>House Trained: <span>{selectedDog.houseTrained ? 'yes' : 'No'}</span></p>
-                    <p>Reactivity to Objects: <span>{selectedDog.objAggression ? 'yes' : 'No'}</span></p>
-                  </div>
-                  <div>
-                    <h4>Special Needs</h4>
-                    <p><span>{selectedDog.specialNeeds}</span></p>
-                    <p><span>{selectedDog.specialNeedsDesc}</span></p>
-                    <h4>Medication:</h4>
-                    <p><span>{selectedDog.medication}</span></p>
-                  </div>
-                  <h4>Adoption Fee <span>{selectedDog.adoptionFee}</span></h4>
-                </section>
-              </div>
-              <div id='adoptionStatus-and-payments'>
-                <p>Available{selectedDog.adoptionSatus}</p>
-                <div id='payments'>
-                  <button onClick={handleDonateClick} className='donate-btn'>Adoption Fee</button>
-                  <button onClick={handleDonateClick} className='donate-btn'>Sponsor</button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-          
-        </div>
-
-      );
-    }
-    return null;
-  };
 
   useEffect(() => { // Filtering + updating the dog data
     const filtered = dogs && dogs.filter((dog) => {
@@ -172,21 +76,22 @@ function Dog() {
   const bannerSwitch = (dog) => {
     if (dog.adoptionStatus === 'pending') return 'pending-card'
     if (dog.adoptionStatus === 'adopted') return 'adopted-card'
-    if (dog.sponsorshipStatus) return 'sponsored-card' 
+    if (dog.sponsorshipStatus) return 'sponsored-card'
     return undefined
   }
 
   const displayBanner = (dog) => {
     if (dog.adoptionStatus === "pending") return 'PENDING'
     if (dog.adoptionStatus === 'adopted') return 'ADOPTED'
-    if (dog.sponsorshipStatus) return 'SPONSORED!' 
+    if (dog.sponsorshipStatus) return 'SPONSORED!'
   }
-  
+
+
 
   const displayDogs = () => {
     return (
-      dogs && filteredDogs.map((dog) => ( 
-        <div id='dog-card' className={bannerSwitch(dog)} key={dog._id} onClick={() => displayDogDetails(dog)}>
+      dogs && filteredDogs.map((dog) => (
+        <div id='dog-card' className={bannerSwitch(dog)} key={dog._id} onClick={() => {getOneDog(dog)}}>
           {bannerSwitch(dog) && <div id={`head-${bannerSwitch(dog)}`}>{displayBanner(dog)}</div>}
           <div id='img-container'>
             <img src={dog.image} alt={dog.name} />
@@ -202,6 +107,12 @@ function Dog() {
       ))
     );
   };
+
+  // handles moving to the DisplayOne page when a dog is selected 
+  const getOneDog = (dog) => {
+    setSelectedDog(dog)
+    navigate('/display-one', {state: dog})
+  }
 
   const handleFilterChange = (event) => {
     const filterValue = event.target.value;
@@ -275,15 +186,15 @@ function Dog() {
             <div className='attr-label'>Age:</div>
 
             <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minAge": 0, "maxAge": 0.9999}')}
-                    onChange={handleFilterChange}
-                    value='{"minAge": 0, "maxAge": 0.9999}'
-                  />
-                }
-                label="<1 yr"
-              />
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minAge": 0, "maxAge": 0.9999}')}
+                  onChange={handleFilterChange}
+                  value='{"minAge": 0, "maxAge": 0.9999}'
+                />
+              }
+              label="<1 yr"
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -330,56 +241,56 @@ function Dog() {
           <MenuItem>
             <div className='attr-label'>Weight:</div>
             <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 1, "maxWeight": 10}'
-                  />
-                }
-                label="1-10 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 11, "maxWeight": 25}'
-                  />
-                }
-                label="11-25 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 26, "maxWeight": 50}'
-                  />
-                }
-                label="26-50 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 51, "maxWeight": 70}'
-                  />
-                }
-                label="51-70 lbs"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
-                    onChange={handleFilterChange}
-                    value='{"minWeight": 71, "maxWeight": 400}'
-                  />
-                }
-                label="70+ lbs"
-              />
-            </MenuItem>
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 1, "maxWeight": 10}'
+                />
+              }
+              label="1-10 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 11, "maxWeight": 25}'
+                />
+              }
+              label="11-25 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 26, "maxWeight": 50}'
+                />
+              }
+              label="26-50 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 51, "maxWeight": 70}'
+                />
+              }
+              label="51-70 lbs"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
+                  onChange={handleFilterChange}
+                  value='{"minWeight": 71, "maxWeight": 400}'
+                />
+              }
+              label="70+ lbs"
+            />
+          </MenuItem>
 
           {/* Friendly With: ------------------------------------------------ */}
           <MenuItem>
@@ -410,20 +321,21 @@ function Dog() {
     )
   }
 
+  
+
   return (
     <>
       <div id='contain-home'>
-    {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
-    {!selectedDog && <div className='filter-label'>{displayFilters()} Filter</div> }
-    <div id='chip-box'>
-     {!selectedDog && displayChips()}
-      </div>
-          <div id='dog-container'>
-            {selectedDog && renderDogDetails()}
-          {!selectedDog && displayDogs()}
+        { <h1 id='welcome-msg'>Meet Our Dogs</h1>}
+        { <div className='filter-label'>{displayFilters()} Filter</div>}
+        <div id='chip-box'>
+          { displayChips()}
+        </div>
+        <div id='dog-container'>
+          {displayDogs()}
         </div>
       </div>
-      
+
     </>
   );
 }

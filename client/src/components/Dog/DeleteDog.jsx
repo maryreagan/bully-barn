@@ -3,7 +3,8 @@ import {Button} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 
-function DeleteDog({selectedDog, navigate}) {
+function DeleteDog({selectedDog}) {
+    const navigate = useNavigate();
 
     const handleDelete = () => {
 
