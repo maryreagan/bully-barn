@@ -10,13 +10,10 @@ body {
 }
 
 .auth-container {
-}
-
-.auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
 }
 
 .login-container {
@@ -102,6 +99,10 @@ body {
 .barn-logo {
     max-width: 6em;
     margin: 1.5em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
 }
 
 #reset-info {
