@@ -40,6 +40,7 @@ function Dog() {
       });
 
       const data = await response.json();
+      console.log(data)
       setDogs(data);
     };
 
@@ -157,10 +158,25 @@ function Dog() {
     setFilteredDogs(filtered)
   }, [dogs, filters])
 
+  const bannerSwitch = (dog) => {
+    if (dog.adoptionStatus === 'pending') return 'pending-card'
+    if (dog.adoptionStatus === 'adopted') return 'adopted-card'
+    if (dog.sponsorshipStatus) return 'sponsored-card' 
+    return false
+  }
+
+  const displayBanner = (dog) => {
+    if (dog.adoptionStatus === "pending") return 'PENDING'
+    if (dog.adoptionStatus === 'adopted') return 'ADOPTED'
+    if (dog.sponsorshipStatus) return 'SPONSORED!' 
+  }
+  
+
   const displayDogs = () => {
     return (
-      dogs && filteredDogs.map((dog) => (
-        <div id='dog-card' key={dog._id} onClick={() => displayDogDetails(dog)}>
+      dogs && filteredDogs.map((dog) => ( 
+        <div id='dog-card' className={bannerSwitch(dog)} key={dog._id} onClick={() => displayDogDetails(dog)}>
+          {bannerSwitch(dog) && <div id={`head-${bannerSwitch(dog)}`}>{displayBanner(dog)}</div>}
           <div id='img-container'>
             <img src={dog.image} alt={dog.name} />
           </div>
@@ -292,56 +308,56 @@ function Dog() {
           <MenuItem>
             <div className='attr-label'>Weight:</div>
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
-                  onChange={handleFilterChange}
-                  value='{"minWeight": 1, "maxWeight": 10}'
-                />
-              }
-              label="5-10 lbs"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
-                  onChange={handleFilterChange}
-                  value='{"minWeight": 11, "maxWeight": 25}'
-                />
-              }
-              label="11-25 lbs"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
-                  onChange={handleFilterChange}
-                  value='{"minWeight": 26, "maxWeight": 50}'
-                />
-              }
-              label="26-50 lbs"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
-                  onChange={handleFilterChange}
-                  value='{"minWeight": 51, "maxWeight": 70}'
-                />
-              }
-              label="51-70 lbs"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
-                  onChange={handleFilterChange}
-                  value='{"minWeight": 71, "maxWeight": 400}'
-                />
-              }
-              label="70+ lbs"
-            />
-          </MenuItem>
+                control={
+                  <Checkbox
+                    checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
+                    onChange={handleFilterChange}
+                    value='{"minWeight": 1, "maxWeight": 10}'
+                  />
+                }
+                label="1-10 lbs"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
+                    onChange={handleFilterChange}
+                    value='{"minWeight": 11, "maxWeight": 25}'
+                  />
+                }
+                label="11-25 lbs"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
+                    onChange={handleFilterChange}
+                    value='{"minWeight": 26, "maxWeight": 50}'
+                  />
+                }
+                label="26-50 lbs"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
+                    onChange={handleFilterChange}
+                    value='{"minWeight": 51, "maxWeight": 70}'
+                  />
+                }
+                label="51-70 lbs"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
+                    onChange={handleFilterChange}
+                    value='{"minWeight": 71, "maxWeight": 400}'
+                  />
+                }
+                label="70+ lbs"
+              />
+            </MenuItem>
 
           {/* Friendly With: ------------------------------------------------ */}
           <MenuItem>
@@ -375,13 +391,13 @@ function Dog() {
   return (
     <>
       <div id='contain-home'>
-        {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
-        <div className='filter-label'>{!selectedDog && displayFilters()} Filter</div>
-        <div id='chip-box'>
-          {!selectedDog && displayChips()}
-        </div>
-        <div id='dog-container'>
-          {selectedDog && renderDogDetails()}
+    {!selectedDog && <h1 id='welcome-msg'>Meet Our Dogs</h1>}
+    {!selectedDog && <div className='filter-label'>{displayFilters()} Filter</div> }
+    <div id='chip-box'>
+     {!selectedDog && displayChips()}
+      </div>
+          <div id='dog-container'>
+            {selectedDog && renderDogDetails()}
           {!selectedDog && displayDogs()}
         </div>
       </div>

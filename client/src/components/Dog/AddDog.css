@@ -10,9 +10,14 @@
     align-items:flex-start;
     gap: 1em;
     background-color: #bebebe;
-    margin: 1em;
+    margin: 4em;
     padding: 1em;
-    border: 1px solid grey;
-    border-radius: 3px;
+    border: 1px solid #bebebe;
+    border-radius: 4px;
+    box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
+}
+
+.form-header{
+    font-family:Arial, Helvetica, sans-serif;
 }
 

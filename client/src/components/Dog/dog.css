@@ -32,7 +32,6 @@
 }
 
 #dog-card #dog-details {
-  background-color: black;
   color: white;
   position: absolute;
   bottom: 0;
@@ -48,7 +47,7 @@
 }
 
 #dog-card #img-container {
-  height: 16em;
+  height: 18em;
   overflow: hidden;
   border-radius: .8em;
 }
@@ -157,7 +156,7 @@
   margin-top: 1em;
 }
 
-span {
+#one-dog-container span {
   font-family: 'Comfortaa', cursive;
   font-size: 14px;
 }
@@ -196,10 +195,39 @@ span {
   padding-left: 2em;
 }
 
-span {
-  font-family: 'Comfortaa', cursive;
-  font-size: 14px;
+#head-sponsored-card, #head-adopted-card, #head-pending-card {
+  background-color: #33CCCC;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  overflow: hidden;
+  color: #fff;
+  height: auto;
+  border-top-left-radius: .6em;
+  border-top-right-radius: .6em;
+  padding: .2em;
+  object-fit: cover;
 }
+
+
+.sponsored-card, .pending-card, .adopted-card {
+  border: solid 4px #2fbcbc;
+}
+
+.pending-card, #head-pending-card {
+  border-color: #b8b8ff;
+  color: #383838;
+  background-color: #E6E6FA;
+}
+
+
+.adopted-card, #head-adopted-card {
+  border-color: rgba(74, 93, 94, 0.863) ;
+  background-color: rgba(74, 93, 94, 0.863);
+}
+
 .attr-label {
   color: #007bff;
   margin-right: 1.2em;
