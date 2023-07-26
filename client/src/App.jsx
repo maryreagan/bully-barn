@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import Auth from "./components/Auth/Auth";
@@ -11,6 +10,12 @@ import AdminDash from "./components/Admin-Dash/Admin-Dash";
 import AddDog from "./components/Dog/AddDog";
 import Footer from "./components/Nav/Footer";
 import EditForm from "./components/Dog/EditForm";
+
+
+
+
+
+
 
 const renderNav = (Component) => {
     return (
@@ -41,6 +46,7 @@ function App() {
                 <Route path="/add-dog" element={renderFooter(AddDog)} />
                 <Route path="/reset-password/:token" element={renderFooter(ResetPwd)} />
                 <Route path= "/edit-form/:dogId" element= {<EditForm />} />
+                
             </Routes>
         </Router>
     );
