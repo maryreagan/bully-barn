@@ -69,20 +69,33 @@
   width: 60vw;
 }
 
+#all-details-wrapper {
+  display: flex;
+}
+
 #dog-details-container {
   display: flex;
   flex-direction: column;
   align-items: start;
-  height: 100vh;
+  height: auto;
   background-color: #F7F3E3;
   border-radius: 20px;
   box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5)
 }
 
-#dog-details-and-adoption {
+#payments {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  margin-top: 6em;
+  margin-left: 4em;
+}
+
+#payments button {
+  cursor: pointer;
+  height: 3em;
+  padding: 1em;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
 }
 
 #back-to-all-dogs-btn {
@@ -114,8 +127,9 @@
 }
 
 #img-dog-container img {
-  width: 22em;
-  height: 25em;
+  margin-top: 5em;
+  width: 23em;
+  height: 23em;
   object-fit: cover;
   border-radius: 1em;
 }
@@ -124,12 +138,16 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-bottom: 6em;
+}
+
+#adoption-status {
+  margin-left: 13em;
 }
 
 #dog-details {
   width: 100%;
-  background-color: #F7F3E3;
-  padding: 4em 2em 2em 4em;
+  padding: 0em 2em 2em 4em;
 }
 
 #dog-details h1 {
@@ -147,24 +165,18 @@
   margin-bottom: 2em;
 }
 
+#dog-details h4 {
+  margin-top: 1em;
+}
+
 #dog-gender {
   display: flex;
   align-items: center;
 }
 
-#dog-details h4 {
-  margin-top: 1em;
-}
-
 #one-dog-container span {
   font-family: 'Comfortaa', cursive;
   font-size: 14px;
-}
-
-#adoptionStatus-and-payments {
-  width: 100%;
-  background-color: #F7F3E3;
-  padding: 4em 2em 2em 4em;
 }
 
 #chip-box {
