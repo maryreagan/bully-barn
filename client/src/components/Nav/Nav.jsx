@@ -16,14 +16,14 @@ function Nav() {
     return token ? (
       <nav>
       <Link to="/" id='bb-logo'>Bully Barn</Link>
-      <Link onClick={handleLogout}>Logout</Link>
       <Link to= "/add-dog">Add Dog</Link>
+      <Link id='nav-logout' onClick={handleLogout}>Logout</Link>
       </nav>
   ) : (
     <nav>
     <Link to="/" id='bb-logo'>Bully Barn</Link>
-    <Link to='/auth'>Login</Link>
     <Link to= "/add-dog">Add Dog</Link>
+    <Link id='nav-logout' to='/auth'>Login</Link>
     </nav>
   )
 }
