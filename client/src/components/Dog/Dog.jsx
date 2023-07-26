@@ -12,8 +12,6 @@ function Dog() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [filteredDogs, setFilteredDogs] = useState([])
   const navigate = useNavigate();
-
-
   const admin = localStorage.getItem('administrator')
 
   const filterMapping = {
