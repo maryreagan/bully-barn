@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import "./Auth.css";
 
@@ -12,6 +12,7 @@ const LoginComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoginMode, setIsLoginMode] = useState(true); // New state for login/register mode
     const [isLoggedIn, setIsLoggedIn] = useState(false); // New state for handling login status
+    const navigate = useNavigate()
 
     useEffect(() => {
         // Check if the user already has a valid token on component mount
@@ -23,6 +24,11 @@ const LoginComponent = () => {
                 setIsLoggedIn(true);
             } else {
                 // Token has expired, clear it from local storage
+                setIsLoggedIn(false)
+                setEmail("");
+                setPassword("");
+                setFirstName("");
+                setLastName("");
                 localStorage.removeItem("token");
                 localStorage.removeItem("tokenExpiration");
             }
@@ -53,6 +59,7 @@ const LoginComponent = () => {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("tokenExpiration", expirationTime);
                 setIsLoggedIn(true);
+                navigate('/')
             } else {
                 // Login failed
                 setError(data.message);
@@ -62,17 +69,6 @@ const LoginComponent = () => {
         }
 
         setIsLoading(false);
-    };
-
-    const handleLogout = () => {
-        // Clear the token and reset the login state
-        localStorage.removeItem("token");
-        localStorage.removeItem("tokenExpiration");
-        setIsLoggedIn(false);
-        setEmail("");
-        setPassword("");
-        setFirstName("");
-        setLastName("");
     };
 
     const handleRegister = async () => {
@@ -117,6 +113,7 @@ const LoginComponent = () => {
         setIsLoginMode((prevMode) => !prevMode);
     };
 
+
     return (
         <>
         <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
@@ -124,10 +121,7 @@ const LoginComponent = () => {
         <div className="login-container">
             {isLoggedIn ? (
                 <>
-                    <h2 className="login-success">
-                        Welcome! You are logged in.
-                    </h2>
-                    <button onClick={handleLogout}>Log Out</button>
+                <h1>You are logged in.</h1>
                 </>
             ) : (
                 <>
