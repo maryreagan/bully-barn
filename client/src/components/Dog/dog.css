@@ -80,7 +80,7 @@
   height: auto;
   background-color: #F7F3E3;
   border-radius: 20px;
-  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5)
+  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 #payments {
@@ -153,7 +153,7 @@
 #dog-details h1 {
   font-family: 'Comfortaa', cursive;
   font-size: 3em;
-}
+} 
 
 #basic-info {
   display: flex;
@@ -163,7 +163,7 @@
   font-size: larger;
   font-weight: 600;
   margin-bottom: 2em;
-}
+} 
 
 #dog-details h4 {
   margin-top: 1em;

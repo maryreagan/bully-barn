@@ -1,5 +1,5 @@
 import React, {useState, useEffect}  from 'react'
-import {useParams} from 'react-router-dom'
+import {Navigate, useNavigate, useParams} from 'react-router-dom'
 import './EditForm.css'
 import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button} from '@mui/material'
 
@@ -7,11 +7,12 @@ import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, For
 
 function EditForm({selectedDog, handleUpdate}) {
 
+    const navigate = useNavigate();
+
     const {dogId} = useParams();
     const [editedDog, setEditedDog] = useState({
         adoptionStatus: 'available',
         energyLevel: 'Low',
-        intakeDate: new Date().toISOString().substring(0,10) // set today's date as default value
         
     })
 
@@ -27,7 +28,6 @@ function EditForm({selectedDog, handleUpdate}) {
         .then(res => res.json())
         .then(data => {
             setEditedDog(data)
-            console.log(data.intakeDate)
         })
         .catch(err => {
             console.log(err)
@@ -42,7 +42,7 @@ function EditForm({selectedDog, handleUpdate}) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        let url = `https://127.0.0.1:4000/dog/update/${dogId}`
+        let url = `http://127.0.0.1:4000/dog/update/${dogId}`
         fetch (url, {
             method: 'PUT',
             headers: new Headers({
@@ -53,7 +53,11 @@ function EditForm({selectedDog, handleUpdate}) {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            if(data.message === 'Dog successfully updated'){
+                alert('Dog Updated Successfully!')
+            } else {
+                alert("Error Occured. Dog Not Updated.")
+            }
 
         })
         .catch(err => {
@@ -418,16 +422,6 @@ function EditForm({selectedDog, handleUpdate}) {
                 onChange={handleChange}
             />  
 
-            {/* <TextField
-                className='form-input'
-                type="date"
-                name='intakeDate'
-                value={editedDog.intakeDate}
-                required
-                helperText="Intake Date"
-                onChange={handleChange}
-            /> */}
-
             <TextField
                 className='form-input'
                 name="adoptionFee"
@@ -442,17 +436,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 }}
             />
 
-            {/* <TextField
-                className='form-input'
-                id='image-input'
-                type="file"
-                name="image"
-                helperText='Image Upload'
-                //onChange={handleImageChange}
-            /> */}
-
-
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" onClick={() => navigate(-1)}>
             Update
             </Button>
 

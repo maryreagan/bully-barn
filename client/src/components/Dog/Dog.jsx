@@ -6,6 +6,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import './dog.css';
 import DeleteDog from './DeleteDog';
 import EditDog from './EditDog';
+import { useNavigate } from 'react-router-dom';
 
 function Dog() {
   const [dogs, setDogs] = useState([]);
@@ -13,6 +14,7 @@ function Dog() {
   const [filters, setFilters] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [filteredDogs, setFilteredDogs] = useState([])
+  const navigate = useNavigate();
 
   const filterMapping = {
     '{"goodwCat": true}': 'Cat Friendly',
@@ -82,11 +84,14 @@ function Dog() {
     if (selectedDog) {
       return (
         <div id='one-dog-container'>
-          <DeleteDog selectedDog={selectedDog} />
+
+          <DeleteDog selectedDog={selectedDog} navigate={navigate}/>
+
           <EditDog selectedDog={selectedDog} />
           <div id='button-container'>
             <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
           </div>
+
 
           <div id='all-details-wrapper'>
             
@@ -95,6 +100,7 @@ function Dog() {
                 <img src={selectedDog.image} alt={selectedDog.name} />
               </div>
               <p id='adoption-status'>Available{selectedDog.adoptionSatus}</p>
+
               <div id='dog-details'>
                 <h1>{selectedDog.name}</h1>
                 <section id='basic-info'>
@@ -102,7 +108,7 @@ function Dog() {
                   <div id='dog-gender'>
                     {renderGenderIcon(selectedDog.gender)}
                     <p>{selectedDog.gender}</p>
-                  </div>
+                  </div> 
                 </section>
                 <section id='additional-info'>
                   <p>Bio: <span>{selectedDog.bio}</span></p>
