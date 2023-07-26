@@ -105,6 +105,7 @@ router.post("/login", async (req, res) => {
             message: "Login successful",
             fullName: `${user.firstName} ${user.lastName}`,
             email: user.email,
+            isAdmin: user.isAdmin,
             token: token,
         });
     } catch (err) {
