@@ -57,6 +57,7 @@ const LoginComponent = () => {
                 const expirationTime =
                     new Date().getTime() + 24 * 60 * 60 * 1000; // 24 hours in milliseconds
                 localStorage.setItem("token", data.token);
+                if (data.isAdmin) localStorage.setItem("administrator", data.isAdmin)
                 localStorage.setItem("tokenExpiration", expirationTime);
                 setIsLoggedIn(true);
                 navigate('/')

@@ -9,15 +9,16 @@ function Nav() {
     // Clear the token and reset the login state
     localStorage.removeItem("token");
     localStorage.removeItem("tokenExpiration");
+    localStorage.removeItem("administrator");
     location.reload()
     };
 
-  return token ? (
-    <nav>
-    <Link to="/" id='bb-logo'>Bully Barn</Link>
-    <Link onClick={handleLogout}>Logout</Link>
-    <Link to= "/add-dog">Add Dog</Link>
-    </nav>
+    return token ? (
+      <nav>
+      <Link to="/" id='bb-logo'>Bully Barn</Link>
+      <Link onClick={handleLogout}>Logout</Link>
+      <Link to= "/add-dog">Add Dog</Link>
+      </nav>
   ) : (
     <nav>
     <Link to="/" id='bb-logo'>Bully Barn</Link>

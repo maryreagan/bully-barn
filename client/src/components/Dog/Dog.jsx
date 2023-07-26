@@ -16,6 +16,8 @@ function Dog() {
   const [filteredDogs, setFilteredDogs] = useState([])
   const navigate = useNavigate();
 
+  const admin = localStorage.getItem('administrator')
+
   const filterMapping = {
     '{"goodwCat": true}': 'Cat Friendly',
     '{"goodwDog": true}': 'Dog Friendly',
@@ -161,6 +163,7 @@ function Dog() {
           return Object.entries(filterObj).every(([key, value]) => dog[key] === value)
         }
       })
+      && !(!admin && dog.adoptionStatus === 'adopted');
     })
 
     setFilteredDogs(filtered)

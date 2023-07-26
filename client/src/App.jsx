@@ -12,11 +12,6 @@ import Footer from "./components/Nav/Footer";
 import EditForm from "./components/Dog/EditForm";
 
 
-
-
-
-
-
 const renderNav = (Component) => {
     return (
         <>
