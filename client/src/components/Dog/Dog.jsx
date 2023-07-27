@@ -58,6 +58,7 @@ function Dog() {
         if (filterObj.hasOwnProperty('minAge') && filterObj.hasOwnProperty('maxAge')) {
           // Handle age range filters
           return dog.age >= filterObj.minAge && dog.age <= filterObj.maxAge
+          // Handle weight range filters
         } else if (filterObj.minWeight && filterObj.maxWeight) {
           return dog.weight >= filterObj.minWeight && dog.weight <= filterObj.maxWeight
         } else {
