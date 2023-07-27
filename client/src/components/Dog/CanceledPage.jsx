@@ -3,8 +3,8 @@ import React from 'react';
 const CanceledPage = () => {
     return (
         <div>
-            <h1>Order Canceled</h1>
-            <p>Ops it looks like something went wrong. Please, try again.</p>
+            <h1 style={{marginBottom: "1em"}}>Order Canceled</h1>
+            <p>Your payment was canceled or unsuccessful. Please, try again.</p>
         </div>
     );
 };
