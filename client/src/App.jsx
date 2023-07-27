@@ -11,7 +11,9 @@ import AddDog from "./components/Dog/AddDog";
 import Footer from "./components/Nav/Footer";
 import EditForm from "./components/Dog/EditForm";
 import DisplayOne from "./components/Dog/DisplayOne";
-
+import PaymentStatusPage from "./components/Dog/PaymentStatusPage";
+import SuccessPage from "./components/Dog/SuccessPage";
+import CanceledPage from "./components/Dog/CanceledPage";
 
 const renderNav = (Component) => {
   return (
@@ -44,6 +46,7 @@ function App() {
         <Route path="/reset-password/:token" element={renderFooter(ResetPwd)} />
         <Route path="/edit-form/:dogId" element={<EditForm />} />
         <Route path="/display-one" element={<DisplayOne />} />
+        <Route path="/payment-status" element={<PaymentStatusPage />} />
 
       </Routes>
       <Footer />
