@@ -1,25 +1,37 @@
 #chart-container{
-    border: red solid 2px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 4em;
+    background-color: whitesmoke
+
 }
 
 .pie-table-container{
     display: flex;
-    border: blue solid 2px;
     gap: 15em;
     justify-content: center;
 }
 
+#pie-title, #table-title, #bar-title{
+    text-align: center;
+}
+
+#bar-title{
+    padding-bottom: 15px;
+}
+
+#table-title{
+    padding-bottom: 25px;
+}
 
 
 /* Table stlying*/
 .table-header {
     background-color: #f2f2f2;
     font-weight: bold;
+    
 }
 
 .table-cell {
@@ -29,6 +41,8 @@
 
 .table {
     font-size: 14px;
+
+
 }
 
 .table-container {

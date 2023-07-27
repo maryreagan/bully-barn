@@ -97,9 +97,11 @@ function Chart() {
     <div id='chart-container'>
         <DrawerNav />
         
+        
         <div className='pie-table-container'>
+
         <div id='piechart'>
-        <h3>Dogs by Caseworker</h3>
+        <h2 id='pie-title'>Dogs by Caseworker</h2>
         <PieChart width={400} height={400}>
             <Pie
                 data={datasets}
@@ -118,7 +120,7 @@ function Chart() {
 
         <div id='table'>
             <div className="table-container">
-            <h2 id='table-tile'>Dog Adoption Status</h2>
+            <h2 id='table-title'>Adoption Status</h2>
             <TableContainer component={Paper}>
             <Table className="table">
                 <TableHead>
@@ -158,7 +160,7 @@ function Chart() {
 
         
         <div id='bar-chart'>
-        <h3>Number of Applications per Dog</h3>
+        <h2 id='bar-title'>Number of Applications per Dog</h2>
         <BarChart
             width={800}
             height={400}
