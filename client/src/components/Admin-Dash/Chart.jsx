@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {PieChart, Pie, Cell, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid} from 'recharts'
 import './Chart.css'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer } from '@mui/material'
+import DrawerNav from './DrawerNav'
+
+
 
 
 function Chart() {
@@ -92,6 +95,7 @@ function Chart() {
 
     return (
     <div id='chart-container'>
+        <DrawerNav />
         
         <div className='pie-table-container'>
         <div id='piechart'>
@@ -116,7 +120,7 @@ function Chart() {
             <div className="table-container">
             <h2 id='table-tile'>Dog Adoption Status</h2>
             <TableContainer component={Paper}>
-            <Table clasName="table">
+            <Table className="table">
                 <TableHead>
                 <TableRow className="table-header">
                     <TableCell>Status</TableCell>
