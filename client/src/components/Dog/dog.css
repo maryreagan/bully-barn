@@ -1,25 +1,25 @@
-#welcome-msg {
+.welcome-msg {
   text-align: center;
-  margin: 1.8em 0 1em 0;
-  font-size: 3em;
+  margin: 1.5em 0 1em 0;
+  font-size: 3.2em;
 }
 
-#contain-home {
+.contain-home {
   margin-top: 0;
 }
 
-#dog-container {
+.dog-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 70em;
+  max-width: 80em;
   margin: 0 auto;
   position: relative;
 }
 
-#dog-card {
+.dog-card {
   text-align: center;
-  width: 15em;
+  width: 17em;
   padding: 0;
   margin: 1em;
   border-radius: 1em;
@@ -27,38 +27,38 @@
   transition: box-shadow 0.3s ease-in-out;
 }
 
-#dog-card:hover {
+.dog-card:hover {
   box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.41);
 }
 
-#dog-card #dog-details {
+.dog-card .dog-details {
   color: white;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);;
   padding: 1em;
   border-radius: .8em;
 }
 
-#dog-card h2 {
+.dog-card h2 {
   margin-bottom: .15em;
 }
 
-#dog-card #img-container {
+.dog-card .img-container {
   height: 18em;
   overflow: hidden;
   border-radius: .8em;
 }
 
-#dog-card img {
+.dog-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-#dog-card p span {
+.dog-card p span {
   margin-right: 10px;
   cursor: pointer;
 }
@@ -91,7 +91,7 @@
   padding-left: 2em;
 }
 
-#head-sponsored-card, #head-adopted-card, #head-pending-card {
+.head-sponsored-card, .head-adopted-card, .head-pending-card {
   background-color: #33CCCC;
   position: absolute;
   top: 0;
@@ -112,19 +112,19 @@
   border: solid 4px #2fbcbc;
 }
 
-.pending-card, #head-pending-card {
+.pending-card, .head-pending-card {
   border-color: #b8b8ff;
   color: #383838;
   background-color: #E6E6FA;
 }
 
 
-.adopted-card, #head-adopted-card {
+.adopted-card, .head-adopted-card {
   border-color: rgba(74, 93, 94, 0.863) ;
   background-color: rgba(74, 93, 94, 0.863);
 }
 
 .attr-label {
-  color: #007bff;
+  color: #27acac;
   margin-right: 1.2em;
 }
