@@ -12,6 +12,10 @@ import Footer from "./components/Nav/Footer";
 import EditForm from "./components/Dog/EditForm";
 import DisplayOne from "./components/Dog/DisplayOne";
 import AdoptedDogs from "./components/Dog/AdoptedDogs";
+import Chart from "./components/Admin-Dash/Chart";
+import PaymentStatusPage from "./components/Dog/PaymentStatusPage";
+import SuccessPage from "./components/Dog/SuccessPage";
+import CanceledPage from "./components/Dog/CanceledPage";
 
 
 const renderNav = (Component) => {
@@ -45,6 +49,9 @@ function App() {
         <Route path="/edit-form/:dogId" element={<EditForm />} />
         <Route path="/display-one" element={renderNav(DisplayOne)} />
         <Route path="/adopted-dogs" element={renderNav(AdoptedDogs)} />
+        <Route path ="/chart" element={<Chart />} />
+        <Route path="/payment-status" element={<PaymentStatusPage />} />
+
       </Routes>
     </Router>
   );
