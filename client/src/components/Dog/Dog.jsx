@@ -13,7 +13,6 @@ function Dog() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [filteredDogs, setFilteredDogs] = useState([])
   const navigate = useNavigate();
-  const admin = localStorage.getItem('administrator')
 
   const filterMapping = {
     '{"goodwCat": true}': 'Cat Friendly',
@@ -59,6 +58,7 @@ function Dog() {
         if (filterObj.hasOwnProperty('minAge') && filterObj.hasOwnProperty('maxAge')) {
           // Handle age range filters
           return dog.age >= filterObj.minAge && dog.age <= filterObj.maxAge
+          // Handle weight range filters
         } else if (filterObj.minWeight && filterObj.maxWeight) {
           return dog.weight >= filterObj.minWeight && dog.weight <= filterObj.maxWeight
         } else {
@@ -66,7 +66,6 @@ function Dog() {
           return Object.entries(filterObj).every(([key, value]) => dog[key] === value)
         }
       })
-      && !(!admin && dog.adoptionStatus === 'adopted');
     })
 
     setFilteredDogs(filtered)
@@ -74,28 +73,24 @@ function Dog() {
 
   const bannerSwitch = (dog) => {
     if (dog.adoptionStatus === 'pending') return 'pending-card'
-    if (dog.adoptionStatus === 'adopted') return 'adopted-card'
     if (dog.sponsorshipStatus) return 'sponsored-card'
     return undefined
   }
 
   const displayBanner = (dog) => {
     if (dog.adoptionStatus === "pending") return 'PENDING'
-    if (dog.adoptionStatus === 'adopted') return 'ADOPTED'
     if (dog.sponsorshipStatus) return 'SPONSORED!'
   }
-
-
 
   const displayDogs = () => {
     return (
       dogs && filteredDogs.map((dog) => (
-        <div id='dog-card' className={bannerSwitch(dog)} key={dog._id} onClick={() => {getOneDog(dog)}}>
-          {bannerSwitch(dog) && <div id={`head-${bannerSwitch(dog)}`}>{displayBanner(dog)}</div>}
-          <div id='img-container'>
+        <div className={`dog-card ${bannerSwitch(dog)}`} key={dog._id} onClick={() => {getOneDog(dog)}}>
+          {bannerSwitch(dog) && <div className={`head-${bannerSwitch(dog)}`}>{displayBanner(dog)}</div>}
+          <div className='img-container'>
             <img src={dog.image} alt={dog.name} />
           </div>
-          <div id='dog-details'>
+          <div className='dog-details'>
             <h2>{dog.name}</h2>
             <p>
               <span>{dog.gender}</span>
@@ -324,17 +319,16 @@ function Dog() {
 
   return (
     <>
-      <div id='contain-home'>
-        { <h1 id='welcome-msg'>Meet Our Dogs</h1>}
+      <div className='contain-home'>
+        { <h1 className='welcome-msg'>Meet Our Dogs</h1>}
         { <div className='filter-label'>{displayFilters()} Filter</div>}
         <div id='chip-box'>
           { displayChips()}
         </div>
-        <div id='dog-container'>
+        <div className='dog-container'>
           {displayDogs()}
         </div>
       </div>
-
     </>
   );
 }

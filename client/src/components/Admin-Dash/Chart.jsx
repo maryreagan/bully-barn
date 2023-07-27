@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {PieChart, Pie, Cell, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid} from 'recharts'
 import './Chart.css'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer } from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material'
 import DrawerNav from './DrawerNav'
-
 
 
 
@@ -120,6 +119,7 @@ function Chart() {
 
         <div id='table'>
             <div className="table-container">
+
             <h2 id='table-title'>Adoption Status</h2>
             <TableContainer component={Paper}>
             <Table className="table">
@@ -160,6 +160,7 @@ function Chart() {
 
         
         <div id='bar-chart'>
+
         <h2 id='bar-title'>Number of Applications per Dog</h2>
         <BarChart
             width={800}
