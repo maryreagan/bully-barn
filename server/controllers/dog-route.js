@@ -23,7 +23,7 @@ const upload = multer({
     limits: {
         fileSize: 4 * 1024 * 1024 //4MB
     },
-})
+}) 
 
 //POST a new dog 
 router.post("/create", upload.single('image'), async (req,res) => {

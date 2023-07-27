@@ -37,7 +37,9 @@ function AddDog() {
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [zoom, setZoom] = useState(1);
     const [croppedImage, setCroppedImage] = useState(null);
-
+    const [finishedCrop, setFinishedCrop] = useState(false)
+    const [multipleImages, setMultipleImages] = useState([])
+ 
     // Function to update the crop state when the user modifies the crop area
     const onCropChange = (crop) => {
         setCrop(crop);
@@ -77,8 +79,17 @@ function AddDog() {
             ...prevDogData,
             croppedImage: reader.result,
             }));
+
         };
         };
+    
+        const handleFinishCrop = () => {
+            setFinishedCrop(true)
+        }
+
+        const handleMultipleImageChange = (e) => {
+            setMultipleImages([...e.target.files])
+        }
 
 
     const handleSubmit = async (e) => {
@@ -110,6 +121,10 @@ function AddDog() {
         formData.append('adoptionFee', dogData.adoptionFee)
         formData.append('image', dogData.image);
         formData.append('croppedImage', dogData.croppedImage)
+        //appends multiple images
+        multipleImages.forEach((image, index) => {
+            formData.append('multipleImages', image, `multipleImage_${index}.jpg`);
+        });
 
 
         try{
@@ -128,7 +143,7 @@ function AddDog() {
     }
     
     function renderFormInputs() {
-
+//#region 
         const genderOptions = [
             {value: 'Male', label: 'Male'},
             {value: 'Female', label: 'Female'}
@@ -517,7 +532,7 @@ function AddDog() {
                     startAdornment: <InputAdornment position="start">$</InputAdornment>
                 }}
             />
-
+//#endregion
             <TextField
                 className='form-input'
                 id='image-input'
@@ -527,7 +542,20 @@ function AddDog() {
                 onChange={handleImageChange}
             />
 
-        {dogData.image && (
+            <TextField
+                className='form-input'
+                id='multiple-images-input'
+                type="file"
+                name="multipleImages"
+                helperText='Upload Multiple Images'
+                onChange={handleMultipleImageChange}
+                multiple // Add the multiple attribute
+                inputProps={{ accept: 'image/*', multiple: true }} // Add accept and multiple props
+            />
+
+        {dogData.image && !finishedCrop &&(
+
+            <div>
             <ImageCropper
                 image={dogData.image}
                 crop={crop}
@@ -536,6 +564,8 @@ function AddDog() {
                 onZoomChange={onZoomChange}
                 onCropComplete={handleCropComplete}
             />
+            <Button onClick={handleFinishCrop}>Finish Crop</Button>
+            </div>
             )}
 
         <Button 
