@@ -11,6 +11,7 @@ import AddDog from "./components/Dog/AddDog";
 import Footer from "./components/Nav/Footer";
 import EditForm from "./components/Dog/EditForm";
 import DisplayOne from "./components/Dog/DisplayOne";
+import Chart from "./components/Admin-Dash/Chart";
 
 
 const renderNav = (Component) => {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/reset-password/:token" element={renderFooter(ResetPwd)} />
         <Route path="/edit-form/:dogId" element={<EditForm />} />
         <Route path="/display-one" element={<DisplayOne />} />
+        <Route path ="/chart" element={<Chart />} />
 
       </Routes>
       <Footer />

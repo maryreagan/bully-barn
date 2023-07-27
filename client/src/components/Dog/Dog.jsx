@@ -5,6 +5,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import './dog.css';
 
 
+
 function Dog() {
   const [dogs, setDogs] = useState([]);
   const [selectedDog, setSelectedDog] = useState([]);
@@ -319,7 +320,7 @@ function Dog() {
     )
   }
 
-  
+
 
   return (
     <>
