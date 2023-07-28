@@ -1,3 +1,97 @@
+th,
 td {
     padding: 0.25em;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+thead th {
+    border: 1px solid #ccc;
+}
+
+tbody td {
+    border: 1px solid #ccc;
+}
+
+thead th span {
+    margin-left: 8px;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+tbody tr.selected {
+    background-color: #e0e0e0;
+}
+
+th span {
+    float: right;
+}
+
+th:not(:last-child) {
+    border-right: none;
+}
+
+tbody tr:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+}
+
+.selected-application-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.selected-application-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.details-columns {
+    display: flex;
+    width: 100%;
+}
+
+.details-column {
+    flex: 1 1 50%;
+    box-sizing: border-box;
+    padding-right: 10px;
+    margin-bottom: 10px;
+}
+
+.header-cell {
+    position: relative;
+    padding-right: 20px;
+}
+
+.header-cell span {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.selected-application-details {
+    margin-bottom: 20px;
+}
+
+thead th,
+tbody td,
+.full-name,
+.details-columns {
+    width: 25%;
 }

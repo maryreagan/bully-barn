@@ -1,8 +1,8 @@
 import React, {useState, useEffect}  from 'react'
-import {Navigate, useNavigate, useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import './EditForm.css'
 import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button} from '@mui/material'
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 
 function EditForm({selectedDog, handleUpdate}) {
@@ -18,11 +18,11 @@ function EditForm({selectedDog, handleUpdate}) {
 
     useEffect(() => {
         let url = `http://127.0.0.1:4000/dog/${dogId}`
+
         fetch(url, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
-                // "authorization": sessionToken
         }),
     })
         .then(res => res.json())
@@ -43,24 +43,23 @@ function EditForm({selectedDog, handleUpdate}) {
         e.preventDefault()
 
         let url = `http://127.0.0.1:4000/dog/update/${dogId}`
+        const token = localStorage.getItem('token')
         fetch (url, {
             method: 'PUT',
             headers: new Headers({
                 'Content-Type': 'application/json',
-                // "authorization": sessionToken
+                "Authorization": `Bearer ${token}`
             }),
             body: JSON.stringify(editedDog)
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             if(data.message === 'Dog successfully updated'){
                 alert('Dog Updated Successfully!')
             } else {
                 alert("Error Occured. Dog Not Updated.")
             }
             navigate('/')
-
         })
         .catch(err => {
             console.log(err)
@@ -98,6 +97,13 @@ function EditForm({selectedDog, handleUpdate}) {
 
     return (
         <>
+        <div id='back-btn'>
+            <Button 
+            variant='outlined'
+            startIcon={<ArrowBackIcon />}
+            onClick={()=>navigate(-1)}
+            >Back</Button>
+        </div>
         <form id='edit-dog-form' onSubmit={handleSubmit}>
         <TextField
             className='form-input'

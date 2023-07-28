@@ -5,12 +5,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
-import './DisplayOne.css';
+import Form from "../Form/Form";
+import './DisplayOne.css'
+import { adminCheck } from '../../helpers/adminCheck'
+import {Paper, Button} from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+
 
 function DisplayOne() {
     const location = useLocation();
     const selectedDog = location.state;
     const navigate = useNavigate();
+    const isAdmin = adminCheck()
 
     const handleBackToAllDogs = () => {
         navigate('/');
@@ -65,13 +71,24 @@ function DisplayOne() {
         if (selectedDog) {
             return (
                 <div id='one-dog-container'>
-                    <DeleteDog selectedDog={selectedDog} />
-                    <EditDog selectedDog={selectedDog} />
+
                     <div id='button-container'>
-                        <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
+                        <Button
+                        variant='outlined'
+                        startIcon={<ArrowBackIcon />} 
+                        onClick={handleBackToAllDogs} 
+                        >Back</Button>
                     </div>
 
                     <div id='all-details-wrapper'>
+
+                        <div className="admin-box">
+                            {isAdmin && <Paper elevation={6} style={{backgroundColor: 'rgb(217, 216, 216)'}} className='edit-delete-paper'>
+                                <h4 id='admin-text'>For Administrative Use Only</h4>
+                                {isAdmin && <DeleteDog selectedDog={selectedDog} />}
+                                {isAdmin && <EditDog selectedDog={selectedDog} />}
+                            </Paper>}
+                        </div>
 
                         <div id='dog-details-container'>
                             <div id='img-dog-container'>
@@ -119,7 +136,6 @@ function DisplayOne() {
                                 </section>
                             </div>
                         </div>
-
                         <div id='payments'>
                             {!selectedDog.isFeePaid && (
                                 <>
@@ -143,7 +159,9 @@ function DisplayOne() {
 
     return (
         <>
+            
             {renderDogDetails()}
+            <Form selectedDog={selectedDog}/>
         </>
     );
 }

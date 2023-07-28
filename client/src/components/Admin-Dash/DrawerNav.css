@@ -1,0 +1,39 @@
+#list-icon {
+cursor: pointer;
+margin-right: 10px;
+color: grey;
+}
+
+#drawer-header {
+display: flex;
+align-items: center;
+background-color: #f1f1f1;
+}
+
+#banner {
+height: 60px;
+width: 100%;
+background-color: lightgray;
+display: flex;
+align-items: center;
+font-size: 24px;
+font-weight: bold;
+transition: margin 0.2s ease-in-out;
+margin-top: 1em;
+
+}
+
+
+#list {
+margin-top: 50px;
+}
+
+.list-item{
+    padding-bottom: 15px;
+    padding-top: 15px;
+    color: rgb(85, 83, 83);
+}
+
+.list-item:hover{
+    background-color: #bebebe;
+}

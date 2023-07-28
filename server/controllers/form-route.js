@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ApplicationForm = require("../models/Form");
+const roleValidation = require("../middleware/roleValidation");
 
 // Submit Application Route
 router.post("/create", async (req, res) => {
@@ -26,7 +27,7 @@ router.post("/create", async (req, res) => {
 });
 
 // Fetch All Applications Route
-router.get("/applications", async (req, res) => {
+router.get("/applications", roleValidation, async (req, res) => {
     try {
         const applications = await ApplicationForm.find();
         res.status(200).json({

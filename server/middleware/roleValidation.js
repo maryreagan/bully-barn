@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken')
 const JWT_KEY = process.env.JWT_KEY
 
 const roleValidation = async (req, res, next) => {
+  if(!req.headers.authorization) {
+    res.status(401).json({ message: 'Forbidden'})
+    return
+  }
   // Get token from header
   const token = req.headers.authorization.includes("Bearer")
   ? req.headers.authorization.split(" ")[1]

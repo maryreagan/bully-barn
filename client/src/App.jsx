@@ -16,23 +16,15 @@ import Chart from "./components/Admin-Dash/Chart";
 import PaymentStatusPage from "./components/Dog/PaymentStatusPage";
 import SuccessPage from "./components/Dog/SuccessPage";
 import CanceledPage from "./components/Dog/CanceledPage";
+import { CssBaseline } from "@mui/material";
 
 
-const renderNav = (Component) => {
+const MainLayout = ({children}) => {
   return (
     <>
-      <Nav />
-      <Component />
-      <Footer />
-    </>
-  );
-};
-
-const renderFooter = (Component) => {
-  return (
-    <>
-      <Component />
-      <Footer />
+    <Nav />
+    {children}
+    <Footer />
     </>
   )
 }
@@ -40,17 +32,19 @@ const renderFooter = (Component) => {
 function App() {
   return (
     <Router>
+      <CssBaseline />
       <Routes>
-        <Route path="/" element={renderNav(Dog)} />
-        <Route path="/auth" element={renderFooter(Auth)} />
-        <Route path="/forgot-password" element={renderFooter(ForgotPwd)} />
-        <Route path="/add-dog" element={renderNav(AddDog)} />
-        <Route path="/reset-password/:token" element={renderFooter(ResetPwd)} />
-        <Route path="/edit-form/:dogId" element={<EditForm />} />
-        <Route path="/display-one" element={renderNav(DisplayOne)} />
-        <Route path="/adopted-dogs" element={renderNav(AdoptedDogs)} />
-        <Route path ="/chart" element={<Chart />} />
+      <Route path="/" element={<MainLayout><Dog /></MainLayout>} />
+        <Route path="/auth" element={<MainLayout><Auth /></MainLayout>} />
+        <Route path="/forgot-password" element={<MainLayout><ForgotPwd /></MainLayout>} />
+        <Route path="/add-dog" element={<MainLayout><AddDog /></MainLayout>} />
+        <Route path="/reset-password/:token" element={<MainLayout><ResetPwd /></MainLayout>} />
+        <Route path="/edit-form/:dogId" element={<MainLayout><EditForm /></MainLayout>} />
+        <Route path="/display-one" element={<MainLayout><DisplayOne /></MainLayout>} />
+        <Route path="/adopted-dogs" element={<MainLayout><AdoptedDogs /></MainLayout>} />
+        <Route path="/chart" element={<MainLayout><Chart /></MainLayout>} />
         <Route path="/payment-status" element={<PaymentStatusPage />} />
+        <Route path="/admin-dash" element={<MainLayout><AdminDash /></MainLayout>} />
       </Routes>
     </Router>
   );
