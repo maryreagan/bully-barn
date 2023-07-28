@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import DeleteDog from './DeleteDog';
 import EditDog from './EditDog';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,22 +14,24 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 function DisplayOne() {
     const location = useLocation();
-    const selectedDog = location.state
+    const selectedDog = location.state;
     const navigate = useNavigate();
     const isAdmin = adminCheck()
 
     const handleBackToAllDogs = () => {
-        navigate('/')
-    }
+        navigate('/');
+    };
 
     const handleDonateClick = async () => {
         try {
-            const response = await fetch('http://localhost:4000/create-checkout-session', {
+            const payload = `{"fee": ${selectedDog.adoptionFee}, "dogId": "${selectedDog._id}"}`;
+            const response = await fetch('http://localhost:4000/payment/create-checkout-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Content-Encoding': 'identity',
                 },
-                body: JSON.stringify({ fee: selectedDog.adoptionFee }), // Send the selected dog's adoption fee to the backend
+                body: payload,
             });
             const session = await response.json();
             window.location = session.url; // Redirect to the Stripe checkout page
@@ -38,9 +40,32 @@ function DisplayOne() {
         }
     };
 
+    const handleSponsorPayment = async () => {
+        try {
+            const payload = `{"fee": ${selectedDog.adoptionFee}, "dogId": "${selectedDog._id}", "isSponsorship": true}`;
+
+            const response = await fetch('http://localhost:4000/payment/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Encoding': 'identity',
+                },
+                body: payload,
+            });
+            const session = await response.json();
+            window.location = session.url; 
+        } catch (error) {
+            console.error('Error initiating sponsorship payment:', error);
+        }
+    };
+
+    const handleSponsorClick = () => {
+        handleSponsorPayment();
+    };
+
     const renderGenderIcon = (gender) => {
-        return gender === "Female" ? <FemaleIcon /> : <MaleIcon />
-    }
+        return gender === "Female" ? <FemaleIcon /> : <MaleIcon />;
+    };
 
     const renderDogDetails = () => {
         if (selectedDog) {
@@ -70,6 +95,10 @@ function DisplayOne() {
                                 <img src={selectedDog.image} alt={selectedDog.name} />
                             </div>
                             <p id='adoption-status'>Available{selectedDog.adoptionSatus}</p>
+
+                            {selectedDog.isFeePaid && (
+                                <p id='fee-status'>Adoption Fee Paid</p>
+                            )}
 
                             <div id='dog-details'>
                                 <h1>{selectedDog.name}</h1>
@@ -108,8 +137,15 @@ function DisplayOne() {
                             </div>
                         </div>
                         <div id='payments'>
-                            <button onClick={handleDonateClick} >Adoption Fee</button>
-                            <button onClick={handleDonateClick} ><VolunteerActivismIcon id='donate-icon' />Sponsor</button>
+                            {!selectedDog.isFeePaid && (
+                                <>
+                                    <button onClick={handleDonateClick}>Adoption Fee</button>
+                                    <button onClick={handleSponsorClick}>
+                                        <VolunteerActivismIcon id='donate-icon' />
+                                        Sponsor
+                                    </button>
+                                </>
+                            )}
                         </div>
 
                     </div>
@@ -127,10 +163,7 @@ function DisplayOne() {
             {renderDogDetails()}
             <Form selectedDog={selectedDog}/>
         </>
-
-
-
-    )
+    );
 }
 
-export default DisplayOne
+export default DisplayOne;
