@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './dog.css'
+import DrawerNav from '../Admin-Dash/DrawerNav'
 
 function AdoptedDogs() {
   const [adoptedDogs, setAdoptedDogs ] = useState([])
@@ -49,6 +50,7 @@ function AdoptedDogs() {
 
   return (
     <>
+    <DrawerNav />
     <h1 className='welcome-msg'>Adopted Dogs</h1>
     {displayAdopted()}
     </>
