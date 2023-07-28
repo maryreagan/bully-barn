@@ -51,6 +51,7 @@ function App() {
         <Route path="/adopted-dogs" element={renderNav(AdoptedDogs)} />
         <Route path ="/chart" element={<Chart />} />
         <Route path="/payment-status" element={<PaymentStatusPage />} />
+
       </Routes>
     </Router>
   );
