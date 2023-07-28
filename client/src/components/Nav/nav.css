@@ -6,8 +6,8 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: black;
-  padding: .8rem 0;
+  background-color: #385170;
+  padding: .9rem 0;
   z-index: 9999;
 }
 
@@ -16,7 +16,7 @@ nav {
 }
 
 nav a {
-  color: white;
+  color: whitesmoke;
   text-decoration: none;
   margin: 0 2em 0 2em;
   font-size: large;
@@ -25,6 +25,7 @@ nav a {
 #bb-logo {
   font-size: x-large;
   font-weight: bold;
+  font-family: 'Playfair Display';
 }
 
 .footer {
@@ -35,7 +36,6 @@ nav a {
   display: flex;
   flex-direction: row;
   margin-top: 15em;
-  margin-bottom: .3em;
   padding-top: 3em;
   margin-top: 20em;
   justify-content: center;

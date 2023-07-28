@@ -1,7 +1,41 @@
 .welcome-msg {
   text-align: center;
-  margin: 1.5em 0 1em 0;
-  font-size: 3.5em;
+  margin: 1.2em 0 1em 0;
+  font-size: 4em;
+}
+
+.adopt-msg {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-image: url(https://images.unsplash.com/photo-1603682274105-c015c571d03d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 118.9rem;
+  height: 56rem;
+}
+
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.64);
+}
+
+.adopt-msg h1 {
+  margin: 1.2em 4em 1em 0;
+  top: 2.5em;
+  left: 4rem;
+  font-size: 8em;
+  color: white;
+  position: relative;
+  transform: translateY(-50%);
+  z-index: 1;
+  text-align: center;
+  line-height: 1;
 }
 
 .contain-home {
@@ -25,10 +59,6 @@
   border-radius: 1em;
   position: relative;
   transition: box-shadow 0.3s ease-in-out;
-}
-
-.dog-card:hover {
-  box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.41);
 }
 
 .dog-card .dog-details {
@@ -114,7 +144,7 @@
 
 .pending-card, .head-pending-card {
   border-color: #b8b8ff;
-  color: #383838;
+  color: #646b6c;
   background-color: #E6E6FA;
 }
 
@@ -122,6 +152,22 @@
 .adopted-card, .head-adopted-card {
   border-color: rgba(74, 93, 94, 0.863) ;
   background-color: rgba(74, 93, 94, 0.863);
+}
+
+.dog-card:hover {
+  box-shadow: 0 0 10px 5px rgba(77, 93, 93, 0.908);
+}
+
+.pending-card:hover {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 187, 0.253);
+}
+
+.sponsored-card:hover {
+  box-shadow: 0 0 10px 5px rgba(52, 213, 213, 0.774);
+}
+
+.adopted-card:hover {
+  box-shadow: 0 0 10px 5px rgba(74, 93, 94, 0.863);
 }
 
 .attr-label {
