@@ -4,8 +4,6 @@ import { Chip, Menu, MenuItem, IconButton, FormControlLabel, Checkbox } from '@m
 import FilterListIcon from '@mui/icons-material/FilterList';
 import './dog.css';
 
-
-
 function Dog() {
   const [dogs, setDogs] = useState([]);
   const [selectedDog, setSelectedDog] = useState([]);

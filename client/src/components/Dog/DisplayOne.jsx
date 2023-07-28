@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import Form from "../Form/Form";
 import './DisplayOne.css'
-import Form from '../Form/Form';
 
 function DisplayOne() {
     const location = useLocation();
