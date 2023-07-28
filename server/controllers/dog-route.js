@@ -129,7 +129,7 @@ router.get("/:id", async(req,res)=> {
 })
 
 // edit a dog by ID
-router.put("/update/:id", async(req,res)=>{
+router.put("/update/:id", roleValidation, async(req,res)=>{
     try{
         const {id:_id} = req.params
         const editDog = req.body
