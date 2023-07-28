@@ -9,28 +9,39 @@ const ApplicationsTable = () => {
     const [sortColumn, setSortColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [caseworkerName, setCaseworkerName] = useState("");
+    const token = localStorage.getItem('token')
 
     useEffect(() => {
-        // Fetch applications data
-        fetch("http://localhost:4000/form/applications")
-            .then((response) => response.json())
-            .then((data) => {
-                setApplications(data.applications);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+      // Fetch applications data
+      fetch("http://localhost:4000/form/applications", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok")
+          }
+          return response.json()
+        })
+        .then((data) => {
+          setApplications(data.applications)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
 
-        // Fetch dogs data
-        fetch("http://localhost:4000/dog")
-            .then((response) => response.json())
-            .then((data) => {
-                setDogs(data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
+      // Fetch dogs data
+      fetch("http://localhost:4000/dog")
+        .then((response) => response.json())
+        .then((data) => {
+          setDogs(data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }, [])
 
     // Function to find the dog object based on dogId
     const findDogById = (dogId) => {
