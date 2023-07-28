@@ -13,7 +13,7 @@ import "./DrawerNav.css"
 function DrawerNav() {
 
         const menuLinks = [
-            {text: 'Adopted Dogs', link: '/adopted', icon: <PetsOutlinedIcon />},
+            {text: 'Adopted Dogs', link: '/adopted-dogs', icon: <PetsOutlinedIcon />},
             {text: 'Applications', link: '/admin-dash', icon: <FeedOutlinedIcon />},
             {text: 'Dasboard', link: '/chart', icon: <SpaceDashboardOutlinedIcon/> },
             {text: 'Add Dog', link: '/add-dog', icon: <AddchartOutlinedIcon /> }
