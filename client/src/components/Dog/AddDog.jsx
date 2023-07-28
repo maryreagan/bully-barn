@@ -3,6 +3,7 @@ import './AddDog.css'
 import ImageCropper from './ImageCropper'
 import getCroppedImg from './getCroppedImg'
 import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button} from '@mui/material'
+import DrawerNav from '../Admin-Dash/DrawerNav'
 
 
 function AddDog() {
@@ -581,6 +582,7 @@ function AddDog() {
 
     return (
     <>
+    <DrawerNav />
     {renderFormInputs()}
 
     </>
