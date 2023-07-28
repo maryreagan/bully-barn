@@ -8,6 +8,9 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import Form from "../Form/Form";
 import './DisplayOne.css'
 import { adminCheck } from '../../helpers/adminCheck'
+import {Paper, Button} from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+
 
 function DisplayOne() {
     const location = useLocation();
@@ -45,10 +48,22 @@ function DisplayOne() {
                 <div id='one-dog-container'>
 
                     <div id='button-container'>
-                        <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
+                        <Button
+                        variant='outlined'
+                        startIcon={<ArrowBackIcon />} 
+                        onClick={handleBackToAllDogs} 
+                        >Back</Button>
                     </div>
 
                     <div id='all-details-wrapper'>
+
+                        <div className="admin-box">
+                            {isAdmin && <Paper elevation={6} style={{backgroundColor: 'rgb(217, 216, 216)'}} className='edit-delete-paper'>
+                                <h4 id='admin-text'>For Administrative Use Only</h4>
+                                {isAdmin && <DeleteDog selectedDog={selectedDog} />}
+                                {isAdmin && <EditDog selectedDog={selectedDog} />}
+                            </Paper>}
+                        </div>
 
                         <div id='dog-details-container'>
                             <div id='img-dog-container'>
@@ -110,8 +125,6 @@ function DisplayOne() {
         <>
             
             {renderDogDetails()}
-            {isAdmin && <DeleteDog selectedDog={selectedDog} />}
-            {isAdmin && <EditDog selectedDog={selectedDog} />}
             <Form selectedDog={selectedDog}/>
         </>
 
