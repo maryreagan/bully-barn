@@ -9,21 +9,20 @@ function DeleteDog({selectedDog}) {
     const handleDelete = () => {
 
             let url = `http://127.0.0.1:4000/dog/delete/${selectedDog._id}`
+            const token = localStorage.getItem('token')
             fetch (url, {
                 method: 'DELETE',
                 headers: new Headers ({
                     "Content-Type": "application/json",
-                    //"authorization": sessionToken
+                    "Authorization": `Bearer ${token}`
                 })
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 if (data.message === 'Dog Deleted') {
                     // Delete was successful
                     alert('Dog Deleted Successfully');
                     navigate('/')
-
                         
                 } else {
                     // Delete was not successful, display an error message

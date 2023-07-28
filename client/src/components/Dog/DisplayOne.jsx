@@ -7,11 +7,13 @@ import MaleIcon from '@mui/icons-material/Male';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import Form from "../Form/Form";
 import './DisplayOne.css'
+import { adminCheck } from '../../helpers/adminCheck'
 
 function DisplayOne() {
     const location = useLocation();
     const selectedDog = location.state
     const navigate = useNavigate();
+    const isAdmin = adminCheck()
 
     const handleBackToAllDogs = () => {
         navigate('/')
@@ -41,8 +43,7 @@ function DisplayOne() {
         if (selectedDog) {
             return (
                 <div id='one-dog-container'>
-                    <DeleteDog selectedDog={selectedDog} />
-                    <EditDog selectedDog={selectedDog} />
+
                     <div id='button-container'>
                         <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
                     </div>
@@ -91,7 +92,6 @@ function DisplayOne() {
                                 </section>
                             </div>
                         </div>
-
                         <div id='payments'>
                             <button onClick={handleDonateClick} >Adoption Fee</button>
                             <button onClick={handleDonateClick} ><VolunteerActivismIcon id='donate-icon' />Sponsor</button>
@@ -108,8 +108,11 @@ function DisplayOne() {
 
     return (
         <>
+            
             {renderDogDetails()}
-            <Form />
+            {isAdmin && <DeleteDog selectedDog={selectedDog} />}
+            {isAdmin && <EditDog selectedDog={selectedDog} />}
+            <Form selectedDog={selectedDog}/>
         </>
 
 
