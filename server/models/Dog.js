@@ -98,6 +98,10 @@ const Dog = new mongoose.Schema(
             multipleImages:{
                 type: [String],
             },
+            isFeePaid: {
+                type: Boolean,
+                default: false,
+            }
         },
 )
 
