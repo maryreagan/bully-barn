@@ -19,23 +19,23 @@ import CanceledPage from "./components/Dog/CanceledPage";
 
 
 const renderNav = (Component) => {
-  return (
-    <>
-      <Nav />
-      <Component />
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Nav />
+            <Component />
+            <Footer />
+        </>
+    );
 };
 
 const renderFooter = (Component) => {
-  return (
-    <>
-      <Component />
-      <Footer />
-    </>
-  )
-}
+    return (
+        <>
+            <Component />
+            <Footer />
+        </>
+    );
+};
 
 function App() {
   return (
