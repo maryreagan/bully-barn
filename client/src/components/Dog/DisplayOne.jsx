@@ -7,6 +7,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import Form from "../Form/Form";
 import './DisplayOne.css'
+import Form from '../Form/Form';
 
 function DisplayOne() {
     const location = useLocation();
@@ -109,7 +110,7 @@ function DisplayOne() {
     return (
         <>
             {renderDogDetails()}
-            <Form selectedDog={selectedDog}/>
+            <Form />
         </>
 
 

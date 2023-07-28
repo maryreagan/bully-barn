@@ -52,7 +52,8 @@ function App() {
         <Route path ="/chart" element={renderNav(Chart)} />
         <Route path="/admin-dash" element={renderNav(AdminDash)} />
         <Route path="/payment-status" element={<PaymentStatusPage />} />
-        <Route path="/admin-dash" element={<AdminDash />} />
+        <Route path="/admin-dash" element={renderNav(AdminDash)} />
+
       </Routes>
     </Router>
   );

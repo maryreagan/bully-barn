@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Admin-Dash.css";
+import DrawerNav from "./DrawerNav";
 
 const ApplicationsTable = () => {
     const [applications, setApplications] = useState([]);
@@ -112,6 +113,7 @@ const ApplicationsTable = () => {
 
     return (
         <div>
+            <DrawerNav />
             <h2>Applications List</h2>
             <div>
                 <input
