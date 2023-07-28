@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import {Button} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 
 function DeleteDog({selectedDog}) {
@@ -38,7 +39,10 @@ function DeleteDog({selectedDog}) {
     return (
     <>
         <Button 
-            variant='contained' 
+            variant='contained'
+            color='error'
+            startIcon={<DeleteIcon />}
+            style= {{marginBottom: '1em', width: '50%'}} 
             onClick={() => {
                 handleDelete();
             }}
