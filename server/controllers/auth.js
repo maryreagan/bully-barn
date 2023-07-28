@@ -97,15 +97,20 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Incorrect Password" });
         }
 
-        const token = jwt.sign({ _id: user._id }, JWT_KEY, {
-            expiresIn: 60 * 60 * 24,
+        const isAdmin = user.isAdmin || false;
+
+        const token = jwt.sign({ 
+          _id: user._id,
+          isAdmin: isAdmin, // Include isAdmin claim in the token
+        }, JWT_KEY, {
+          expiresIn: 60 * 60 * 24,
         });
+
 
         res.status(200).json({
             message: "Login successful",
             fullName: `${user.firstName} ${user.lastName}`,
             email: user.email,
-            isAdmin: user.isAdmin,
             token: token,
         });
     } catch (err) {

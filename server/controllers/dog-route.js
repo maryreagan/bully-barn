@@ -1,7 +1,8 @@
 const router = require("express").Router()
 const Dog = require("../models/Dog")
 const multer = require('multer')
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
+const roleValidation = require("../middleware/roleValidation");
 
 
 const s3 = new AWS.S3(
@@ -80,7 +81,7 @@ router.post("/create", upload.single('image'), async (req,res) => {
 // get all dogs from database 
 router.get("/", async (req,res)=> {
     try{
-        const getDogs = await Dog.find({})
+        const getDogs = await Dog.find({ adoptionStatus: { $ne: 'adopted' } })
         if(getDogs.length === 0) throw Error ("No Dogs Available")
         
         res.status(201).json(getDogs)
@@ -91,7 +92,22 @@ router.get("/", async (req,res)=> {
             message: `${err}`
         })
     }
+})
 
+// get adopted dogs with admin validation
+router.get("/adopted-dogs", roleValidation, async (req,res)=> {
+    try{
+        const getAdoptedDogs = await Dog.find({ adoptionStatus: { $eq: 'adopted' } })
+        if(getAdoptedDogs.length === 0) throw Error ("No Adopted Dogs")
+        
+        res.status(201).json(getAdoptedDogs)
+
+    }catch(err) {
+        console.log(err)
+        res.status(500).json({
+            message: `${err}`
+        })
+    }
 })
 
 // gets one dog by ID
