@@ -41,8 +41,7 @@ function DisplayOne() {
         if (selectedDog) {
             return (
                 <div id='one-dog-container'>
-                    <DeleteDog selectedDog={selectedDog} />
-                    <EditDog selectedDog={selectedDog} />
+
                     <div id='button-container'>
                         <button onClick={handleBackToAllDogs} id='back-to-all-dogs-btn'>Back</button>
                     </div>
@@ -91,7 +90,6 @@ function DisplayOne() {
                                 </section>
                             </div>
                         </div>
-
                         <div id='payments'>
                             <button onClick={handleDonateClick} >Adoption Fee</button>
                             <button onClick={handleDonateClick} ><VolunteerActivismIcon id='donate-icon' />Sponsor</button>
@@ -108,7 +106,10 @@ function DisplayOne() {
 
     return (
         <>
+            
             {renderDogDetails()}
+            <DeleteDog selectedDog={selectedDog} />
+            <EditDog selectedDog={selectedDog} />
             <Form />
         </>
 
