@@ -7,11 +7,13 @@ import MaleIcon from '@mui/icons-material/Male';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import Form from "../Form/Form";
 import './DisplayOne.css'
+import { adminCheck } from '../../helpers/adminCheck'
 
 function DisplayOne() {
     const location = useLocation();
     const selectedDog = location.state
     const navigate = useNavigate();
+    const isAdmin = adminCheck()
 
     const handleBackToAllDogs = () => {
         navigate('/')
@@ -108,9 +110,9 @@ function DisplayOne() {
         <>
             
             {renderDogDetails()}
-            <DeleteDog selectedDog={selectedDog} />
-            <EditDog selectedDog={selectedDog} />
-            <Form />
+            {isAdmin && <DeleteDog selectedDog={selectedDog} />}
+            {isAdmin && <EditDog selectedDog={selectedDog} />}
+            <Form selectedDog={selectedDog}/>
         </>
 
 

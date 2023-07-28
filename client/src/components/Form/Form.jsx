@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Form.css";
 
-const Form = ({ dogId }) => {
+const Form = ({ selectedDog }) => {
+    const dogId = selectedDog._id
     const [formData, setFormData] = useState({
         personalInformation: {
             fullName: "",
@@ -55,6 +56,7 @@ const Form = ({ dogId }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
+                alert('Application Submitted Succesfully!')
                 setFormData({
                     personalInformation: {
                         fullName: "",
@@ -82,6 +84,7 @@ const Form = ({ dogId }) => {
             } else {
                 const errorMessage = await response.text();
                 console.error("Error:", errorMessage);
+                alert('Error Occured. Application Not Submitted.')
             }
         } catch (err) {
             console.error("Error:", err.message);
