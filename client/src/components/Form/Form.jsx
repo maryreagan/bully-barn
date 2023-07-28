@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Form.css";
 
-const Form = () => {
+const Form = ({ dogId }) => {
     const [formData, setFormData] = useState({
         personalInformation: {
             fullName: "",
@@ -12,7 +12,7 @@ const Form = () => {
         },
         petPreferences: {
             distanceWillingToTravel: "",
-            dogId: "",
+            dogId: dogId,
         },
         employmentInformation: {
             currentEmploymentStatus: "",

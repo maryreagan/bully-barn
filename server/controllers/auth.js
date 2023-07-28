@@ -172,11 +172,9 @@ router.put("/reset-password/:token", async (req, res) => {
         });
 
         if (!user) {
-            return res
-                .status(404)
-                .json({
-                    message: "Password reset token is invalid or has expired",
-                });
+            return res.status(404).json({
+                message: "Password reset token is invalid or has expired",
+            });
         }
 
         if (!isValidPwd(newPwd)) {

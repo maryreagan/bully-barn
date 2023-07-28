@@ -19,23 +19,23 @@ import CanceledPage from "./components/Dog/CanceledPage";
 
 
 const renderNav = (Component) => {
-  return (
-    <>
-      <Nav />
-      <Component />
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Nav />
+            <Component />
+            <Footer />
+        </>
+    );
 };
 
 const renderFooter = (Component) => {
-  return (
-    <>
-      <Component />
-      <Footer />
-    </>
-  )
-}
+    return (
+        <>
+            <Component />
+            <Footer />
+        </>
+    );
+};
 
 function App() {
   return (
@@ -51,7 +51,7 @@ function App() {
         <Route path="/adopted-dogs" element={renderNav(AdoptedDogs)} />
         <Route path ="/chart" element={renderNav(Chart)} />
         <Route path="/payment-status" element={<PaymentStatusPage />} />
-        <Route path="/admin-dash" element={<AdminDash />} />
+        <Route path="/admin-dash" element={renderNav(AdminDash)} />
 
       </Routes>
     </Router>
