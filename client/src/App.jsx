@@ -50,9 +50,9 @@ function App() {
         <Route path="/display-one" element={renderNav(DisplayOne)} />
         <Route path="/adopted-dogs" element={renderNav(AdoptedDogs)} />
         <Route path ="/chart" element={renderNav(Chart)} />
+        <Route path="/admin-dash" element={renderNav(AdminDash)} />
         <Route path="/payment-status" element={<PaymentStatusPage />} />
         <Route path="/admin-dash" element={<AdminDash />} />
-
       </Routes>
     </Router>
   );

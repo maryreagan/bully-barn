@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import Form from "../Form/Form";
 import './DisplayOne.css'
 
 function DisplayOne() {
@@ -108,6 +109,7 @@ function DisplayOne() {
     return (
         <>
             {renderDogDetails()}
+            <Form selectedDog={selectedDog}/>
         </>
 
 
