@@ -9,39 +9,55 @@ const ApplicationsTable = () => {
     const [sortColumn, setSortColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [caseworkerName, setCaseworkerName] = useState("");
-    const token = localStorage.getItem('token')
+    const [adoptionStatus, setAdoptionStatus] = useState("All");
+    const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
+    const [caseworkerList, setCaseworkerList] = useState([]);
+    const [originalApplications, setOriginalApplications] = useState([]);
+    const [originalAdoptionStatus, setOriginalAdoptionStatus] = useState([]);
+    const [originalSponsorshipStatus, setOriginalSponsorshipStatus] = useState(
+        []
+    );
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
-      // Fetch applications data
-      fetch("http://localhost:4000/form/applications", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok")
-          }
-          return response.json()
+        // Fetch applications data
+        fetch("http://localhost:4000/form/applications", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
         })
-        .then((data) => {
-          setApplications(data.applications)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setApplications(data.applications);
+                setOriginalApplications(data.applications); // Save the original data
+                setOriginalAdoptionStatus(data.applications); // Save the original data for adoption status
+                setOriginalSponsorshipStatus(data.applications); // Save the original data for sponsorship status
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-      // Fetch dogs data
-      fetch("http://localhost:4000/dog")
-        .then((response) => response.json())
-        .then((data) => {
-          setDogs(data)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    }, [])
+        // Fetch dogs data
+        fetch("http://localhost:4000/dog")
+            .then((response) => response.json())
+            .then((data) => {
+                setDogs(data);
+                // Extracting unique caseworker names from the dogs state
+                const uniqueCaseworkers = [
+                    ...new Set(data.map((dog) => dog.caseworker)),
+                ];
+                setCaseworkerList(uniqueCaseworkers);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
 
     // Function to find the dog object based on dogId
     const findDogById = (dogId) => {
@@ -73,6 +89,13 @@ const ApplicationsTable = () => {
                 } else if (column === "sponsorshipStatus") {
                     valueA = dogA.sponsorshipStatus ? "yes" : "no";
                     valueB = dogB.sponsorshipStatus ? "yes" : "no";
+                } else if (column === "dogName") {
+                    valueA = getDogNameById(
+                        a.petPreferences.dogId
+                    ).toLowerCase();
+                    valueB = getDogNameById(
+                        b.petPreferences.dogId
+                    ).toLowerCase();
                 }
 
                 return sortOrder === "asc"
@@ -82,13 +105,25 @@ const ApplicationsTable = () => {
         });
 
         if (sortColumn === column) {
-            setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            if (column === "adoptionStatus") {
+                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            } else if (column === "sponsorshipStatus") {
+                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            } else {
+                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            }
         } else {
             setSortColumn(column);
             setSortOrder("asc");
         }
 
         setApplications(sorted);
+    };
+
+    // New function to get the dog name by dogId
+    const getDogNameById = (dogId) => {
+        const dog = dogs.find((dog) => dog._id === dogId);
+        return dog ? dog.name : "No information available";
     };
 
     const getSortArrow = (column) => {
@@ -108,34 +143,151 @@ const ApplicationsTable = () => {
         console.log("Selected Dog ID:", application.petPreferences.dogId);
     };
 
-    // New function to handle caseworker filter
-    const handleCaseworkerFilter = () => {
-        const filteredApps = applications.filter((application) => {
-            const dog = findDogById(application.petPreferences.dogId);
-            return (
-                dog &&
-                dog.caseworker
-                    .toLowerCase()
-                    .includes(caseworkerName.toLowerCase())
+    const handleCaseworkerFilter = (selectedCaseworker) => {
+        // Check if a caseworker is selected or not
+        if (!selectedCaseworker) {
+            // Clear the filter and sorting
+            setCaseworkerName("");
+            setSortColumn(null);
+            setSortOrder(null);
+            // Reset the applications list to its original state
+            setApplications(originalApplications); // Reset to the original unfiltered data
+        } else {
+            // Reset the sorting when a new caseworker is selected
+            setSortColumn(null);
+            setSortOrder(null);
+
+            // Filter applications based on selected caseworker from the original data
+            const filteredApps = originalApplications.filter((application) => {
+                const dog = findDogById(application.petPreferences.dogId);
+                return (
+                    dog &&
+                    dog.caseworker
+                        .toLowerCase()
+                        .includes(selectedCaseworker.toLowerCase())
+                );
+            });
+            setApplications(filteredApps);
+        }
+    };
+
+    const handleAdoptionStatusFilter = (selectedStatus) => {
+        // Check if adoptionStatus is selected or not
+        if (!selectedStatus || selectedStatus === "All") {
+            // Clear the filter and sorting
+            setAdoptionStatus("All");
+            setSortColumn(null);
+            setSortOrder(null);
+            // Reset the applications list to its original state
+            setApplications(originalAdoptionStatus);
+        } else {
+            // Reset the sorting when a new adoptionStatus is selected
+            setSortColumn(null);
+            setSortOrder(null);
+
+            // Filter applications based on selected adoptionStatus from the original data
+            const filteredApps = originalAdoptionStatus.filter(
+                (application) => {
+                    const dog = findDogById(application.petPreferences.dogId);
+                    return (
+                        dog &&
+                        dog.adoptionStatus.toLowerCase() ===
+                            selectedStatus.toLowerCase()
+                    );
+                }
             );
-        });
-        setApplications(filteredApps);
+            setApplications(filteredApps);
+            setAdoptionStatus(selectedStatus);
+        }
+    };
+
+    const handleSponsorshipStatusFilter = (selectedStatus) => {
+        // Check if sponsorshipStatus is selected or not
+        if (selectedStatus === "All") {
+            // Clear the filter and sorting
+            setSponsorshipStatus("All");
+            setSortColumn(null);
+            setSortOrder(null);
+            // Reset the applications list to its original state
+            setApplications(originalSponsorshipStatus);
+        } else {
+            // Convert the selected status to a boolean value
+            const statusFilter = selectedStatus === "Yes";
+
+            // Reset the sorting when a new sponsorshipStatus is selected
+            setSortColumn(null);
+            setSortOrder(null);
+
+            // Filter applications based on selected sponsorshipStatus from the original data
+            const filteredApps = originalSponsorshipStatus.filter(
+                (application) => {
+                    const dog = findDogById(application.petPreferences.dogId);
+                    return dog && dog.sponsorshipStatus === statusFilter;
+                }
+            );
+
+            setApplications(filteredApps);
+            setSponsorshipStatus(selectedStatus);
+        }
     };
 
     return (
         <div>
             <DrawerNav />
             <h2>Applications List</h2>
+            {/* Caseworker Filter */}
             <div>
-                <input
-                    type="text"
+                <label htmlFor="caseworker">Select Caseworker:</label>
+                <select
+                    id="caseworker"
                     value={caseworkerName}
-                    onChange={(e) => setCaseworkerName(e.target.value)}
-                    placeholder="Enter Caseworker Name"
-                />
-                <button onClick={handleCaseworkerFilter}>
-                    Filter by Caseworker
-                </button>
+                    onChange={(e) => {
+                        // Update the caseworker name state
+                        setCaseworkerName(e.target.value);
+                        // Call the filter function with the selected caseworker
+                        handleCaseworkerFilter(e.target.value);
+                    }}
+                >
+                    <option value="">All</option>
+                    {caseworkerList.map((caseworker) => (
+                        <option key={caseworker} value={caseworker}>
+                            {caseworker}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            {/* Adoption Status Filter */}
+            <div>
+                <label htmlFor="adoptionStatus">Select Adoption Status:</label>
+                <select
+                    id="adoptionStatus"
+                    value={adoptionStatus}
+                    onChange={(e) => {
+                        handleAdoptionStatusFilter(e.target.value); // Call the filter function immediately after the selection changes
+                    }}
+                >
+                    <option value="All">All</option>
+                    <option value="Available">Available</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Adopted">Adopted</option>
+                </select>
+            </div>
+            {/* Sponsorship Status Filter */}
+            <div>
+                <label htmlFor="sponsorshipStatus">
+                    Select Sponsorship Status:
+                </label>
+                <select
+                    id="sponsorshipStatus"
+                    value={sponsorshipStatus}
+                    onChange={(e) => {
+                        handleSponsorshipStatusFilter(e.target.value); // Call the filter function immediately after the selection changes
+                    }}
+                >
+                    <option value="All">All</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
             </div>
             <table>
                 <thead>
@@ -153,6 +305,12 @@ const ApplicationsTable = () => {
                             className="header-cell"
                         >
                             Case Worker {getSortArrow("caseWorker")}
+                        </th>
+                        <th
+                            onClick={() => sortApplicationsByColumn("dogName")}
+                            className="header-cell"
+                        >
+                            Dog Name {getSortArrow("dogName")}
                         </th>
                         <th
                             onClick={() =>
@@ -194,21 +352,28 @@ const ApplicationsTable = () => {
                                 <td>
                                     {application.personalInformation.fullName}
                                 </td>
-                                {dog ? (
-                                    <>
-                                        <td>{dog.caseworker}</td>
-                                        <td>{dog.adoptionStatus}</td>
-                                        <td>
-                                            {dog.sponsorshipStatus
-                                                ? "Yes"
-                                                : "No"}
-                                        </td>
-                                    </>
-                                ) : (
-                                    <td colSpan="3">
-                                        No information available
-                                    </td>
-                                )}
+                                <td>
+                                    {dog
+                                        ? dog.caseworker
+                                        : "No information available"}
+                                </td>
+                                <td>
+                                    {getDogNameById(
+                                        application.petPreferences.dogId
+                                    )}
+                                </td>
+                                <td>
+                                    {dog
+                                        ? dog.adoptionStatus
+                                        : "No information available"}
+                                </td>
+                                <td>
+                                    {dog
+                                        ? dog.sponsorshipStatus
+                                            ? "Yes"
+                                            : "No"
+                                        : "No information available"}
+                                </td>
                             </tr>
                         );
                     })}
