@@ -1,4 +1,13 @@
 import React, { useState, useEffect } from "react";
+import {
+    IconButton,
+    Menu,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Select,
+} from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import "./Admin-Dash.css";
 import DrawerNav from "./DrawerNav";
 
@@ -8,7 +17,7 @@ const ApplicationsTable = () => {
     const [selectedApplication, setSelectedApplication] = useState(null);
     const [sortColumn, setSortColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
-    const [caseworkerName, setCaseworkerName] = useState("");
+    const [caseworkerName, setCaseworkerName] = useState("All");
     const [adoptionStatus, setAdoptionStatus] = useState("All");
     const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
     const [caseworkerList, setCaseworkerList] = useState([]);
@@ -143,21 +152,22 @@ const ApplicationsTable = () => {
         console.log("Selected Dog ID:", application.petPreferences.dogId);
     };
 
+    const resetFilters = () => {
+        setCaseworkerName("All");
+        setAdoptionStatus("All");
+        setSponsorshipStatus("All");
+        setSortColumn(null);
+        setSortOrder(null);
+        setApplications(originalApplications);
+    };
+
     const handleCaseworkerFilter = (selectedCaseworker) => {
-        // Check if a caseworker is selected or not
-        if (!selectedCaseworker) {
-            // Clear the filter and sorting
-            setCaseworkerName("");
-            setSortColumn(null);
-            setSortOrder(null);
-            // Reset the applications list to its original state
-            setApplications(originalApplications); // Reset to the original unfiltered data
+        if (selectedCaseworker === "All") {
+            resetFilters();
         } else {
-            // Reset the sorting when a new caseworker is selected
             setSortColumn(null);
             setSortOrder(null);
 
-            // Filter applications based on selected caseworker from the original data
             const filteredApps = originalApplications.filter((application) => {
                 const dog = findDogById(application.petPreferences.dogId);
                 return (
@@ -168,127 +178,141 @@ const ApplicationsTable = () => {
                 );
             });
             setApplications(filteredApps);
+            setCaseworkerName(selectedCaseworker);
         }
     };
 
     const handleAdoptionStatusFilter = (selectedStatus) => {
-        // Check if adoptionStatus is selected or not
-        if (!selectedStatus || selectedStatus === "All") {
-            // Clear the filter and sorting
-            setAdoptionStatus("All");
-            setSortColumn(null);
-            setSortOrder(null);
-            // Reset the applications list to its original state
-            setApplications(originalAdoptionStatus);
+        if (selectedStatus === "All") {
+            resetFilters();
         } else {
-            // Reset the sorting when a new adoptionStatus is selected
             setSortColumn(null);
             setSortOrder(null);
 
-            // Filter applications based on selected adoptionStatus from the original data
-            const filteredApps = originalAdoptionStatus.filter(
-                (application) => {
-                    const dog = findDogById(application.petPreferences.dogId);
-                    return (
-                        dog &&
-                        dog.adoptionStatus.toLowerCase() ===
-                            selectedStatus.toLowerCase()
-                    );
-                }
-            );
+            const filteredApps = originalApplications.filter((application) => {
+                const dog = findDogById(application.petPreferences.dogId);
+                return (
+                    dog &&
+                    dog.adoptionStatus.toLowerCase() ===
+                        selectedStatus.toLowerCase()
+                );
+            });
             setApplications(filteredApps);
             setAdoptionStatus(selectedStatus);
         }
     };
 
     const handleSponsorshipStatusFilter = (selectedStatus) => {
-        // Check if sponsorshipStatus is selected or not
         if (selectedStatus === "All") {
-            // Clear the filter and sorting
-            setSponsorshipStatus("All");
-            setSortColumn(null);
-            setSortOrder(null);
-            // Reset the applications list to its original state
-            setApplications(originalSponsorshipStatus);
+            resetFilters();
         } else {
-            // Convert the selected status to a boolean value
-            const statusFilter = selectedStatus === "Yes";
-
-            // Reset the sorting when a new sponsorshipStatus is selected
             setSortColumn(null);
             setSortOrder(null);
 
-            // Filter applications based on selected sponsorshipStatus from the original data
-            const filteredApps = originalSponsorshipStatus.filter(
-                (application) => {
-                    const dog = findDogById(application.petPreferences.dogId);
-                    return dog && dog.sponsorshipStatus === statusFilter;
-                }
-            );
-
+            const filteredApps = originalApplications.filter((application) => {
+                const dog = findDogById(application.petPreferences.dogId);
+                return (
+                    dog && dog.sponsorshipStatus === (selectedStatus === "Yes")
+                );
+            });
             setApplications(filteredApps);
             setSponsorshipStatus(selectedStatus);
         }
+    };
+
+    // State for Menu
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    // Function to handle Menu open
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    // Function to handle Menu close
+    const handleMenuClose = () => {
+        setAnchorEl(null);
     };
 
     return (
         <div>
             <DrawerNav />
             <h2>Applications List</h2>
-            {/* Caseworker Filter */}
-            <div>
-                <label htmlFor="caseworker">Select Caseworker:</label>
-                <select
-                    id="caseworker"
-                    value={caseworkerName}
-                    onChange={(e) => {
-                        // Update the caseworker name state
-                        setCaseworkerName(e.target.value);
-                        // Call the filter function with the selected caseworker
-                        handleCaseworkerFilter(e.target.value);
-                    }}
-                >
-                    <option value="">All</option>
-                    {caseworkerList.map((caseworker) => (
-                        <option key={caseworker} value={caseworker}>
-                            {caseworker}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            {/* Adoption Status Filter */}
-            <div>
-                <label htmlFor="adoptionStatus">Select Adoption Status:</label>
-                <select
-                    id="adoptionStatus"
-                    value={adoptionStatus}
-                    onChange={(e) => {
-                        handleAdoptionStatusFilter(e.target.value); // Call the filter function immediately after the selection changes
-                    }}
-                >
-                    <option value="All">All</option>
-                    <option value="Available">Available</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Adopted">Adopted</option>
-                </select>
-            </div>
-            {/* Sponsorship Status Filter */}
-            <div>
-                <label htmlFor="sponsorshipStatus">
-                    Select Sponsorship Status:
-                </label>
-                <select
-                    id="sponsorshipStatus"
-                    value={sponsorshipStatus}
-                    onChange={(e) => {
-                        handleSponsorshipStatusFilter(e.target.value); // Call the filter function immediately after the selection changes
-                    }}
-                >
-                    <option value="All">All</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-            </div>
+
+            {/* Filter Dropdown */}
+            <IconButton onClick={handleMenuClick}>
+                <FilterListIcon />
+            </IconButton>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem>
+                    {/* Caseworker Filter */}
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="caseworker">
+                            Caseworker:
+                        </InputLabel>
+                        <Select
+                            id="caseworker"
+                            value={caseworkerName}
+                            onChange={(e) => {
+                                setCaseworkerName(e.target.value);
+                                handleCaseworkerFilter(e.target.value);
+                            }}
+                            style= {{ minWidth: "200px "}}
+                        >
+                            <MenuItem value="All">All</MenuItem>
+                            {caseworkerList.map((caseworker) => (
+                                <MenuItem key={caseworker} value={caseworker}>
+                                    {caseworker}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    {/* Adoption Status Filter */}
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="adoptionStatus">
+                            Adoption Status:
+                        </InputLabel>
+                        <Select
+                            id="adoptionStatus"
+                            value={adoptionStatus}
+                            onChange={(e) => {
+                                handleAdoptionStatusFilter(e.target.value);
+                            }}
+                            style= {{ minWidth: "200px "}}
+                        >
+                            <MenuItem value="All">All</MenuItem>
+                            <MenuItem value="Available">Available</MenuItem>
+                            <MenuItem value="Pending">Pending</MenuItem>
+                            <MenuItem value="Adopted">Adopted</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    {/* Sponsorship Status Filter */}
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="sponsorshipStatus">
+                            Sponsorship Status:
+                        </InputLabel>
+                        <Select
+                            id="sponsorshipStatus"
+                            value={sponsorshipStatus}
+                            onChange={(e) => {
+                                handleSponsorshipStatusFilter(e.target.value);
+                            }}
+                            style= {{ minWidth: "200px "}}
+                        >
+                            <MenuItem value="All">All</MenuItem>
+                            <MenuItem value="Yes">Yes</MenuItem>
+                            <MenuItem value="No">No</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+            </Menu>
             <table>
                 <thead>
                     <tr>

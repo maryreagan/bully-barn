@@ -95,3 +95,9 @@ tbody td,
 .details-columns {
     width: 20%;
 }
+
+.filter-option-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
