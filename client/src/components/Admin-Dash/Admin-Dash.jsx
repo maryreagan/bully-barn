@@ -22,7 +22,7 @@ const ApplicationsTable = () => {
     const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
     const [caseworkerList, setCaseworkerList] = useState([]);
     const [originalApplications, setOriginalApplications] = useState([]);
-    const [token] = useState(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         fetch("http://localhost:4000/form/applications", {
@@ -40,6 +40,16 @@ const ApplicationsTable = () => {
             .then((data) => {
                 setApplications(data.applications);
                 setOriginalApplications(data.applications);
+                setOriginalAdoptionStatus(data.applications);
+                setOriginalSponsorshipStatus(data.applications);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+        fetch("http://localhost:4000/dog")
+            .then((response) => response.json())
+            .then((data) => {
                 setDogs(data);
                 const uniqueCaseworkers = [
                     ...new Set(data.map((dog) => dog.caseworker)),
@@ -49,7 +59,7 @@ const ApplicationsTable = () => {
             .catch((error) => {
                 console.error(error);
             });
-    }, [token]);
+    }, []);
 
     const findDogById = (dogId) => {
         return dogs.find((dog) => dog._id === dogId);
