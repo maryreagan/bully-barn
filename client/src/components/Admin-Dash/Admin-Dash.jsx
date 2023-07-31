@@ -22,14 +22,9 @@ const ApplicationsTable = () => {
     const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
     const [caseworkerList, setCaseworkerList] = useState([]);
     const [originalApplications, setOriginalApplications] = useState([]);
-    const [originalAdoptionStatus, setOriginalAdoptionStatus] = useState([]);
-    const [originalSponsorshipStatus, setOriginalSponsorshipStatus] = useState(
-        []
-    );
-    const token = localStorage.getItem("token");
+    const [token] = useState(localStorage.getItem("token"));
 
     useEffect(() => {
-        // Fetch applications data
         fetch("http://localhost:4000/form/applications", {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -44,20 +39,8 @@ const ApplicationsTable = () => {
             })
             .then((data) => {
                 setApplications(data.applications);
-                setOriginalApplications(data.applications); // Save the original data
-                setOriginalAdoptionStatus(data.applications); // Save the original data for adoption status
-                setOriginalSponsorshipStatus(data.applications); // Save the original data for sponsorship status
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-        // Fetch dogs data
-        fetch("http://localhost:4000/dog")
-            .then((response) => response.json())
-            .then((data) => {
+                setOriginalApplications(data.applications);
                 setDogs(data);
-                // Extracting unique caseworker names from the dogs state
                 const uniqueCaseworkers = [
                     ...new Set(data.map((dog) => dog.caseworker)),
                 ];
@@ -66,14 +49,12 @@ const ApplicationsTable = () => {
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [token]);
 
-    // Function to find the dog object based on dogId
     const findDogById = (dogId) => {
         return dogs.find((dog) => dog._id === dogId);
     };
 
-    // Function to sort applications by column
     const sortApplicationsByColumn = (column) => {
         const sorted = [...applications].sort((a, b) => {
             if (column === "name") {
@@ -129,7 +110,6 @@ const ApplicationsTable = () => {
         setApplications(sorted);
     };
 
-    // New function to get the dog name by dogId
     const getDogNameById = (dogId) => {
         const dog = dogs.find((dog) => dog._id === dogId);
         return dog ? dog.name : "No information available";
@@ -220,15 +200,12 @@ const ApplicationsTable = () => {
         }
     };
 
-    // State for Menu
     const [anchorEl, setAnchorEl] = useState(null);
 
-    // Function to handle Menu open
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Function to handle Menu close
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
@@ -237,8 +214,6 @@ const ApplicationsTable = () => {
         <div>
             <DrawerNav />
             <h2>Applications List</h2>
-
-            {/* Filter Dropdown */}
             <IconButton onClick={handleMenuClick}>
                 <FilterListIcon />
             </IconButton>
@@ -248,7 +223,6 @@ const ApplicationsTable = () => {
                 onClose={handleMenuClose}
             >
                 <MenuItem>
-                    {/* Caseworker Filter */}
                     <div className="filter-option-container">
                         <InputLabel htmlFor="caseworker">
                             Caseworker:
@@ -260,7 +234,7 @@ const ApplicationsTable = () => {
                                 setCaseworkerName(e.target.value);
                                 handleCaseworkerFilter(e.target.value);
                             }}
-                            style= {{ minWidth: "200px "}}
+                            style={{ minWidth: "200px" }}
                         >
                             <MenuItem value="All">All</MenuItem>
                             {caseworkerList.map((caseworker) => (
@@ -272,7 +246,6 @@ const ApplicationsTable = () => {
                     </div>
                 </MenuItem>
                 <MenuItem>
-                    {/* Adoption Status Filter */}
                     <div className="filter-option-container">
                         <InputLabel htmlFor="adoptionStatus">
                             Adoption Status:
@@ -283,7 +256,7 @@ const ApplicationsTable = () => {
                             onChange={(e) => {
                                 handleAdoptionStatusFilter(e.target.value);
                             }}
-                            style= {{ minWidth: "200px "}}
+                            style={{ minWidth: "200px" }}
                         >
                             <MenuItem value="All">All</MenuItem>
                             <MenuItem value="Available">Available</MenuItem>
@@ -293,7 +266,6 @@ const ApplicationsTable = () => {
                     </div>
                 </MenuItem>
                 <MenuItem>
-                    {/* Sponsorship Status Filter */}
                     <div className="filter-option-container">
                         <InputLabel htmlFor="sponsorshipStatus">
                             Sponsorship Status:
@@ -304,7 +276,7 @@ const ApplicationsTable = () => {
                             onChange={(e) => {
                                 handleSponsorshipStatusFilter(e.target.value);
                             }}
-                            style= {{ minWidth: "200px "}}
+                            style={{ minWidth: "200px" }}
                         >
                             <MenuItem value="All">All</MenuItem>
                             <MenuItem value="Yes">Yes</MenuItem>
