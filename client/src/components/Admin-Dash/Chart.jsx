@@ -4,12 +4,16 @@ import './Chart.css'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material'
 import DrawerNav from './DrawerNav'
 import { adminCheck } from '../../helpers/adminCheck'
+import { scrollToTop } from '../../helpers/scrollToTop'
+import { useNavigate } from 'react-router-dom'
 
 function Chart() {
   const [dogs, setDogs] = useState([])
   const [adoptedDogs, setAdoptedDogs] = useState([])
   const [applicants, setApplicants] = useState([])
+  const navigate = useNavigate()
   const isAdmin = adminCheck()
+  if (!isAdmin) navigate('/')
 
   useEffect(() => {
     const getDogs = async () => {
@@ -41,6 +45,7 @@ function Chart() {
       setApplicants(data.applications)
     }
     getApplications()
+    scrollToTop()
   }, [])
 
   useEffect(() => { // Getting adopted dogs

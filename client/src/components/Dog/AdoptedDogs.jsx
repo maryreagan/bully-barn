@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import { adminCheck } from '../../helpers/adminCheck'
+import { useNavigate } from 'react-router-dom'
 import './dog.css'
+import DrawerNav from '../Admin-Dash/DrawerNav'
 
 function AdoptedDogs() {
   const [adoptedDogs, setAdoptedDogs ] = useState([])
+  const [selectedDog, setSelectedDog] = useState([])
+  const navigate = useNavigate()
+  const isAdmin = adminCheck()
+  if (!isAdmin) navigate('/')
 
   useEffect(() => {
     const getAdoptedDogs = async () => {
@@ -24,6 +31,11 @@ function AdoptedDogs() {
 
     getAdoptedDogs();
   }, []);
+
+  const getOneDog = (dog) => {
+    setSelectedDog(dog)
+    navigate('/display-one', {state: dog})
+  }
 
   const displayAdopted = () => {
     return (
@@ -49,6 +61,7 @@ function AdoptedDogs() {
 
   return (
     <>
+    <DrawerNav />
     <h1 className='welcome-msg'>Adopted Dogs</h1>
     {displayAdopted()}
     </>

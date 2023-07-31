@@ -1,7 +1,40 @@
 .welcome-msg {
   text-align: center;
-  margin: 1.5em 0 1em 0;
-  font-size: 3.5em;
+  margin: 1.4em 0 .5em 0;
+  font-size: 4.3em;
+}
+
+.adopt-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(https://images.unsplash.com/photo-1603682274105-c015c571d03d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 56.5rem;
+  position: relative;
+}
+
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.724);
+}
+
+.adopt-msg h1 {
+  margin: 1.5em 10em -1.9em .6em;
+  font-size: 8em;
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  line-height: 1;
+  text-shadow: 1px 1px 3px rgb(0, 0, 0);
 }
 
 .contain-home {
@@ -19,35 +52,34 @@
 
 .dog-card {
   text-align: center;
-  width: 17em;
+  width: 18em;
   padding: 0;
   margin: 1em;
   border-radius: 1em;
   position: relative;
   transition: box-shadow 0.3s ease-in-out;
-}
-
-.dog-card:hover {
-  box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.41);
+  font-weight: bold;
 }
 
 .dog-card .dog-details {
   color: white;
-  position: absolute;
+  position: absolute; 
   bottom: 0;
   left: 0;
   width: 100%;
+  height: 4.7em;
   background-color: rgba(0, 0, 0, 0.8);;
-  padding: 1em;
+  padding: .5em;
   border-radius: .8em;
+  font-size: 1.1em;
 }
 
 .dog-card h2 {
-  margin-bottom: .15em;
+  margin-bottom: 0;
 }
 
 .dog-card .img-container {
-  height: 18em;
+  height: 18.5em;
   overflow: hidden;
   border-radius: .8em;
 }
@@ -114,7 +146,7 @@
 
 .pending-card, .head-pending-card {
   border-color: #b8b8ff;
-  color: #383838;
+  color: #646b6c;
   background-color: #E6E6FA;
 }
 
@@ -122,6 +154,23 @@
 .adopted-card, .head-adopted-card {
   border-color: rgba(74, 93, 94, 0.863) ;
   background-color: rgba(74, 93, 94, 0.863);
+}
+
+.dog-card:hover {
+  box-shadow: 0 0 10px 5px rgba(77, 93, 93, 0.908);
+  cursor: pointer;
+}
+
+.pending-card:hover {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 187, 0.253);
+}
+
+.sponsored-card:hover {
+  box-shadow: 0 0 10px 5px rgba(52, 213, 213, 0.774);
+}
+
+.adopted-card:hover {
+  box-shadow: 0 0 10px 5px rgba(74, 93, 94, 0.863);
 }
 
 .attr-label {

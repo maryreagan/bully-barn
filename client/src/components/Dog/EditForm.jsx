@@ -1,8 +1,8 @@
 import React, {useState, useEffect}  from 'react'
-import {Navigate, useNavigate, useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import './EditForm.css'
 import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button} from '@mui/material'
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 
 function EditForm({selectedDog, handleUpdate}) {
@@ -97,7 +97,15 @@ function EditForm({selectedDog, handleUpdate}) {
 
     return (
         <>
+        <div id='back-btn'>
+            <Button 
+            variant='outlined'
+            startIcon={<ArrowBackIcon />}
+            onClick={()=>navigate(-1)}
+            >Back</Button>
+        </div>
         <form id='edit-dog-form' onSubmit={handleSubmit}>
+        <h3 className='form-header'>Edit Any Details Necessary:</h3>
         <TextField
             className='form-input'
             helperText="Name"
@@ -437,7 +445,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 }}
             />
 
-            <Button type="submit" variant="contained">
+            <Button id='edit-dog-btn' type="submit" variant="contained">
             Update
             </Button>
 

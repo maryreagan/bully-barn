@@ -76,7 +76,7 @@ function Dog() {
   }
 
   const displayBanner = (dog) => {
-    if (dog.adoptionStatus === "pending") return 'PENDING'
+    if (dog.adoptionStatus === "pending") return 'PENDING ADOPTION!'
     if (dog.sponsorshipStatus) return 'SPONSORED!'
   }
 
@@ -313,11 +313,13 @@ function Dog() {
     )
   }
 
-
-
   return (
     <>
       <div className='contain-home'>
+        <div className='adopt-msg'>
+        <div className='dark-overlay'></div>
+          <h1>Ready to<br/>Adopt?</h1>
+        </div>
         { <h1 className='welcome-msg'>Meet Our Dogs</h1>}
         { <div className='filter-label'>{displayFilters()} Filter</div>}
         <div id='chip-box'>

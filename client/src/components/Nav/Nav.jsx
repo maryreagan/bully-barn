@@ -17,12 +17,14 @@ function Nav() {
 
     return token ? (
       <nav>
+      <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
       <Link to="/" id='bb-logo'>Bully Barn</Link>
       { isAdmin && <Link to='/chart'>Dashboard</Link>}
       <Link id='nav-logout' onClick={handleLogout}>Logout</Link>
       </nav>
   ) : (
     <nav>
+    <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
     <Link to="/" id='bb-logo'>Bully Barn</Link>
     <Link id='nav-logout' to='/auth'>Login</Link>
     

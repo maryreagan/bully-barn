@@ -8,10 +8,15 @@ import {
     Select,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { useNavigate } from "react-router-dom";
 import "./Admin-Dash.css";
 import DrawerNav from "./DrawerNav";
+import { adminCheck } from "../../helpers/adminCheck";
 
 const ApplicationsTable = () => {
+    const navigate = useNavigate()
+    const isAdmin = adminCheck()
+    if (!isAdmin) navigate('/')
     const [applications, setApplications] = useState([]);
     const [dogs, setDogs] = useState([]);
     const [selectedApplication, setSelectedApplication] = useState(null);

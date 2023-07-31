@@ -35,10 +35,10 @@ function App() {
       <CssBaseline />
       <Routes>
       <Route path="/" element={<MainLayout><Dog /></MainLayout>} />
-        <Route path="/auth" element={<MainLayout><Auth /></MainLayout>} />
-        <Route path="/forgot-password" element={<MainLayout><ForgotPwd /></MainLayout>} />
+        <Route path="/auth" element={<Auth />}/>
+        <Route path="/forgot-password" element={<ForgotPwd />} />
         <Route path="/add-dog" element={<MainLayout><AddDog /></MainLayout>} />
-        <Route path="/reset-password/:token" element={<MainLayout><ResetPwd /></MainLayout>} />
+        <Route path="/reset-password/:token" element={<ResetPwd />} />
         <Route path="/edit-form/:dogId" element={<MainLayout><EditForm /></MainLayout>} />
         <Route path="/display-one" element={<MainLayout><DisplayOne /></MainLayout>} />
         <Route path="/adopted-dogs" element={<MainLayout><AdoptedDogs /></MainLayout>} />
