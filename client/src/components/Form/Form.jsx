@@ -6,6 +6,7 @@ import FeedIcon from '@mui/icons-material/Feed'
 
 const Form = ({ selectedDog, isLoggedIn }) => {
     const dogId = selectedDog._id
+    console.log(selectedDog)
     const [showForm, setShowForm] = useState(false)
     const token = localStorage.getItem('token')
 
@@ -253,18 +254,19 @@ const Form = ({ selectedDog, isLoggedIn }) => {
 
     return (
         <>
-        <Paper elevation={6} style={{backgroundColor: '#ececec'}} className='apply-paper'>
-            <p>Ready to Apply?</p>
-            {!token && <p>Login or Register to Access Application</p> }
-            {token &&
-                <Button
-                variant="contained"
-                startIcon={<FeedIcon />}
-                onClick={handleApplyHere}
-                >Apply Here</Button>
-            }
-            
-        </Paper>
+        {selectedDog.adoptionStatus != 'adopted' &&
+            <Paper elevation={6} style={{backgroundColor: '#ececec'}} className='apply-paper'>
+                <p>Ready to Apply?</p>
+                {!token && <p>Login or Register to Access Application</p> }
+                {token &&
+                    <Button
+                    variant="contained"
+                    startIcon={<FeedIcon />}
+                    onClick={handleApplyHere}
+                    >Apply Here</Button>
+                }
+            </Paper>
+        }
         {showForm && displayApplicationForm()}
         </>
     );
