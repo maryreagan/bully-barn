@@ -9,16 +9,19 @@
     justify-content: center;
     align-items:flex-start;
     gap: 1em;
-    background-color: #bebebe;
+    background-color: #f5f5f5;
     margin: 4em;
     padding: 1em;
-    border: 1px solid #bebebe;
-    border-radius: 4px;
-    box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    font-family: "Segoe UI", Arial, sans-serif; 
 }
 
 .form-header{
     font-family:Arial, Helvetica, sans-serif;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 #back-btn{
@@ -26,3 +29,19 @@
     margin-top: 20px;
     margin-bottom: -25px;
 }
+
+#edit-dog-btn{
+    background-color: #007bff;
+    color: #fff; 
+    border: none;
+    border-radius: 4px;
+    padding: 0.5em 1em;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#edit-dog-btn:hover {
+    background-color: #0056b3; /
+}
+
