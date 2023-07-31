@@ -7,7 +7,7 @@ nav {
   left: 0;
   width: 100%;
   background-color: #385170;
-  padding: .9rem 0;
+  padding: .9rem;
   z-index: 9999;
 }
 
@@ -19,13 +19,33 @@ nav a {
   color: whitesmoke;
   text-decoration: none;
   margin: 0 2em 0 2em;
-  font-size: large;
+  font-size: 1.14em;
+  font-weight: 770;
+}
+
+nav a:hover {
+  text-shadow: 1px 1.2px 3px rgba(0, 0, 0, 0.872);
+}
+
+nav .barn-logo {
+  margin: .45em 0 0 1em;
+  max-width: 2.3em;
+  filter: invert(96%);
 }
 
 #bb-logo {
-  font-size: x-large;
+  font-size: 1.9em;
   font-weight: bold;
   font-family: 'Playfair Display';
+  margin-left: -.6em;
+  color: whitesmoke;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 1px 1px 1px rgba(36, 36, 36, 0.701);
+}
+
+#bb-logo:hover {
+  text-shadow: 1px 1.2px 4px rgba(0, 0, 0, 0.872);
 }
 
 .footer {

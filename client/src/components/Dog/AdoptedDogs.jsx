@@ -6,6 +6,7 @@ import DrawerNav from '../Admin-Dash/DrawerNav'
 
 function AdoptedDogs() {
   const [adoptedDogs, setAdoptedDogs ] = useState([])
+  const [selectedDog, setSelectedDog] = useState([])
   const navigate = useNavigate()
   const isAdmin = adminCheck()
   if (!isAdmin) navigate('/')
@@ -30,6 +31,11 @@ function AdoptedDogs() {
 
     getAdoptedDogs();
   }, []);
+
+  const getOneDog = (dog) => {
+    setSelectedDog(dog)
+    navigate('/display-one', {state: dog})
+  }
 
   const displayAdopted = () => {
     return (

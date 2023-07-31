@@ -9,10 +9,11 @@ import Form from "../Form/Form";
 import './DisplayOne.css'
 import { adminCheck } from '../../helpers/adminCheck'
 import { Paper, Button } from '@mui/material'
+import { scrollToTop } from '../../helpers/scrollToTop';
+import {Paper, Button} from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-
 
 function DisplayOne() {
     const location = useLocation();
@@ -21,7 +22,9 @@ function DisplayOne() {
     const isAdmin = adminCheck()
 
     const handleBackToAllDogs = () => {
-        navigate('/');
+        selectedDog.adoptionStatus === 'adopted'
+        ? navigate('/adopted-dogs')
+        : navigate('/');
     };
 
     const handleDonateClick = async () => {
@@ -85,7 +88,7 @@ function DisplayOne() {
         if (selectedDog) {
             return (
                 <div id='one-dog-container'>
-
+                {scrollToTop()}
                     <div id='button-container'>
                         <Button
                             variant='outlined'
