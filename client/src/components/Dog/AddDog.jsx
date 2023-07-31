@@ -137,7 +137,35 @@ function AddDog() {
             if(!response.ok){
                 alert("Error Occured. Dog not added to database")
             } else {
-                alert('Dog Addedd Successfully')}
+                alert('Dog Added Successfully')}
+
+                setDogData({
+                    name: '',
+                    age: '',
+                    bio: '',
+                    gender: '',
+                    weight: '',
+                    energyLevel: '',
+                    goodwDog: '',
+                    goodwCat: '',
+                    goodwKid: '',
+                    crateTrained: '',
+                    houseTrained: '',
+                    objAggression: '',
+                    objAggressionDesc: '',
+                    specialNeeds: '',
+                    specialNeedsDesc: '',
+                    medication: '',
+                    caseworker: '',
+                    adoptionStatus: '',
+                    sponsorshipStatus: '',
+                    intakeType: '',
+                    intakeDate: '',
+                    adoptionFee: '',
+                    image: null,
+                    croppedImage: null,
+                });
+                
         } catch (err) {
             console.log(err)
         }

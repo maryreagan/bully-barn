@@ -105,6 +105,7 @@ function EditForm({selectedDog, handleUpdate}) {
             >Back</Button>
         </div>
         <form id='edit-dog-form' onSubmit={handleSubmit}>
+        <h3 className='form-header'>Edit Any Details Necessary:</h3>
         <TextField
             className='form-input'
             helperText="Name"
@@ -444,7 +445,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 }}
             />
 
-            <Button type="submit" variant="contained">
+            <Button id='edit-dog-btn' type="submit" variant="contained">
             Update
             </Button>
 
