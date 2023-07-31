@@ -19,7 +19,9 @@ function DisplayOne() {
     const isAdmin = adminCheck()
 
     const handleBackToAllDogs = () => {
-        navigate('/');
+        selectedDog.adoptionStatus === 'adopted'
+        ? navigate('/adopted-dogs')
+        : navigate('/');
     };
 
     const handleDonateClick = async () => {
