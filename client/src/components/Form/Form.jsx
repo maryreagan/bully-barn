@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import "./Form.css";
+import {TextField, Button, InputAdornment, Paper} from '@mui/material'
+import FeedIcon from '@mui/icons-material/Feed'
 
-const Form = ({ selectedDog }) => {
+
+const Form = ({ selectedDog, isLoggedIn }) => {
     const dogId = selectedDog._id
+    const [showForm, setShowForm] = useState(false)
+    const token = localStorage.getItem('token')
+
     const [formData, setFormData] = useState({
         personalInformation: {
             fullName: "",
@@ -81,6 +87,7 @@ const Form = ({ selectedDog }) => {
                         monthlyRentOrMortgage: "",
                     },
                 });
+                setShowForm(false)
             } else {
                 const errorMessage = await response.text();
                 console.error("Error:", errorMessage);
@@ -91,177 +98,175 @@ const Form = ({ selectedDog }) => {
         }
     };
 
-    return (
-        <div className="application-form-container">
-            <h2>Application Form</h2>
-            <form onSubmit={handleSubmit}>
-                <h3>Personal Information</h3>
-                <label>
-                    Full Name:
-                    <input
-                        type="text"
-                        name="personalInformation.fullName"
-                        value={formData.personalInformation.fullName}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Full Address:
-                    <input
-                        type="text"
-                        name="personalInformation.fullAddress"
-                        value={formData.personalInformation.fullAddress}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Age:
-                    <input
-                        type="number"
-                        name="personalInformation.age"
-                        value={formData.personalInformation.age}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Phone Number:
-                    <input
-                        type="text"
-                        name="personalInformation.phoneNumber"
-                        value={formData.personalInformation.phoneNumber}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        name="personalInformation.email"
-                        value={formData.personalInformation.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+    function displayApplicationForm() {
 
-                <h3>Pet Preferences</h3>
-                <label>
-                    Distance Willing to Travel:
-                    <input
-                        type="text"
-                        name="petPreferences.distanceWillingToTravel"
-                        value={formData.petPreferences.distanceWillingToTravel}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+        return (
+            <form id='application-form' onSubmit = {handleSubmit}>
+                <h2>Application Form for {selectedDog.name}</h2>
+                <h3>Please fill out all required fields.</h3>
+                <h3>Personal Information</h3>
+                <TextField
+                type="text"
+                name="personalInformation.fullName"
+                label= 'Full Name'
+                value={formData.personalInformation.fullName}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="text"
+                name="personalInformation.fullAddress"
+                label="Full Address"
+                value={formData.personalInformation.fullAddress}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="number"
+                name="personalInformation.age"
+                label="Age"
+                value={formData.personalInformation.age}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="text"
+                name="personalInformation.phoneNumber"
+                label="Phone Number"
+                value={formData.personalInformation.phoneNumber}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="email"
+                name="personalInformation.email"
+                label="Email"
+                value={formData.personalInformation.email}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="number"
+                name="petPreferences.distanceWillingToTravel"
+                value={formData.petPreferences.distanceWillingToTravel}
+                label="Distance Willing To Travel"
+                style= {{width:300}}
+                InputProps={{endAdornment: <InputAdornment position='end'>miles</InputAdornment>}}
+                onChange={handleChange}
+                required
+                />
 
                 <h3>Employment Information</h3>
-                <label>
-                    Current Employment Status:
-                    <input
-                        type="text"
-                        name="employmentInformation.currentEmploymentStatus"
-                        value={
-                            formData.employmentInformation
-                                .currentEmploymentStatus
-                        }
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Employer Name:
-                    <input
-                        type="text"
-                        name="employmentInformation.employerName"
-                        value={formData.employmentInformation.employerName}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Job Title:
-                    <input
-                        type="text"
-                        name="employmentInformation.jobTitle"
-                        value={formData.employmentInformation.jobTitle}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Monthly Income:
-                    <input
-                        type="number"
-                        name="employmentInformation.monthlyIncome"
-                        value={formData.employmentInformation.monthlyIncome}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+                <TextField
+                type="text"
+                name="employmentInformation.currentEmploymentStatus"
+                label="Employment Status"
+                value={formData.employmentInformation.currentEmploymentStatus}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="text"
+                name="employmentInformation.employerName"
+                label="Employer Name"
+                value={formData.employmentInformation.employerName}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="text"
+                name="employmentInformation.jobTitle"
+                label="Job Title"
+                value={formData.employmentInformation.jobTitle}
+                onChange={handleChange}
+                required
+                />
+
+                <TextField
+                type="number"
+                name="employmentInformation.monthlyIncome"
+                label="Monthly Income"
+                value={formData.employmentInformation.monthlyIncome}
+                InputProps={{startAdornment: <InputAdornment position='start'>$</InputAdornment>}}
+                onChange={handleChange}
+                required
+                />
 
                 <h3>Home Information</h3>
-                <label>
-                    Home Condition:
-                    <input
-                        type="text"
-                        name="homeInformation.homeCondition"
-                        value={formData.homeInformation.homeCondition}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Type of Home:
-                    <input
-                        type="text"
-                        name="homeInformation.typeOfHome"
-                        value={formData.homeInformation.typeOfHome}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    Landlord Contact:
-                    <input
-                        type="text"
-                        name="homeInformation.landlordContact"
-                        value={formData.homeInformation.landlordContact}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Monthly Rent or Mortgage:
-                    <input
-                        type="number"
-                        name="homeInformation.monthlyRentOrMortgage"
-                        value={formData.homeInformation.monthlyRentOrMortgage}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+                <TextField
+                type="text"
+                name="homeInformation.typeOfHome"
+                label="Type of Home"
+                value={formData.homeInformation.typeOfHome}
+                onChange={handleChange}
+                required
+                />
+                
+                <TextField
+                type="text"
+                name="homeInformation.homeCondition"
+                label='Home Condition'
+                helperText='Describe your home to us. i.e. Do you have a yard? Are you near a busy road?'
+                value={formData.homeInformation.homeCondition}
+                onChange={handleChange}
+                required
+                multiline
+                />
 
-                <button type="submit">Submit Application</button>
+                <TextField
+                type="text"
+                name="homeInformation.landlordContact"
+                label='LandLord Contact'
+                value={formData.homeInformation.landlordContact}
+                onChange={handleChange}
+                />
+                
+                <TextField
+                type="number"
+                name="homeInformation.monthlyRentOrMortgage"
+                label="Monthly Rent or Mortgage"
+                value={formData.homeInformation.monthlyRentOrMortgage}
+                InputProps={{startAdornment: <InputAdornment position='start'>$</InputAdornment>}}
+                onChange={handleChange}
+                required
+                />
+
+                <Button
+                id='application-btn'
+                type='submit'
+                variant='contained'
+                >Submit</Button>
             </form>
-        </div>
+        )
+    }
+
+    const handleApplyHere = () => {
+        setShowForm(true) // show form when Apply Here button is clicked
+    }
+
+    return (
+        <>
+        <Paper elevation={6} style={{backgroundColor: '#ececec'}} className='apply-paper'>
+            <p>Ready to Apply?</p>
+            {!token && <p>Login or Register to Access Application</p> }
+            {token &&
+                <Button
+                variant="contained"
+                startIcon={<FeedIcon />}
+                onClick={handleApplyHere}
+                >Apply Here</Button>
+            }
+            
+        </Paper>
+        {showForm && displayApplicationForm()}
+        </>
     );
 };
 
