@@ -4,6 +4,7 @@ import './Chart.css'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material'
 import DrawerNav from './DrawerNav'
 import { adminCheck } from '../../helpers/adminCheck'
+import { scrollToTop } from '../../helpers/scrollToTop'
 import { useNavigate } from 'react-router-dom'
 
 function Chart() {
@@ -44,6 +45,7 @@ function Chart() {
       setApplicants(data.applications)
     }
     getApplications()
+    scrollToTop()
   }, [])
 
   useEffect(() => { // Getting adopted dogs

@@ -8,9 +8,9 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import Form from "../Form/Form";
 import './DisplayOne.css'
 import { adminCheck } from '../../helpers/adminCheck'
+import { scrollToTop } from '../../helpers/scrollToTop';
 import {Paper, Button} from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-
 
 function DisplayOne() {
     const location = useLocation();
@@ -73,7 +73,7 @@ function DisplayOne() {
         if (selectedDog) {
             return (
                 <div id='one-dog-container'>
-
+                {scrollToTop()}
                     <div id='button-container'>
                         <Button
                         variant='outlined'
