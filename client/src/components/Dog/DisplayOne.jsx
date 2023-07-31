@@ -8,9 +8,12 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import Form from "../Form/Form";
 import './DisplayOne.css'
 import { adminCheck } from '../../helpers/adminCheck'
+import { Paper, Button } from '@mui/material'
 import { scrollToTop } from '../../helpers/scrollToTop';
 import {Paper, Button} from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check';
 
 function DisplayOne() {
     const location = useLocation();
@@ -55,7 +58,7 @@ function DisplayOne() {
                 body: payload,
             });
             const session = await response.json();
-            window.location = session.url; 
+            window.location = session.url;
         } catch (error) {
             console.error('Error initiating sponsorship payment:', error);
         }
@@ -69,6 +72,18 @@ function DisplayOne() {
         return gender === "Female" ? <FemaleIcon /> : <MaleIcon />;
     };
 
+    const renderSponsorButton = () => {
+        if (!selectedDog.isFeePaid && !selectedDog.sponsorshipStatus) {
+            return (
+                <button onClick={handleSponsorClick}>
+                    <VolunteerActivismIcon id='donate-icon' />
+                    Sponsor
+                </button>
+            );
+        }
+        return null;
+    };
+
     const renderDogDetails = () => {
         if (selectedDog) {
             return (
@@ -76,31 +91,35 @@ function DisplayOne() {
                 {scrollToTop()}
                     <div id='button-container'>
                         <Button
-                        variant='outlined'
-                        startIcon={<ArrowBackIcon />} 
-                        onClick={handleBackToAllDogs} 
+                            variant='outlined'
+                            startIcon={<ArrowBackIcon />}
+                            onClick={handleBackToAllDogs}
                         >Back</Button>
                     </div>
 
                     <div id='all-details-wrapper'>
 
                         <div className="admin-box">
-                            {isAdmin && <Paper elevation={6} style={{backgroundColor: 'rgb(217, 216, 216)'}} className='edit-delete-paper'>
+                            {isAdmin && <Paper elevation={6} style={{ backgroundColor: 'rgb(217, 216, 216)' }} className='edit-delete-paper'>
                                 <h4 id='admin-text'>For Administrative Use Only</h4>
                                 {isAdmin && <DeleteDog selectedDog={selectedDog} />}
                                 {isAdmin && <EditDog selectedDog={selectedDog} />}
                             </Paper>}
                         </div>
 
-                        <div id='dog-details-container'>
+                        <div id='dog-details-container'
+                            style={{
+                                boxShadow:
+                                    selectedDog.sponsorshipStatus === true
+                                        ? '0 0 10px 5px rgba(52, 213, 213, 0.774)' // Sponsored
+                                        : selectedDog.adoptionStatus === 'pending'
+                                            ? '0 0 10px 5px rgba(0, 0, 187, 0.253)' //Pending   
+                                            : '0 0 10px 5px rgba(0, 0, 255, 0.41)', // Default blue glow for available
+                            }}>
                             <div id='img-dog-container'>
                                 <img src={selectedDog.image} alt={selectedDog.name} />
                             </div>
-                            <p id='adoption-status'>Available{selectedDog.adoptionSatus}</p>
-
-                            {selectedDog.isFeePaid && (
-                                <p id='fee-status'>Adoption Fee Paid</p>
-                            )}
+                            <p id='adoption-status'>{selectedDog.adoptionStatus}</p>
 
                             <div id='dog-details'>
                                 <h1>{selectedDog.name}</h1>
@@ -110,46 +129,59 @@ function DisplayOne() {
                                         {renderGenderIcon(selectedDog.gender)}
                                         <p>{selectedDog.gender}</p>
                                     </div>
+                                    <p>Weight {selectedDog.weight}</p>
                                 </section>
                                 <section id='additional-info'>
-                                    <p>Bio: <span>{selectedDog.bio}</span></p>
-                                    <div>
-                                        <h4>Energy Level</h4>
-                                        <p><span>{selectedDog.energyLevel}</span></p>
-                                        <h4>Family-Friendly Traits</h4>
-                                        <p>Other dogs: <span>{selectedDog.goodwDog ? 'yes' : '-'}</span></p>
-                                        <p>Cats: <span>{selectedDog.goodwCat ? 'yes' : '-'}</span></p>
-                                        <p>Children: <span>{selectedDog.goodwKid ? 'yes' : '-'}</span></p>
+                                    <div id='bio'>
+                                        <h2>Bio</h2>
+                                        <p>{selectedDog.bio}</p>
                                     </div>
+                                    <hr />
+
                                     <div>
-                                        <h4>Training and Behavior</h4>
-                                        <p>Crate Trained: <span>{selectedDog.crateTrained ? 'yes' : 'No'}</span></p>
-                                        <p>House Trained: <span>{selectedDog.houseTrained ? 'yes' : 'No'}</span></p>
-                                        <p>Reactivity to Objects: <span>{selectedDog.objAggression ? 'yes' : 'No'}</span></p>
+                                        <div className="sub-additional-info">
+                                            <p><span className="span-style">{selectedDog.goodwDog ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Other dogs</p>
+                                            <p><span className="span-style">{selectedDog.goodwCat ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Cats</p>
+                                            <p><span className="span-style">{selectedDog.goodwKid ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Children</p>
+                                            <div className="sub-additional-info">
+                                                <h4>Energy Level <span className="span-style">{selectedDog.energyLevel}</span></h4>
+                                                <h4>Crate Trained <span className="span-style">{selectedDog.crateTrained ? 'yes' : 'No'}</span></h4>
+                                                <h4>House Trained <span className="span-style">{selectedDog.houseTrained ? 'yes' : 'No'}</span></h4>
+                                                <h4>Reactivity to Objects <span className="span-style">{selectedDog.objAggression ? 'yes' : 'No'}</span></h4>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <hr />
+                                    <h2>More info about me</h2>
                                     <div>
-                                        <h4>Special Needs</h4>
-                                        <p><span>{selectedDog.specialNeeds}</span></p>
-                                        <p><span>{selectedDog.specialNeedsDesc}</span></p>
-                                        <h4>Medication:</h4>
-                                        <p><span>{selectedDog.medication}</span></p>
+                                        <h4>Special Needs<span className="span-style">{selectedDog.specialNeeds !== "" ? "-" : selectedDog.specialNeedsDesc}</span></h4>
+                                        <h4>Medication <span className="span-style">{selectedDog.medication !== "" ? "-" : selectedDog.medication}</span></h4>
+                                        <h4>Intake Type <span className="span-style">{selectedDog.intakeType}</span></h4>
+                                        <h4>Intake Date <span className="span-style">{selectedDog.intakeDate}</span></h4>
                                     </div>
-                                    <h4>Adoption Fee <span>{selectedDog.adoptionFee}</span></h4>
+
                                 </section>
                             </div>
                         </div>
-                        <div id='payments'>
-                            {!selectedDog.isFeePaid && (
-                                <>
-                                    <button onClick={handleDonateClick}>Adoption Fee</button>
-                                    <button onClick={handleSponsorClick}>
-                                        <VolunteerActivismIcon id='donate-icon' />
-                                        Sponsor
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                        <div id='side-box'>
+                            <div id='adoption-fee'>
+                                <div id="display-fee-amount">
+                                    <h4>Adoption Fee: ${selectedDog.adoptionFee}</h4>
+                                </div>
+                                {selectedDog.isFeePaid && (
+                                    <p id='fee-status'>Adoption Fee Paid</p>
+                                )}
+                            </div>
 
+                            <div id='payments'>
+                                {!selectedDog.isFeePaid && (
+                                    <>
+                                        <button onClick={handleDonateClick}>Adoption Fee</button>
+                                        {renderSponsorButton()}
+                                    </>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -161,9 +193,9 @@ function DisplayOne() {
 
     return (
         <>
-            
+
             {renderDogDetails()}
-            <Form selectedDog={selectedDog}/>
+            <Form selectedDog={selectedDog} />
         </>
     );
 }
