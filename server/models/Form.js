@@ -1,6 +1,14 @@
 const { mongoose } = require("../db");
 
 const ApplicationFormSchema = new mongoose.Schema({
+    archived: {
+        type: Boolean,
+        default: false,
+    },
+    approved: {
+        type: Boolean,
+        default: false,
+    },
     personalInformation: {
         fullName: {
             type: String,

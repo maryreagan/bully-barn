@@ -40,8 +40,6 @@ const ApplicationsTable = () => {
             .then((data) => {
                 setApplications(data.applications);
                 setOriginalApplications(data.applications);
-                setOriginalAdoptionStatus(data.applications);
-                setOriginalSponsorshipStatus(data.applications);
             })
             .catch((error) => {
                 console.error(error);
