@@ -21,6 +21,7 @@ function Nav() {
       <Link to="/" id='bb-logo'>Bully Barn</Link>
       { isAdmin && <Link to='/chart'>Dashboard</Link>}
       <Link id='nav-logout' onClick={handleLogout}>Logout</Link>
+      <Link to='/multi-image'>Multi Image</Link>
       </nav>
   ) : (
     <nav>
