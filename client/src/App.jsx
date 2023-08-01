@@ -17,7 +17,6 @@ import PaymentStatusPage from "./components/Dog/PaymentStatusPage";
 import SuccessPage from "./components/Dog/SuccessPage";
 import CanceledPage from "./components/Dog/CanceledPage";
 import { CssBaseline } from "@mui/material";
-import MultiImage from "./components/Dog/MultiImage";
 import About from "./components/About/About";
 
 
@@ -47,9 +46,8 @@ function App() {
         <Route path="/display-one" element={<MainLayout><DisplayOne /></MainLayout>} />
         <Route path="/adopted-dogs" element={<MainLayout><AdoptedDogs /></MainLayout>} />
         <Route path="/chart" element={<MainLayout><Chart /></MainLayout>} />
-        <Route path="/payment-status" element={<PaymentStatusPage />} />
+        <Route path="/payment-status" element={<MainLayout><PaymentStatusPage /></MainLayout>} />
         <Route path="/admin-dash" element={<MainLayout><AdminDash /></MainLayout>} />
-        <Route path="/multi-image" element={<MultiImage />} />
       </Routes>
     </Router>
   );

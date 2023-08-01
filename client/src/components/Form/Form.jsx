@@ -1,14 +1,10 @@
 import React, { useState} from "react";
 import "./Form.css";
 import {TextField, Button, InputAdornment, Paper} from '@mui/material'
-import FeedIcon from '@mui/icons-material/Feed'
 
 
-const Form = ({ selectedDog, isLoggedIn }) => {
+const Form = ({ selectedDog, setShowForm }) => {
     const dogId = selectedDog._id
-    console.log(selectedDog)
-    const [showForm, setShowForm] = useState(false)
-    const token = localStorage.getItem('token')
 
     const [formData, setFormData] = useState({
         personalInformation: {
@@ -245,29 +241,14 @@ const Form = ({ selectedDog, isLoggedIn }) => {
                 variant='contained'
                 >Submit</Button>
             </form>
+
         )
     }
 
-    const handleApplyHere = () => {
-        setShowForm(true) // show form when Apply Here button is clicked
-    }
 
     return (
         <>
-        {selectedDog.adoptionStatus != 'adopted' &&
-            <Paper elevation={6} style={{backgroundColor: '#ececec'}} className='apply-paper'>
-                <p>Ready to Apply?</p>
-                {!token && <p>Login or Register to Access Application</p> }
-                {token &&
-                    <Button
-                    variant="contained"
-                    startIcon={<FeedIcon />}
-                    onClick={handleApplyHere}
-                    >Apply Here</Button>
-                }
-            </Paper>
-        }
-        {showForm && displayApplicationForm()}
+        {displayApplicationForm()}
         </>
     );
 };
