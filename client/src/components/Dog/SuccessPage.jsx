@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import "./Canc-Succ.css";
 
 function SuccessPage() {
     const location = useLocation();
