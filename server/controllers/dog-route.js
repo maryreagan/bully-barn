@@ -74,17 +74,30 @@ router.post("/create", upload.fields([
     try{
         console.log(req.files)
         const imageFile = req.files['image'][0]
+        console.log('imageFile', imageFile)
         const imageBuffer = imageFile.buffer.toString("base64")
 
         const multipleImages = req.files['multipleImages']
-        console.log('multiple images', multipleImages)
         const multipleImageUrls = []
         const {name, age, bio, gender, weight, energyLevel, goodwDog, goodwCat, goodwKid, crateTrained, houseTrained, objAggression, objAggressionDesc, specialNeeds, specialNeedsDesc, medication, caseworker, adoptionStatus, sponsorshipStatus, intakeType, intakeDate, adoptionFee} = req.body
 
-        if(multipleImages && multipleImages.length>0){
+        let dataSingle = null;
 
+        if(imageFile){
+        const s3ParamsSingle = {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: `${Date.now()} ${imageFile.originalname}`,
+            Body: Buffer.from(imageBuffer, "base64"),
+            acl: 'public-read',
+            ContentType: imageFile.mimetype,
+        }
+        dataSingle = await s3.upload(s3ParamsSingle).promise()
+        }
+
+        console.log('dataSingle', dataSingle)
+
+        if(multipleImages && multipleImages.length>0){
             for (const file of multipleImages){
-                console.log("File:", file)
                 const buffer = file.buffer.toString("base64")
                 const s3Params = {
                     Bucket: process.env.S3_BUCKET_NAME,
@@ -99,7 +112,7 @@ router.post("/create", upload.fields([
         }
 
         const newDog = new Dog({
-            image: imageFile.originalname,
+            image: dataSingle.Location,
             multipleImages: multipleImageUrls,
             name, age, bio, gender, weight, energyLevel,
             goodwDog, goodwCat, goodwKid, crateTrained, houseTrained,
@@ -121,8 +134,6 @@ router.post("/create", upload.fields([
         })
     }
 })
-
-
 
 
 // get all dogs from database 

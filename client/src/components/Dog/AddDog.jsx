@@ -45,6 +45,7 @@ function AddDog() {
     // handles the image upload and updates dogData
     const handleImageChange = (e) => {
         const {name, files} = e.target;
+        console.log(files)
         if (name === 'image'){
             setDogData({
                 ...dogData,
@@ -52,10 +53,12 @@ function AddDog() {
             });
         } else if(name === 'multipleImages'){
             const allFiles =[];
-            
+            for(let i =0; i <files.length; i++){
+                allFiles.push(files[i])
+            }
             setDogData({
                 ...dogData, 
-                multipleImages: e.target.files[0]
+                multipleImages: allFiles,
             })
         }
     };
@@ -89,7 +92,12 @@ function AddDog() {
         formData.append('intakeDate', dogData.intakeDate)
         formData.append('adoptionFee', dogData.adoptionFee)
         formData.append('image', dogData.image);
-        formData.append('multipleImages', dogData.multipleImages)
+        if(dogData.multipleImages){
+            for (let i = 0; i < dogData.multipleImages.length; i++) {
+                formData.append('multipleImages', dogData.multipleImages[i]);
+            }
+        }
+    
 
         try{
             const response = await fetch(url, {
