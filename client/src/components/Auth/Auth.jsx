@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from 'react-router-dom'
-
 import "./Auth.css";
+
 
 const LoginComponent = () => {
     const [email, setEmail] = useState("");
@@ -13,6 +13,8 @@ const LoginComponent = () => {
     const [isLoginMode, setIsLoginMode] = useState(true); // New state for login/register mode
     const [isLoggedIn, setIsLoggedIn] = useState(false); // New state for handling login status
     const navigate = useNavigate()
+
+
 
     useEffect(() => {
         // Check if the user already has a valid token on component mount
@@ -71,6 +73,7 @@ const LoginComponent = () => {
         setIsLoading(false);
     };
 
+
     const handleRegister = async () => {
         setError("");
         setIsLoading(true);
@@ -113,6 +116,7 @@ const LoginComponent = () => {
         setIsLoginMode((prevMode) => !prevMode);
     };
 
+    //<Form isLoggedIn={isLoggedIn} />
 
     return (
         <>
