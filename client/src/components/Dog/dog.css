@@ -4,6 +4,12 @@
   font-size: 4.3em;
 }
 
+.adopted-header {
+  text-align: center;
+  margin: .9em 0 .7em 0;
+  font-size: 4.3em;
+}
+
 .adopt-msg {
   display: flex;
   align-items: center;
@@ -113,6 +119,7 @@
 #chip-box .MuiButtonBase-root {
   color: #000;
   margin: 0;
+  margin-bottom: 1em;
 }
 
 .filter-label {

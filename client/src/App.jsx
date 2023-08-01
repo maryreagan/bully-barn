@@ -18,7 +18,7 @@ import SuccessPage from "./components/Dog/SuccessPage";
 import CanceledPage from "./components/Dog/CanceledPage";
 import { CssBaseline } from "@mui/material";
 import MultiImage from "./components/Dog/MultiImage";
-
+import About from "./components/About/About";
 
 
 
@@ -38,6 +38,7 @@ function App() {
       <CssBaseline />
       <Routes>
       <Route path="/" element={<MainLayout><Dog /></MainLayout>} />
+      <Route path="/about" element={<MainLayout><About /></MainLayout>} />
         <Route path="/auth" element={<Auth />}/>
         <Route path="/forgot-password" element={<ForgotPwd />} />
         <Route path="/add-dog" element={<MainLayout><AddDog /></MainLayout>} />

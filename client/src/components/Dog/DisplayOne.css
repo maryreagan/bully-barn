@@ -9,18 +9,38 @@
 }
 
 #dog-details-container {
-    width: 50vw;;
+    width: 50vw;
+    ;
     display: flex;
     flex-direction: column;
     align-items: start;
     height: auto;
-    background-color: #F7F3E3;
+    background-color: #ccdee7;
     border-radius: 20px;
-    box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.41);
 }
-#button-container{
+
+#button-container {
     margin-top: 20px;
     margin-left: 20px;
+}
+
+#side-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+#display-fee-amount h4 {
+    padding: 1em;
+    font-family: 'Playfair Display';
+    font-size: larger;
+    background: rgb(228, 228, 227);
+    border-radius: 5px;
+}
+
+#display-fee-amount span {
+    font-size: 30px;
 }
 
 #payments {
@@ -50,6 +70,12 @@
     border: #151515;
 }
 
+#fee-status {
+    margin-top: 1em;
+    text-align: center;
+    color: red;
+}
+
 #img-dog-container img {
     margin-top: 5em;
     width: 23em;
@@ -65,8 +91,18 @@
     margin-bottom: 6em;
 }
 
+#status-available-icon {
+    vertical-align: middle;
+    color: green;
+}
+
+#status-pending-icon {
+    vertical-align: middle;
+    color: #3B6064;
+}
+
 #adoption-status {
-    margin-left: 13em;
+    margin-left: 9em;
 }
 
 #dog-details {
@@ -75,18 +111,40 @@
 }
 
 #dog-details h1 {
-    font-family: 'Comfortaa', cursive;
+    font-family: 'Playfair Display';
     font-size: 3em;
 }
 
 #basic-info {
     display: flex;
     gap: 1em;
-    color: #B3B6B7;
+    color: #a5aaac;
     font-family: 'Comfortaa', cursive;
     font-size: larger;
     font-weight: 600;
     margin-bottom: 2em;
+}
+
+#bio p {
+    margin-bottom: 4em;
+}
+
+hr {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.span-style {
+    font-weight: 200;
+    font-size: 1rem;
+    margin-left: 1em;
+}
+
+.sub-additional-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 4em;
 }
 
 #dog-details h4 {
@@ -98,20 +156,24 @@
     align-items: center;
 }
 
-#one-dog-container span {
-    font-family: 'Comfortaa', cursive;
-    font-size: 14px;
+.yes-icon {
+    vertical-align: middle;
+    color: #D8973C
 }
 
+.no-icon {
+    vertical-align: middle;
+    color: #413C58;
+}
 
 /* Admin Box Styling */
 
-.admin-box{
+.admin-box {
     display: flex;
     justify-content: center;
 }
 
-.edit-delete-paper{
+.edit-delete-paper {
     width: 300px;
     height: 250px;
     margin-top: 125px;
@@ -120,10 +182,8 @@
     align-items: center;
 }
 
-#admin-text{
+#admin-text {
     text-align: center;
     padding-top: 2em;
     padding-bottom: 2em;
 }
-
-
