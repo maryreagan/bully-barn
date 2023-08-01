@@ -13,7 +13,7 @@ function About() {
         <div className="about-textbox">
           <h1 className="about-header">About Us</h1>
           <div className="about-body">
-            <p>
+            <p id="first-p">
               Welcome to Bully Barn, your go-to destination for bulldog
               adoptions! Our mission is to find loving and forever homes for
               these adorable bulldogs, ensuring they receive the care and
@@ -23,7 +23,7 @@ function About() {
         </div>
         <img
           src="https://images.pexels.com/photos/4984837/pexels-photo-4984837.jpeg?auto=compress&cs=tinysrgb&w=1600"
-          className="about-img"
+          className="about-img" id="first-img"
         />
       </div>
 
@@ -50,8 +50,8 @@ function About() {
       <div className="about-container">
         <div className="about-textbox">
           <h1 className="about-header">Finding Forever Homes</h1>
-          <div className="about-body last-one">
-            <p>
+          <div className="about-body">
+            <p id="last-p">
               We take great pride in our adoption process, ensuring that each
               bulldog finds the perfect forever home. Our team carefully screens
               potential adopters to ensure they are ready for the
