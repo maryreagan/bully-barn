@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chip, Menu, MenuItem, IconButton, FormControlLabel, Checkbox } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { motion } from 'framer-motion';
 import './dog.css';
+import { scrollToTop } from '../../helpers/scrollToTop';
 
 function Dog() {
   const [dogs, setDogs] = useState([]);
@@ -13,21 +15,21 @@ function Dog() {
   const navigate = useNavigate();
 
   const filterMapping = {
-    '{"goodwCat": true}': 'Cat Friendly',
-    '{"goodwDog": true}': 'Dog Friendly',
-    '{"gender": "Male"}': 'Male',
-    '{"gender": "Female"}': 'Female',
-    '{"goodwKid": true}': 'Kid Friendly',
-    '{"minAge": 0, "maxAge": 0.9999}': '<1 yr',
-    '{"minAge": 3, "maxAge": 5}': '3-5 years old',
-    '{"minAge": 1, "maxAge": 2}': '1-2 years old',
-    '{"minAge": 6, "maxAge": 10}': '6-10 years old',
-    '{"minAge": 11, "maxAge": 50}': '11+ years old',
-    '{"minWeight": 1, "maxWeight": 10}': '1-10 lbs',
-    '{"minWeight": 11, "maxWeight": 25}': '11-25 lbs',
-    '{"minWeight": 26, "maxWeight": 50}': '25-50 lbs',
-    '{"minWeight": 51, "maxWeight": 70}': '51-70 lbs',
-    '{"minWeight": 71, "maxWeight": 400}': '70+ lbs',
+    '{"goodwCat": true}': "Cat Friendly",
+    '{"goodwDog": true}': "Dog Friendly",
+    '{"gender": "Male"}': "Male",
+    '{"gender": "Female"}': "Female",
+    '{"goodwKid": true}': "Kid Friendly",
+    '{"ageRange": [0, 1]}': "0-1 yrs old",
+    '{"ageRange": [2, 5]}': "2-5 yrs old",
+    '{"ageRange": [1, 2]}': "1-2 yrs old",
+    '{"ageRange": [6, 10]}': "6-10 yrs old",
+    '{"ageRange": [11, 50]}': "11+ yrs old",
+    '{"weightRange": [1, 10]}': "1-10 lbs",
+    '{"weightRange": [11, 25]}': "11-25 lbs",
+    '{"weightRange": [26, 50]}': "25-50 lbs",
+    '{"weightRange": [51, 70]}': "51-70 lbs",
+    '{"weightRange": [71, 400]}': "70+ lbs",
   }
 
   useEffect(() => {
@@ -48,26 +50,33 @@ function Dog() {
     getDogs();
   }, []);
 
+  useEffect(() => {
+    scrollToTop()
+  },[])
 
-  useEffect(() => { // Filtering + updating the dog data
+
+  useEffect(() => {
+    // Filtering + updating the dog data
     const filtered = dogs && dogs.filter((dog) => {
       return filters.every((filter) => {
-        const filterObj = JSON.parse(filter) // Turns the string into an object
-        if (filterObj.hasOwnProperty('minAge') && filterObj.hasOwnProperty('maxAge')) {
+        const filterObj = JSON.parse(filter); // Turns the string into an object
+        if (filterObj.hasOwnProperty('ageRange')) {
           // Handle age range filters
-          return dog.age >= filterObj.minAge && dog.age <= filterObj.maxAge
+          const [minAge, maxAge] = filterObj.ageRange;
+          return dog.age >= minAge && dog.age < maxAge;
+        } else if (filterObj.hasOwnProperty('weightRange')) {
           // Handle weight range filters
-        } else if (filterObj.minWeight && filterObj.maxWeight) {
-          return dog.weight >= filterObj.minWeight && dog.weight <= filterObj.maxWeight
+          const [minWeight, maxWeight] = filterObj.weightRange;
+          return dog.weight >= minWeight && dog.weight <= maxWeight;
         } else {
           // Handle other filters
-          return Object.entries(filterObj).every(([key, value]) => dog[key] === value)
+          return Object.entries(filterObj).every(([key, value]) => dog[key] === value);
         }
-      })
-    })
-
-    setFilteredDogs(filtered)
-  }, [dogs, filters])
+      });
+    });
+  
+    setFilteredDogs(filtered);
+  }, [dogs, filters]);
 
   const bannerSwitch = (dog) => {
     if (dog.adoptionStatus === 'pending') return 'pending-card'
@@ -107,7 +116,7 @@ function Dog() {
   }
 
   const handleFilterChange = (event) => {
-    const filterValue = event.target.value;
+    const filterValue = event.target.value
 
     if (event.target.checked) {
       // Add filter to the array if checkbox is checked
@@ -180,39 +189,42 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minAge": 0, "maxAge": 0.9999}')}
+                  checked={filters.includes(`{"ageRange": [0, 1]}`)}
                   onChange={handleFilterChange}
-                  value='{"minAge": 0, "maxAge": 0.9999}'
+                  value={`{"ageRange": [0, 1]}`}
                 />
               }
-              label="<1 yr"
+              label="0-1 yr"
             />
-            <FormControlLabel
+
+<FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minAge": 1, "maxAge": 2}')}
+                  checked={filters.includes('{"ageRange": [1, 2]}')}
                   onChange={handleFilterChange}
-                  value='{"minAge": 1, "maxAge": 2}'
+                  value={`{"ageRange": [1, 2]}`}
                 />
               }
               label="1-2 yrs"
             />
+
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minAge": 3, "maxAge": 5}')}
+                  checked={filters.includes(`{"ageRange": [2, 5]}`)}
                   onChange={handleFilterChange}
-                  value='{"minAge": 3, "maxAge": 5}'
+                  value={`{"ageRange": [2, 5]}`}
                 />
               }
-              label="3-5 yrs"
+              label="2-5 yrs"
             />
+    
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minAge": 6, "maxAge": 10}')}
+                  checked={filters.includes(`{"ageRange": [6, 10]}`)}
                   onChange={handleFilterChange}
-                  value='{"minAge": 6, "maxAge": 10}'
+                  value={`{"ageRange": [6, 10]}`}
                 />
               }
               label="6-10 yrs"
@@ -220,9 +232,9 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minAge": 11, "maxAge": 50}')}
+                  checked={filters.includes('{"ageRange": [11, 50]}')}
                   onChange={handleFilterChange}
-                  value='{"minAge": 11, "maxAge": 50}'
+                  value={`{"ageRange": [11, 50]}`}
                 />
               }
               label="11+ yrs"
@@ -235,9 +247,9 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minWeight": 1, "maxWeight": 10}')}
+                  checked={filters.includes('{"weightRange": [1, 10]}')}
                   onChange={handleFilterChange}
-                  value='{"minWeight": 1, "maxWeight": 10}'
+                  value={`{"weightRange": [1, 10]}`}
                 />
               }
               label="1-10 lbs"
@@ -245,9 +257,9 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minWeight": 11, "maxWeight": 25}')}
+                  checked={filters.includes('{"weightRange": [11, 25]}')}
                   onChange={handleFilterChange}
-                  value='{"minWeight": 11, "maxWeight": 25}'
+                  value={`{"weightRange": [11, 25]}`}
                 />
               }
               label="11-25 lbs"
@@ -255,9 +267,9 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minWeight": 26, "maxWeight": 50}')}
+                  checked={filters.includes('{"weightRange": [26, 50]}')}
                   onChange={handleFilterChange}
-                  value='{"minWeight": 26, "maxWeight": 50}'
+                  value={`{"weightRange": [26, 50]}`}
                 />
               }
               label="26-50 lbs"
@@ -265,9 +277,9 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minWeight": 51, "maxWeight": 70}')}
+                  checked={filters.includes('{"weightRange": [51, 70]}')}
                   onChange={handleFilterChange}
-                  value='{"minWeight": 51, "maxWeight": 70}'
+                  value={`{"weightRange": [51, 70]}`}
                 />
               }
               label="51-70 lbs"
@@ -275,9 +287,9 @@ function Dog() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.includes('{"minWeight": 71, "maxWeight": 400}')}
+                  checked={filters.includes('{"weightRange": [71, 400]}')}
                   onChange={handleFilterChange}
-                  value='{"minWeight": 71, "maxWeight": 400}'
+                  value={`{"weightRange": [71, 400]}`}
                 />
               }
               label="70+ lbs"
@@ -318,7 +330,13 @@ function Dog() {
       <div className='contain-home'>
         <div className='adopt-msg'>
         <div className='dark-overlay'></div>
-          <h1>Ready to<br/>Adopt?</h1>
+        <motion.h1
+         initial={{ opacity: 0 }}
+         whileInView={{ opacity: 1 }}
+         transition={{ duration: 1.2 }}
+        >
+          Ready to<br/>Adopt?
+      </motion.h1>
         </div>
         { <h1 className='welcome-msg'>Meet Our Dogs</h1>}
         { <div className='filter-label'>{displayFilters()} Filter</div>}

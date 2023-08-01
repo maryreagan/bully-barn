@@ -62,7 +62,7 @@ function AdoptedDogs() {
   return (
     <>
     <DrawerNav />
-    <h1 className='welcome-msg'>Adopted Dogs</h1>
+    <h1 className='adopted-header'>Adopted Dogs</h1>
     {displayAdopted()}
     </>
   )

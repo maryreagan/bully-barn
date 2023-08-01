@@ -1,4 +1,13 @@
 import React, { useState, useEffect } from "react";
+import {
+    IconButton,
+    Menu,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Select,
+} from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import { useNavigate } from "react-router-dom";
 import "./Admin-Dash.css";
 import DrawerNav from "./DrawerNav";
@@ -13,47 +22,52 @@ const ApplicationsTable = () => {
     const [selectedApplication, setSelectedApplication] = useState(null);
     const [sortColumn, setSortColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
-    const [caseworkerName, setCaseworkerName] = useState("");
-    const token = localStorage.getItem('token')
+    const [caseworkerName, setCaseworkerName] = useState("All");
+    const [adoptionStatus, setAdoptionStatus] = useState("All");
+    const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
+    const [caseworkerList, setCaseworkerList] = useState([]);
+    const [originalApplications, setOriginalApplications] = useState([]);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
-      // Fetch applications data
-      fetch("http://localhost:4000/form/applications", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok")
-          }
-          return response.json()
+        fetch("http://localhost:4000/form/applications", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
         })
-        .then((data) => {
-          setApplications(data.applications)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setApplications(data.applications);
+                setOriginalApplications(data.applications);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-      // Fetch dogs data
-      fetch("http://localhost:4000/dog")
-        .then((response) => response.json())
-        .then((data) => {
-          setDogs(data)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    }, [])
+        fetch("http://localhost:4000/dog")
+            .then((response) => response.json())
+            .then((data) => {
+                setDogs(data);
+                const uniqueCaseworkers = [
+                    ...new Set(data.map((dog) => dog.caseworker)),
+                ];
+                setCaseworkerList(uniqueCaseworkers);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
 
-    // Function to find the dog object based on dogId
     const findDogById = (dogId) => {
         return dogs.find((dog) => dog._id === dogId);
     };
 
-    // Function to sort applications by column
     const sortApplicationsByColumn = (column) => {
         const sorted = [...applications].sort((a, b) => {
             if (column === "name") {
@@ -78,6 +92,13 @@ const ApplicationsTable = () => {
                 } else if (column === "sponsorshipStatus") {
                     valueA = dogA.sponsorshipStatus ? "yes" : "no";
                     valueB = dogB.sponsorshipStatus ? "yes" : "no";
+                } else if (column === "dogName") {
+                    valueA = getDogNameById(
+                        a.petPreferences.dogId
+                    ).toLowerCase();
+                    valueB = getDogNameById(
+                        b.petPreferences.dogId
+                    ).toLowerCase();
                 }
 
                 return sortOrder === "asc"
@@ -87,13 +108,24 @@ const ApplicationsTable = () => {
         });
 
         if (sortColumn === column) {
-            setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            if (column === "adoptionStatus") {
+                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            } else if (column === "sponsorshipStatus") {
+                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            } else {
+                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+            }
         } else {
             setSortColumn(column);
             setSortOrder("asc");
         }
 
         setApplications(sorted);
+    };
+
+    const getDogNameById = (dogId) => {
+        const dog = dogs.find((dog) => dog._id === dogId);
+        return dog ? dog.name : "No information available";
     };
 
     const getSortArrow = (column) => {
@@ -113,35 +145,159 @@ const ApplicationsTable = () => {
         console.log("Selected Dog ID:", application.petPreferences.dogId);
     };
 
-    // New function to handle caseworker filter
-    const handleCaseworkerFilter = () => {
-        const filteredApps = applications.filter((application) => {
-            const dog = findDogById(application.petPreferences.dogId);
-            return (
-                dog &&
-                dog.caseworker
-                    .toLowerCase()
-                    .includes(caseworkerName.toLowerCase())
-            );
-        });
-        setApplications(filteredApps);
+    const resetFilters = () => {
+        setCaseworkerName("All");
+        setAdoptionStatus("All");
+        setSponsorshipStatus("All");
+        setSortColumn(null);
+        setSortOrder(null);
+        setApplications(originalApplications);
+    };
+
+    const handleCaseworkerFilter = (selectedCaseworker) => {
+        if (selectedCaseworker === "All") {
+            resetFilters();
+        } else {
+            setSortColumn(null);
+            setSortOrder(null);
+
+            const filteredApps = originalApplications.filter((application) => {
+                const dog = findDogById(application.petPreferences.dogId);
+                return (
+                    dog &&
+                    dog.caseworker
+                        .toLowerCase()
+                        .includes(selectedCaseworker.toLowerCase())
+                );
+            });
+            setApplications(filteredApps);
+            setCaseworkerName(selectedCaseworker);
+        }
+    };
+
+    const handleAdoptionStatusFilter = (selectedStatus) => {
+        if (selectedStatus === "All") {
+            resetFilters();
+        } else {
+            setSortColumn(null);
+            setSortOrder(null);
+
+            const filteredApps = originalApplications.filter((application) => {
+                const dog = findDogById(application.petPreferences.dogId);
+                return (
+                    dog &&
+                    dog.adoptionStatus.toLowerCase() ===
+                        selectedStatus.toLowerCase()
+                );
+            });
+            setApplications(filteredApps);
+            setAdoptionStatus(selectedStatus);
+        }
+    };
+
+    const handleSponsorshipStatusFilter = (selectedStatus) => {
+        if (selectedStatus === "All") {
+            resetFilters();
+        } else {
+            setSortColumn(null);
+            setSortOrder(null);
+
+            const filteredApps = originalApplications.filter((application) => {
+                const dog = findDogById(application.petPreferences.dogId);
+                return (
+                    dog && dog.sponsorshipStatus === (selectedStatus === "Yes")
+                );
+            });
+            setApplications(filteredApps);
+            setSponsorshipStatus(selectedStatus);
+        }
+    };
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
     };
 
     return (
         <div>
             <DrawerNav />
             <h2>Applications List</h2>
-            <div>
-                <input
-                    type="text"
-                    value={caseworkerName}
-                    onChange={(e) => setCaseworkerName(e.target.value)}
-                    placeholder="Enter Caseworker Name"
-                />
-                <button onClick={handleCaseworkerFilter}>
-                    Filter by Caseworker
-                </button>
-            </div>
+            <IconButton onClick={handleMenuClick}>
+                <FilterListIcon />
+            </IconButton>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="caseworker">
+                            Caseworker:
+                        </InputLabel>
+                        <Select
+                            id="caseworker"
+                            value={caseworkerName}
+                            onChange={(e) => {
+                                setCaseworkerName(e.target.value);
+                                handleCaseworkerFilter(e.target.value);
+                            }}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="All">All</MenuItem>
+                            {caseworkerList.map((caseworker) => (
+                                <MenuItem key={caseworker} value={caseworker}>
+                                    {caseworker}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="adoptionStatus">
+                            Adoption Status:
+                        </InputLabel>
+                        <Select
+                            id="adoptionStatus"
+                            value={adoptionStatus}
+                            onChange={(e) => {
+                                handleAdoptionStatusFilter(e.target.value);
+                            }}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="All">All</MenuItem>
+                            <MenuItem value="Available">Available</MenuItem>
+                            <MenuItem value="Pending">Pending</MenuItem>
+                            <MenuItem value="Adopted">Adopted</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="sponsorshipStatus">
+                            Sponsorship Status:
+                        </InputLabel>
+                        <Select
+                            id="sponsorshipStatus"
+                            value={sponsorshipStatus}
+                            onChange={(e) => {
+                                handleSponsorshipStatusFilter(e.target.value);
+                            }}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="All">All</MenuItem>
+                            <MenuItem value="Yes">Yes</MenuItem>
+                            <MenuItem value="No">No</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+            </Menu>
             <table>
                 <thead>
                     <tr>
@@ -158,6 +314,12 @@ const ApplicationsTable = () => {
                             className="header-cell"
                         >
                             Case Worker {getSortArrow("caseWorker")}
+                        </th>
+                        <th
+                            onClick={() => sortApplicationsByColumn("dogName")}
+                            className="header-cell"
+                        >
+                            Dog Name {getSortArrow("dogName")}
                         </th>
                         <th
                             onClick={() =>
@@ -199,21 +361,28 @@ const ApplicationsTable = () => {
                                 <td>
                                     {application.personalInformation.fullName}
                                 </td>
-                                {dog ? (
-                                    <>
-                                        <td>{dog.caseworker}</td>
-                                        <td>{dog.adoptionStatus}</td>
-                                        <td>
-                                            {dog.sponsorshipStatus
-                                                ? "Yes"
-                                                : "No"}
-                                        </td>
-                                    </>
-                                ) : (
-                                    <td colSpan="3">
-                                        No information available
-                                    </td>
-                                )}
+                                <td>
+                                    {dog
+                                        ? dog.caseworker
+                                        : "No information available"}
+                                </td>
+                                <td>
+                                    {getDogNameById(
+                                        application.petPreferences.dogId
+                                    )}
+                                </td>
+                                <td>
+                                    {dog
+                                        ? dog.adoptionStatus
+                                        : "No information available"}
+                                </td>
+                                <td>
+                                    {dog
+                                        ? dog.sponsorshipStatus
+                                            ? "Yes"
+                                            : "No"
+                                        : "No information available"}
+                                </td>
                             </tr>
                         );
                     })}
