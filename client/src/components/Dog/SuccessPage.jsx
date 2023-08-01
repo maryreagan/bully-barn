@@ -44,10 +44,10 @@ function SuccessPage() {
     }, [location.search, navigate]);
 
     return (
-        <div>
-            <h1 style={{ marginBottom: "1em" }}>Order Placed Successfully!</h1>
-            <p>Thank you for your payment. Your transaction was successful.</p>
-            <p>You will be redirected to the main page shortly.</p>
+        <div className='background-wrapper'>
+            <h1 style={{ marginBottom: "1em" }} id="title">Order Placed Successfully!</h1>
+            <p className="text">Thank you for your payment. Your transaction was successful.</p>
+            <p className="text">You will be redirected to the main page shortly.</p>
         </div>
     );
 }
