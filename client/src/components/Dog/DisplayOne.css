@@ -70,6 +70,12 @@
     border: #151515;
 }
 
+#fee-status {
+    margin-top: 1em;
+    text-align: center;
+    color: red;
+}
+
 #img-dog-container img {
     margin-top: 5em;
     width: 23em;
@@ -85,8 +91,18 @@
     margin-bottom: 6em;
 }
 
+#status-available-icon {
+    vertical-align: middle;
+    color: green;
+}
+
+#status-pending-icon {
+    vertical-align: middle;
+    color: #3B6064;
+}
+
 #adoption-status {
-    margin-left: 10em;
+    margin-left: 9em;
 }
 
 #dog-details {
@@ -142,10 +158,12 @@ hr {
 
 .yes-icon {
     vertical-align: middle;
+    color: #D8973C
 }
 
 .no-icon {
     vertical-align: middle;
+    color: #413C58;
 }
 
 /* Admin Box Styling */

@@ -13,6 +13,8 @@ import { scrollToTop } from '../../helpers/scrollToTop';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import { MdLens } from "react-icons/md";
+import { MdOutlinePending } from "react-icons/md"
 
 function DisplayOne() {
     const location = useLocation();
@@ -118,7 +120,8 @@ function DisplayOne() {
                             <div id='img-dog-container'>
                                 <img src={selectedDog.image} alt={selectedDog.name} />
                             </div>
-                            <p id='adoption-status'>{selectedDog.adoptionStatus}</p>
+                            <p id='adoption-status'>{selectedDog.adoptionStatus === "available" 
+                            ? <MdLens id="status-available-icon"/> : <MdOutlinePending id="status-pending-icon"/>}{selectedDog.adoptionStatus}</p>
 
                             <div id='dog-details'>
                                 <h1>{selectedDog.name}</h1>
@@ -139,9 +142,9 @@ function DisplayOne() {
 
                                     <div>
                                         <div className="sub-additional-info">
-                                            <p><span className="span-style">{selectedDog.goodwDog ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Other dogs</p>
-                                            <p><span className="span-style">{selectedDog.goodwCat ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Cats</p>
-                                            <p><span className="span-style">{selectedDog.goodwKid ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Children</p>
+                                            <p><span className="span-style">{selectedDog.goodwDog ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Good with other dogs</p>
+                                            <p><span className="span-style">{selectedDog.goodwCat ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Good with cats</p>
+                                            <p><span className="span-style">{selectedDog.goodwKid ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Good with children</p>
                                             <div className="sub-additional-info">
                                                 <h4>Energy Level <span className="span-style">{selectedDog.energyLevel}</span></h4>
                                                 <h4>Crate Trained <span className="span-style">{selectedDog.crateTrained ? 'yes' : 'No'}</span></h4>
@@ -173,7 +176,7 @@ function DisplayOne() {
                             </div>
 
                             <div id='payments'>
-                                {!selectedDog.isFeePaid && (
+                                {!selectedDog.isFeePaid && !selectedDog.sponsorshipStatus && (
                                     <>
                                         <button onClick={handleDonateClick}>Adoption Fee</button>
                                         {renderSponsorButton()}
