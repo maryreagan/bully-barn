@@ -22,40 +22,85 @@ const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: imageFilter,
     limits: {
-        fileSize: 4 * 1024 * 1024 //4MB
+        fileSize: 8 * 1024 * 1024 //8MB
     },
 }) 
 
 //POST a new dog 
-router.post("/create", upload.single('image'), async (req,res) => {
+// router.post("/create", upload.single('image'), async (req,res) => {
+//     try{
+//         const imageBuffer = req.file.buffer.toString("base64")
+//         const {name, age, bio, gender, weight, energyLevel, goodwDog, goodwCat, goodwKid, crateTrained, houseTrained, objAggression, objAggressionDesc, specialNeeds, specialNeedsDesc, medication, caseworker, adoptionStatus, sponsorshipStatus, intakeType, intakeDate, adoptionFee} = req.body
+
+
+//         const s3Params = {
+//             Bucket: process.env.S3_BUCKET_NAME,
+//             Key: `${Date.now()} ${req.file.originalname}`,
+//             Body: Buffer.from(imageBuffer, "base64"),
+//             acl: 'public-read',
+//             ContentType: req.file.mimetype,
+//         }
+
+//         const data = await s3.upload(s3Params).promise()
+
+//         const newDog = new Dog({
+//             image: data.Location,
+//             name, age, bio, gender, weight, energyLevel,
+//             goodwDog, goodwCat, goodwKid, crateTrained, houseTrained,
+//             objAggression, objAggressionDesc,
+//             specialNeeds, specialNeedsDesc, medication,
+//             caseworker, adoptionStatus, sponsorshipStatus, 
+//             intakeType, intakeDate, adoptionFee
+//         })
+//         await newDog.save()
+
+//         res.status(201).json({
+//             message: `New Dog Added`,
+//             newDog
+//         })
+//     } catch (err) {
+//         console.log(err)
+//         res.status(500).json({
+//             message: `${err}`
+//         })
+//     }
+// })
+
+
+router.post("/create", upload.fields([
+    {name: 'image', maxCount: 1},
+    {name: 'multipleImages', maxCount: 5},
+    ]), async (req,res) => {
     try{
-        const imageBuffer = req.file.buffer.toString("base64")
-        const croppedImageBase64 = req.body.croppedImage;
+        console.log(req.files)
+        const imageFile = req.files['image'][0]
+        const imageBuffer = imageFile.buffer.toString("base64")
+
+        const multipleImages = req.files['multipleImages']
+        console.log('multiple images', multipleImages)
+        const multipleImageUrls = []
         const {name, age, bio, gender, weight, energyLevel, goodwDog, goodwCat, goodwKid, crateTrained, houseTrained, objAggression, objAggressionDesc, specialNeeds, specialNeedsDesc, medication, caseworker, adoptionStatus, sponsorshipStatus, intakeType, intakeDate, adoptionFee} = req.body
 
+        if(multipleImages && multipleImages.length>0){
 
-        const s3Params = {
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: `${Date.now()} ${req.file.originalname}`,
-            Body: Buffer.from(imageBuffer, "base64"),
-            acl: 'public-read',
-            ContentType: req.file.mimetype,
+            for (const file of multipleImages){
+                console.log("File:", file)
+                const buffer = file.buffer.toString("base64")
+                const s3Params = {
+                    Bucket: process.env.S3_BUCKET_NAME,
+                    Key: `${Date.now()} ${file.originalname}`,
+                    Body: Buffer.from(buffer, "base64"),
+                    acl: 'public-read',
+                    ContentType: file.mimetype,
+                }
+                const data = await s3.upload(s3Params).promise()
+                multipleImageUrls.push(data.Location)
+            }
         }
-
-        const croppedImageS3Params = {
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: `cropped_${Date.now()} ${req.file.originalname}`,
-            Body: Buffer.from(croppedImageBase64, 'base64'),
-            acl: "public-read",
-            ContentType: req.file.mimetype,
-        }
-
-        const data = await s3.upload(s3Params).promise()
-        const croppedImageData = await s3.upload(croppedImageS3Params).promise()
 
         const newDog = new Dog({
-            image: data.Location,
-            croppedImage: croppedImageData.Location,
+            image: imageFile.originalname,
+            multipleImages: multipleImageUrls,
             name, age, bio, gender, weight, energyLevel,
             goodwDog, goodwCat, goodwKid, crateTrained, houseTrained,
             objAggression, objAggressionDesc,
@@ -76,6 +121,8 @@ router.post("/create", upload.single('image'), async (req,res) => {
         })
     }
 })
+
+
 
 
 // get all dogs from database 

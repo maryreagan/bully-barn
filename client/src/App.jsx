@@ -19,6 +19,7 @@ import CanceledPage from "./components/Dog/CanceledPage";
 import { CssBaseline } from "@mui/material";
 
 
+
 const MainLayout = ({children}) => {
   return (
     <>
