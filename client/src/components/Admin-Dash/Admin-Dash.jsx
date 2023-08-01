@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
+    Button,
     IconButton,
     Menu,
     MenuItem,
-    FormControl,
     InputLabel,
     Select,
 } from "@mui/material";
@@ -14,9 +14,9 @@ import DrawerNav from "./DrawerNav";
 import { adminCheck } from "../../helpers/adminCheck";
 
 const ApplicationsTable = () => {
-    const navigate = useNavigate()
-    const isAdmin = adminCheck()
-    if (!isAdmin) navigate('/')
+    const navigate = useNavigate();
+    const isAdmin = adminCheck();
+    if (!isAdmin) navigate("/");
     const [applications, setApplications] = useState([]);
     const [dogs, setDogs] = useState([]);
     const [selectedApplication, setSelectedApplication] = useState(null);
@@ -221,6 +221,54 @@ const ApplicationsTable = () => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleApprove = (applicationId) => {
+        fetch(`http://localhost:4000/form/applications/${applicationId}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ approvalStatus: "Approved" }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                // Remove the approved application from the list
+                setApplications((prevApplications) =>
+                    prevApplications.filter((app) => app._id !== applicationId)
+                );
+                setSelectedApplication(null); // Deselect the application after approval
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const handleArchive = (applicationId) => {
+        fetch(`http://localhost:4000/form/applications/${applicationId}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ archiveStatus: true }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                // Remove the archived application from the list
+                setApplications((prevApplications) =>
+                    prevApplications.filter((app) => app._id !== applicationId)
+                );
+                setSelectedApplication(null); // Deselect the application after archiving
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     return (
@@ -544,6 +592,27 @@ const ApplicationsTable = () => {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    {/* Buttons */}
+                    <div className="buttons-container">
+                        <Button
+                            variant="contained"
+                            color="success"
+                            onClick={() =>
+                                handleApprove(selectedApplication._id)
+                            }
+                        >
+                            Approve
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() =>
+                                handleArchive(selectedApplication._id)
+                            }
+                        >
+                            Archive
+                        </Button>
                     </div>
                 </div>
             )}

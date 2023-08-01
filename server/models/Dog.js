@@ -101,6 +101,7 @@ const Dog = new mongoose.Schema(
             isFeePaid: {
                 type: Boolean,
                 default: false,
+                required: true,
             }
         },
 )

@@ -42,4 +42,40 @@ router.get("/applications", roleValidation, async (req, res) => {
     }
 });
 
+// Update Application Status Route
+router.put("/applications/:id", roleValidation, async (req, res) => {
+    const { id } = req.params;
+    const { approvalStatus, archiveStatus } = req.body;
+
+    try {
+        // Find the application form by ID and update the fields based on the request body
+        const updatedForm = await ApplicationForm.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    approvalStatus, // This will update the approvalStatus field
+                    archiveStatus, // This will update the archiveStatus field
+                },
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedForm) {
+            return res.status(404).json({
+                message: "Application form not found",
+            });
+        }
+
+        res.status(200).json({
+            message: "Application form updated successfully",
+            updatedForm,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Failed to update application form",
+        });
+    }
+});
+
 module.exports = router;
