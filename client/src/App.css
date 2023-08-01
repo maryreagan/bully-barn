@@ -6,6 +6,22 @@ body {
   font-family: 'Fira Sans';
 }
 
+html, body, #root {
+  background-color: #ececec;
+}
+
+.top-bar {
+  position: fixed;
+  display: flex;
+  justify-content:first baseline;
+  align-items: flex-end;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ececec;
+  padding: 3rem;
+}
+
 h1 {
   font-family: 'Playfair Display';
 }

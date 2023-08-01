@@ -193,7 +193,7 @@ function DisplayOne() {
 
     return (
         <>
-
+            <div className="top-bar"></div>
             {renderDogDetails()}
             <Form selectedDog={selectedDog} />
         </>

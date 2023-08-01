@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chip, Menu, MenuItem, IconButton, FormControlLabel, Checkbox } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { motion } from 'framer-motion';
 import './dog.css';
+import { scrollToTop } from '../../helpers/scrollToTop';
 
 function Dog() {
   const [dogs, setDogs] = useState([]);
@@ -47,6 +49,10 @@ function Dog() {
 
     getDogs();
   }, []);
+
+  useEffect(() => {
+    scrollToTop()
+  },[])
 
 
   useEffect(() => { // Filtering + updating the dog data
@@ -318,7 +324,13 @@ function Dog() {
       <div className='contain-home'>
         <div className='adopt-msg'>
         <div className='dark-overlay'></div>
-          <h1>Ready to<br/>Adopt?</h1>
+        <motion.h1
+         initial={{ opacity: 0 }}
+         whileInView={{ opacity: 1 }}
+         transition={{ duration: 1.2 }}
+        >
+          Ready to<br/>Adopt?
+      </motion.h1>
         </div>
         { <h1 className='welcome-msg'>Meet Our Dogs</h1>}
         { <div className='filter-label'>{displayFilters()} Filter</div>}
