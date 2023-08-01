@@ -1,0 +1,49 @@
+.about-container {
+  display: flex;
+  align-items: center;
+  background-color: #ececec;
+  padding: 8em 6em 8em 6em;
+}
+
+.about-container:first-of-type {
+  padding: 4em 6em 4em 6em;
+}
+
+.about-container:nth-child(odd) {
+  background-color: #9fd3c7;
+}
+
+.about-img {
+  max-width: 40em;
+  border-radius: 3em;
+  border: solid 3px black;
+}
+
+.about-textbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-header {
+  font-size: 4.2em;
+  margin-bottom: .13em;
+}
+
+.about-body {
+  margin-right: auto;
+}
+
+.about-body p {
+  font-size: 1.6em;
+  margin: 0 5em 2em 5em;
+  text-align: center;
+}
+
+.last-one p {
+  margin: 0 11em 2em 11em;
+}
+
+.last-img {
+  max-width: 44em;
+}
