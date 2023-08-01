@@ -17,7 +17,6 @@ import PaymentStatusPage from "./components/Dog/PaymentStatusPage";
 import SuccessPage from "./components/Dog/SuccessPage";
 import CanceledPage from "./components/Dog/CanceledPage";
 import { CssBaseline } from "@mui/material";
-import MultiImage from "./components/Dog/MultiImage";
 import About from "./components/About/About";
 
 
