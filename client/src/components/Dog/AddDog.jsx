@@ -51,6 +51,8 @@ function AddDog() {
                 image: e.target.files[0],
             });
         } else if(name === 'multipleImages'){
+            const allFiles =[];
+            
             setDogData({
                 ...dogData, 
                 multipleImages: e.target.files[0]
@@ -87,6 +89,7 @@ function AddDog() {
         formData.append('intakeDate', dogData.intakeDate)
         formData.append('adoptionFee', dogData.adoptionFee)
         formData.append('image', dogData.image);
+        formData.append('multipleImages', dogData.multipleImages)
 
         try{
             const response = await fetch(url, {
