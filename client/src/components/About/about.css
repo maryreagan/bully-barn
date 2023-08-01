@@ -40,8 +40,16 @@
   text-align: center;
 }
 
-.last-one p {
-  margin: 0 11em 2em 11em;
+#first-p {
+  margin: 0 8em 2em 8em;
+}
+
+#first-img {
+  max-width: 44em;
+}
+
+#last-p {
+  margin: 0 16em 2em 16em;
 }
 
 .last-img {
