@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Auth.css'
 
 function ForgotPwd() {
@@ -41,6 +42,7 @@ function ForgotPwd() {
   return (
     <>
       <div className="top-bar"></div>
+      <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
       <div className="auth-container">
         <div className="login-container">
           <div>

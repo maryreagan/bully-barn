@@ -1,7 +1,7 @@
 .welcome-msg {
   text-align: center;
-  margin: 1.4em 0 .5em 0;
-  font-size: 4.3em;
+  margin: 2em 0 .5em 0;
+  font-size: 4.5em;
 }
 
 .adopted-header {
@@ -58,7 +58,7 @@
 
 .dog-card {
   text-align: center;
-  width: 18em;
+  width: 17em;
   padding: 0;
   margin: 1em;
   border-radius: 1em;
@@ -85,7 +85,7 @@
 }
 
 .dog-card .img-container {
-  height: 18.5em;
+  height: 18.6em;
   overflow: hidden;
   border-radius: .8em;
 }
@@ -183,4 +183,21 @@
 .attr-label {
   color: #27acac;
   margin-right: 1.2em;
+}
+
+.adopt-instructions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: .9em;
+  padding: 2rem;
+  background-color: #9fd3c7;
+  margin: 18rem 0rem;
+  margin-bottom: -20rem;
+}
+
+.adopt-instructions .dog-paw {
+  max-width: .8em;
+  margin: 0em .2em 0 .2em;
 }

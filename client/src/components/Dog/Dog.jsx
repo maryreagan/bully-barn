@@ -327,28 +327,39 @@ function Dog() {
 
   return (
     <>
-      <div className='contain-home'>
-        <div className='adopt-msg'>
-        <div className='dark-overlay'></div>
-        <motion.h1
-         initial={{ opacity: 0 }}
-         whileInView={{ opacity: 1 }}
-         transition={{ duration: 1.2 }}
-        >
-          Ready to<br/>Adopt?
-      </motion.h1>
+      <div className="contain-home">
+        <div className="adopt-msg">
+          <div className="dark-overlay"></div>
+          <motion.h1
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.2 }}
+          >
+            Ready to
+            <br />
+            Adopt?
+          </motion.h1>
         </div>
-        { <h1 className='welcome-msg'>Meet Our Dogs</h1>}
-        { <div className='filter-label'>{displayFilters()} Filter</div>}
-        <div id='chip-box'>
-          { displayChips()}
-        </div>
-        <div className='dog-container'>
-          {displayDogs()}
+        {<h1 className="welcome-msg">Meet Our Dogs</h1>}
+        {<div className="filter-label">{displayFilters()} Filter</div>}
+        <div id="chip-box">{displayChips()}</div>
+        <div className="dog-container">{displayDogs()}</div>
+        <div className="adopt-instructions">
+          <h1>
+            <img
+              className="dog-paw"
+              src="https://www.svgrepo.com/show/101633/dog-paw.svg"
+            />{" "}
+            Login or Create an Account to Apply!{" "}
+            <img
+              className="dog-paw"
+              src="https://www.svgrepo.com/show/101633/dog-paw.svg"
+            />
+          </h1>
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export default Dog;
