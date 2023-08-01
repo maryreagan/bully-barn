@@ -10,7 +10,6 @@ import './DisplayOne.css'
 import { adminCheck } from '../../helpers/adminCheck'
 import { Paper, Button } from '@mui/material'
 import { scrollToTop } from '../../helpers/scrollToTop';
-import {Paper, Button} from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
