@@ -22,7 +22,6 @@ function Nav() {
       { isAdmin && <Link to='/chart'>Dashboard</Link>}
       <Link to='/about'>About Us</Link>
       <Link id='nav-logout' onClick={handleLogout}>Logout</Link>
-      <Link to='/multi-image'>Multi Image</Link>
       </nav>
   ) : (
     <nav>
