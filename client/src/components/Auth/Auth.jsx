@@ -120,7 +120,7 @@ const LoginComponent = () => {
 
     return (
         <>
-        <div className="top-bar"></div>
+        <div className="background-wrapper">
         <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
         <div className="auth-container">
         <div className="login-container">
@@ -176,8 +176,8 @@ const LoginComponent = () => {
                     {error && <div className="error-message">{error}</div>}
                     {isLoginMode ? (
                         <>
-                            <button onClick={handleLogin} disabled={isLoading}>
-                                {isLoading ? "Logging in..." : "Log in"}
+                            <button className='auth-button' onClick={handleLogin} disabled={isLoading}>
+                                {isLoading ? "Logging in..." : "Login"}
                             </button>
                             <p>
                                 Don't have an account?{" "}
@@ -189,6 +189,7 @@ const LoginComponent = () => {
                     ) : (
                         <>
                             <button
+                                className='auth-button'
                                 onClick={handleRegister}
                                 disabled={isLoading}
                             >
@@ -197,13 +198,14 @@ const LoginComponent = () => {
                             <p>
                                 Already have an account?{" "}
                                 <button onClick={handleToggleMode}>
-                                    Log in
+                                    Login
                                 </button>
                             </p>
                         </>
                     )}
                 </>
             )}
+        </div>
         </div>
         </div>
         </>

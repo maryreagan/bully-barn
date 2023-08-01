@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { IconButton } from '@mui/material';
 import './Auth.css'
 
 function ForgotPwd() {
   const [email, setEmail] = useState("")
   const [error, setError] = useState("")
   const [msg, setMsg] = useState("")
+  const navigate = useNavigate()
 
   const handleSend = async () => {
     const url = "http://127.0.0.1:4000/auth/forgot-password"
@@ -41,11 +44,14 @@ function ForgotPwd() {
 
   return (
     <>
-      <div className="top-bar"></div>
+      <div className="background-wrapper">
       <Link to={'/'}><img className="barn-logo" src='https://freesvg.org/img/1401952018.png' /></Link>
       <div className="auth-container">
         <div className="login-container">
           <div>
+          <IconButton style={{ bottom: '25px', right: '30px' }} onClick={() => navigate('/auth')}>
+          <ArrowBackIcon />
+          </IconButton>
             <h2>Forgot Password?</h2>
             <p id="reset-info">
               We will send you an email with a link that you can use to reset
@@ -58,9 +64,10 @@ function ForgotPwd() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <button onClick={handleSend}>Send Email</button>
+            <button className='auth-button' onClick={handleSend}>Send Email</button>
           </div>
         </div>
+      </div>
       </div>
     </>
   )
