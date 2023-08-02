@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
+    Button,
     IconButton,
     Menu,
     MenuItem,
-    FormControl,
     InputLabel,
     Select,
 } from "@mui/material";
@@ -14,9 +14,9 @@ import DrawerNav from "./DrawerNav";
 import { adminCheck } from "../../helpers/adminCheck";
 
 const ApplicationsTable = () => {
-    const navigate = useNavigate()
-    const isAdmin = adminCheck()
-    if (!isAdmin) navigate('/')
+    const navigate = useNavigate();
+    const isAdmin = adminCheck();
+    if (!isAdmin) navigate("/");
     const [applications, setApplications] = useState([]);
     const [dogs, setDogs] = useState([]);
     const [selectedApplication, setSelectedApplication] = useState(null);
@@ -221,6 +221,138 @@ const ApplicationsTable = () => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleApprove = (id) => {
+        const application = selectedApplication;
+
+        if (application.approvalStatus) {
+            // If the application is already approved, unapprove it
+            fetch(`http://localhost:4000/form/unapprove/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Update the local state with the updated form
+                    setApplications((prevApplications) =>
+                        prevApplications.map((app) =>
+                            app._id === data.updatedForm._id
+                                ? data.updatedForm
+                                : app
+                        )
+                    );
+                    setSelectedApplication(data.updatedForm);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            // If the application is not approved, approve it
+            fetch(`http://localhost:4000/form/approve/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Update the local state with the updated form
+                    setApplications((prevApplications) =>
+                        prevApplications.map((app) =>
+                            app._id === data.updatedForm._id
+                                ? data.updatedForm
+                                : app
+                        )
+                    );
+                    setSelectedApplication(data.updatedForm);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    };
+
+    const handleArchive = (id) => {
+        const application = selectedApplication;
+        if (!application) {
+            // If there is no selected application, do nothing or show an error message
+            return;
+        }
+
+        if (application.archiveStatus) {
+            // If the application is already archived, unarchive it
+            fetch(`http://localhost:4000/form/unarchive/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Update the local state with the updated form
+                    setApplications((prevApplications) =>
+                        prevApplications.map((app) =>
+                            app._id === data.updatedForm._id
+                                ? data.updatedForm
+                                : app
+                        )
+                    );
+                    setSelectedApplication(data.updatedForm);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            // If the application is not archived, archive it
+            fetch(`http://localhost:4000/form/archive/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Update the local state with the updated form
+                    setApplications((prevApplications) =>
+                        prevApplications.map((app) =>
+                            app._id === data.updatedForm._id
+                                ? data.updatedForm
+                                : app
+                        )
+                    );
+                    setSelectedApplication(data.updatedForm);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     };
 
     return (
@@ -544,6 +676,54 @@ const ApplicationsTable = () => {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    {/* Buttons */}
+                    <div className="buttons-container">
+                        {/* Approve Button */}
+                        {selectedApplication.approvalStatus ? (
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() =>
+                                    handleApprove(selectedApplication._id)
+                                }
+                            >
+                                Unapprove
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={() =>
+                                    handleApprove(selectedApplication._id)
+                                }
+                            >
+                                Approve
+                            </Button>
+                        )}
+
+                        {/* Archive Button */}
+                        {selectedApplication.archiveStatus ? (
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() =>
+                                    handleArchive(selectedApplication._id)
+                                }
+                            >
+                                Unarchive
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={() =>
+                                    handleArchive(selectedApplication._id)
+                                }
+                            >
+                                Archive
+                            </Button>
+                        )}
                     </div>
                 </div>
             )}
