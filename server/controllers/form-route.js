@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const ApplicationForm = require("../models/Form");
+const Dog = require('../models/Dog')
 const roleValidation = require("../middleware/roleValidation");
 const {
     sendApprovedEmail,
 } = require("../helpers/sendEmail");
+const User = require("../models/User");
 
 // Submit Application Route
 router.post("/create", async (req, res) => {
@@ -168,16 +170,35 @@ router.put("/unapprove/:id", async (req, res) => {
 });
 
 router.post("/sendApprovedEmail", roleValidation, async (req, res) => {
-    const { applicantEmail, applicantName, dogName, paymentLink } = req.body;
+  const { applicantEmail, applicantName, dogID, paymentLink, formID } = req.body
 
-    try {
-      await sendApprovedEmail(applicantEmail, applicantName, dogName, paymentLink);
-  
-      res.json({ message: 'Email sent successfully!' });
-    } catch (error) {
-      console.error('Error sending email:', error);
-      res.status(500).json({ error: 'Failed to send email' });
+  try {
+    const foundDog = await Dog.findOne({ _id: dogID })
+
+    const existingForm = await ApplicationForm.findById(formID)
+    if (!foundDog) throw Error("Dog Not Found")
+
+    if (!existingForm) {
+      return res.status(404).json({
+        message: "Application form not found",
+      })
     }
+
+    const dogName = foundDog.name
+
+    await sendApprovedEmail(applicantEmail, applicantName, dogName, paymentLink)
+    existingForm.sentApprovedEmail = true
+
+    const updatedForm = await existingForm.save();
+
+        res.status(200).json({
+            message: "Approved email sent successfully",
+            updatedForm
+        });
+  } catch (error) {
+    console.error("Error sending email:", error)
+    res.status(500).json({ error: "Failed to send email" })
+  }
 })
 
 module.exports = router;

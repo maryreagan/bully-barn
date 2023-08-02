@@ -143,6 +143,7 @@ const ApplicationsTable = () => {
     const handleApplicationClick = (application) => {
         setSelectedApplication(application);
         console.log("Selected Dog ID:", application.petPreferences.dogId);
+        console.log('APPLICATION CLICK', selectedApplication)
     };
 
     const resetFilters = () => {
@@ -353,6 +354,51 @@ const ApplicationsTable = () => {
                     console.error(error);
                 });
         }
+    };
+
+    const handleEmailSend = async () => {
+        const application = selectedApplication
+        const dogID = application.petPreferences.dogId
+        const formID = application._id
+        const applicantName = selectedApplication.personalInformation.fullName
+        const applicantEmail = selectedApplication.personalInformation.email
+        const paymentLink = 'http://localhost:5173/'
+        const url = "http://127.0.0.1:4000/form/sendApprovedEmail"
+        const token = localStorage.getItem('token')
+      
+        if (
+          selectedApplication &&
+          formID &&
+          applicantEmail &&
+          applicantName &&
+          paymentLink
+        ) {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: new Headers({
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            }),
+            body: JSON.stringify({
+              applicantEmail,
+              applicantName,
+              dogID,
+              paymentLink,
+              formID,
+            }),
+          })
+          const data = await response.json()
+          console.log(data)
+
+          setApplications((prevApplications) =>
+            prevApplications.map((app) =>
+              app._id === data.updatedForm._id ? data.updatedForm : app
+            )
+          )
+          setSelectedApplication(data.updatedForm)
+        } else {
+          console.log("Information not found.")
+        } 
     };
 
     return (
@@ -722,6 +768,25 @@ const ApplicationsTable = () => {
                                 }
                             >
                                 Archive
+                            </Button>
+                        )}
+
+{selectedApplication.sentApprovedEmail ? (
+                            <Button
+                                variant="contained"
+                                color="info"
+                            >
+                                Email Sent
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={() =>
+                                    handleEmailSend()
+                                }
+                            >
+                                Send Approved Email
                             </Button>
                         )}
                     </div>
