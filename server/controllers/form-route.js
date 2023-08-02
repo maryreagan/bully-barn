@@ -42,38 +42,124 @@ router.get("/applications", roleValidation, async (req, res) => {
     }
 });
 
-// Update Application Status Route
-router.put("/applications/:id", roleValidation, async (req, res) => {
-    const { id } = req.params;
-    const { approvalStatus, archiveStatus } = req.body;
-
+// Archive Application Route
+router.put("/archive/:id", async (req, res) => {
     try {
-        // Find the application form by ID and update the fields based on the request body
-        const updatedForm = await ApplicationForm.findByIdAndUpdate(
-            id,
-            {
-                $set: {
-                    approvalStatus, // This will update the approvalStatus field
-                    archiveStatus, // This will update the archiveStatus field
-                },
-            },
-            { new: true } // Return the updated document
-        );
+        const { id } = req.params;
 
-        if (!updatedForm) {
+        const existingForm = await ApplicationForm.findById(id);
+
+        if (!existingForm) {
             return res.status(404).json({
                 message: "Application form not found",
             });
         }
 
+        existingForm.archiveStatus = true;
+
+        const updatedForm = await existingForm.save();
+
         res.status(200).json({
-            message: "Application form updated successfully",
+            message: "Application form archived",
             updatedForm,
         });
     } catch (err) {
         console.error(err);
         res.status(500).json({
-            message: "Failed to update application form",
+            message: "Failed to archive the application form",
+        });
+    }
+});
+
+// Unarchive Application Route
+router.put("/unarchive/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const existingForm = await ApplicationForm.findById(id);
+
+        if (!existingForm) {
+            return res.status(404).json({
+                message: "Application form not found",
+            });
+        }
+
+        existingForm.archiveStatus = false;
+
+        const updatedForm = await existingForm.save();
+
+        res.status(200).json({
+            message: "Application form unarchived",
+            updatedForm,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Failed to unarchive the application form",
+        });
+    }
+});
+
+// Approve Application Route
+router.put("/approve/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the existing application form by ID
+        const existingForm = await ApplicationForm.findById(id);
+
+        if (!existingForm) {
+            return res.status(404).json({
+                message: "Application form not found",
+            });
+        }
+
+        // Update the approvalStatus field to true
+        existingForm.approvalStatus = true;
+
+        // Save the updated form
+        const updatedForm = await existingForm.save();
+
+        res.status(200).json({
+            message: "Application form approved",
+            updatedForm,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Failed to approve the application form",
+        });
+    }
+});
+
+// Unapprove Application Route
+router.put("/unapprove/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the existing application form by ID
+        const existingForm = await ApplicationForm.findById(id);
+
+        if (!existingForm) {
+            return res.status(404).json({
+                message: "Application form not found",
+            });
+        }
+
+        // Update the approvalStatus field to false
+        existingForm.approvalStatus = false;
+
+        // Save the updated form
+        const updatedForm = await existingForm.save();
+
+        res.status(200).json({
+            message: "Application form unapproved",
+            updatedForm,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Failed to unapprove the application form",
         });
     }
 });
