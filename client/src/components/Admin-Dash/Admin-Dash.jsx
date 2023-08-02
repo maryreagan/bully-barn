@@ -27,42 +27,51 @@ const ApplicationsTable = () => {
     const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
     const [caseworkerList, setCaseworkerList] = useState([]);
     const [originalApplications, setOriginalApplications] = useState([]);
+    const [showArchived, setShowArchived] = useState(false);
+    const [approvalFilter, setApprovalFilter] = useState(null);
+    const [feePaidFilter, setFeePaidFilter] = useState(null);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
-        fetch("http://localhost:4000/form/applications", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setApplications(data.applications);
-                setOriginalApplications(data.applications);
-            })
-            .catch((error) => {
-                console.error(error);
+        const fetchApplications = async () => {
+            const response = await fetch("http://localhost:4000/form/applications", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+
+            const filteredApplications = data.applications.filter((application) => {
+                const matchesShowArchived = showArchived === null || application.archiveStatus === showArchived;
+                const matchesApprovalStatus = approvalFilter === null || application.approvalStatus === approvalFilter;
+                const dog = findDogById(application.petPreferences.dogId);
+                const matchesFeePaid = feePaidFilter === null || (dog && dog.isFeePaid === feePaidFilter);
+                return matchesShowArchived && matchesApprovalStatus && matchesFeePaid;
             });
 
-        fetch("http://localhost:4000/dog")
-            .then((response) => response.json())
-            .then((data) => {
-                setDogs(data);
-                const uniqueCaseworkers = [
-                    ...new Set(data.map((dog) => dog.caseworker)),
-                ];
-                setCaseworkerList(uniqueCaseworkers);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
+            setApplications(filteredApplications);
+            setOriginalApplications(data.applications);
+        };
+
+        const fetchDogs = async () => {
+            const response = await fetch("http://localhost:4000/dog");
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            setDogs(data);
+            const uniqueCaseworkers = [...new Set(data.map((dog) => dog.caseworker))];
+            setCaseworkerList(uniqueCaseworkers);
+        };
+
+        fetchApplications();
+        fetchDogs();
+    }, [token, showArchived, approvalFilter, selectedApplication, feePaidFilter]);
+
 
     const findDogById = (dogId) => {
         return dogs.find((dog) => dog._id === dogId);
@@ -187,7 +196,7 @@ const ApplicationsTable = () => {
                 return (
                     dog &&
                     dog.adoptionStatus.toLowerCase() ===
-                        selectedStatus.toLowerCase()
+                    selectedStatus.toLowerCase()
                 );
             });
             setApplications(filteredApps);
@@ -318,7 +327,8 @@ const ApplicationsTable = () => {
                                 : app
                         )
                     );
-                    setSelectedApplication(data.updatedForm);
+                    // Deselect the application after archiving/unarchiving
+                    setSelectedApplication(null);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -347,11 +357,39 @@ const ApplicationsTable = () => {
                                 : app
                         )
                     );
-                    setSelectedApplication(data.updatedForm);
+                    // Deselect the application after archiving/unarchiving
+                    setSelectedApplication(null);
                 })
                 .catch((error) => {
                     console.error(error);
                 });
+        }
+    };
+
+    const handleShowArchivedChange = (event) => {
+        const value = event.target.value === "archived";
+        setShowArchived(value);
+    };
+
+    const handleApprovalStatusChange = (event) => {
+        const value = event.target.value;
+        if (value === "approved") {
+            setApprovalFilter(true);
+        } else if (value === "nonApproved") {
+            setApprovalFilter(false);
+        } else {
+            setApprovalFilter(null);
+        }
+    };
+
+    const handleFeePaidChange = (event) => {
+        const value = event.target.value;
+        if (value === "paid") {
+            setFeePaidFilter(true);
+        } else if (value === "notPaid") {
+            setFeePaidFilter(false);
+        } else {
+            setFeePaidFilter(null);
         }
     };
 
@@ -426,6 +464,50 @@ const ApplicationsTable = () => {
                             <MenuItem value="All">All</MenuItem>
                             <MenuItem value="Yes">Yes</MenuItem>
                             <MenuItem value="No">No</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="showArchived">Show Archived:</InputLabel>
+                        <Select
+                            id="showArchived"
+                            value={showArchived ? "archived" : "nonArchived"}
+                            onChange={handleShowArchivedChange}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="nonArchived">Non-Archived</MenuItem>
+                            <MenuItem value="archived">Archived</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="approvalStatus">Approval Status:</InputLabel>
+                        <Select
+                            id="approvalStatus"
+                            value={approvalFilter === true ? "approved" : approvalFilter === false ? "nonApproved" : "all"}
+                            onChange={handleApprovalStatusChange}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="all">All</MenuItem>
+                            <MenuItem value="approved">Approved</MenuItem>
+                            <MenuItem value="nonApproved">Non-Approved</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="feePaid">Fee Paid:</InputLabel>
+                        <Select
+                            id="feePaid"
+                            value={feePaidFilter === true ? "paid" : feePaidFilter === false ? "notPaid" : "all"}
+                            onChange={handleFeePaidChange}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="all">All</MenuItem>
+                            <MenuItem value="paid">Paid</MenuItem>
+                            <MenuItem value="notPaid">Not Paid</MenuItem>
                         </Select>
                     </div>
                 </MenuItem>
@@ -680,50 +762,47 @@ const ApplicationsTable = () => {
                     {/* Buttons */}
                     <div className="buttons-container">
                         {/* Approve Button */}
-                        {selectedApplication.approvalStatus ? (
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() =>
-                                    handleApprove(selectedApplication._id)
-                                }
-                            >
-                                Unapprove
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                color="success"
-                                onClick={() =>
-                                    handleApprove(selectedApplication._id)
-                                }
-                            >
-                                Approve
-                            </Button>
+                        {!selectedApplication.archiveStatus && (
+                            selectedApplication.approvalStatus ? (
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleApprove(selectedApplication._id)}
+                                >
+                                    Unapprove
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={() => handleApprove(selectedApplication._id)}
+                                >
+                                    Approve
+                                </Button>
+                            )
                         )}
 
                         {/* Archive Button */}
-                        {selectedApplication.archiveStatus ? (
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() =>
-                                    handleArchive(selectedApplication._id)
-                                }
-                            >
-                                Unarchive
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                color="success"
-                                onClick={() =>
-                                    handleArchive(selectedApplication._id)
-                                }
-                            >
-                                Archive
-                            </Button>
+                        {!selectedApplication.approvalStatus && (
+                            selectedApplication.archiveStatus ? (
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleArchive(selectedApplication._id)}
+                                >
+                                    Unarchive
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={() => handleArchive(selectedApplication._id)}
+                                >
+                                    Archive
+                                </Button>
+                            )
                         )}
+
                     </div>
                 </div>
             )}
