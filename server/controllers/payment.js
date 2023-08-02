@@ -47,6 +47,8 @@ router.post('/create-checkout-session', async (req, res) => {
 
 router.post("/update-dog-status", async (req, res) => {
     const { dogId, isSponsorship } = req.body;
+    console.log('isSponsorship:', isSponsorship);
+    console.log(dogId)
 
     try {
         if (isSponsorship) {

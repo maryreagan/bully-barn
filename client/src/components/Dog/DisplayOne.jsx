@@ -55,17 +55,18 @@ function DisplayOne() {
         }
     };
 
-    const handleSponsorPayment = async () => {
+    const handleSponsorPayment = async (isSponsorship) => {
+        console.log('isSponsorship:', isSponsorship);
         try {
-            const payload = `{"fee": ${selectedDog.adoptionFee}, "dogId": "${selectedDog._id}", "isSponsorship": true}`;
-
+            const payload = `{"fee": ${selectedDog.adoptionFee}, "dogId": "${selectedDog._id}", "isSponsorship": ${true}}`;
+            console.log('payload:', payload);
             const response = await fetch('http://localhost:4000/payment/create-checkout-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Content-Encoding': 'identity',
+                    // 'Content-Encoding': 'identity',
                 },
-                body: payload,
+                body: JSON.stringify(payload),
             });
             const session = await response.json();
             window.location = session.url;
@@ -75,7 +76,8 @@ function DisplayOne() {
     };
 
     const handleSponsorClick = () => {
-        handleSponsorPayment();
+        const isSponsorship = true;
+        handleSponsorPayment(isSponsorship);
     };
 
     const renderGenderIcon = (gender) => {
