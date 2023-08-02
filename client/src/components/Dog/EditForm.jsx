@@ -13,6 +13,14 @@ function EditForm({selectedDog, handleUpdate}) {
     const [editedDog, setEditedDog] = useState({
         adoptionStatus: 'available',
         energyLevel: 'Low',
+        sponsorshipStatus: false,
+        goodwDog: false,
+        goodwCat: false,
+        goodwKid: false,
+        crateTrained: false,
+        houseTrained: false,
+        objAggression: false,
+        specialNeeds: false,
         
     })
 
@@ -35,8 +43,9 @@ function EditForm({selectedDog, handleUpdate}) {
     },[dogId])
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setEditedDog((prevDog)=> ({...prevDog, [name]: value}))
+        const {name, value, type} = e.target;
+        const newValue = type === 'radio' ? value === 'true' : value;
+        setEditedDog((prevDog) => ({ ...prevDog, [name]: newValue }));
     }
 
     const handleSubmit = (e) => {
@@ -78,8 +87,8 @@ function EditForm({selectedDog, handleUpdate}) {
     ]
 
     const trueFalseOptions= [
-        {value: 'true', label: 'Yes'},
-        {value: 'false', label: 'No'}
+        {value: true, label: 'Yes'},
+        {value: false, label: 'No'}
         
     ]
 
@@ -90,8 +99,8 @@ function EditForm({selectedDog, handleUpdate}) {
     ]
 
     const sponsorshipOptions = [
-        {value:'true', label:'Sponsored'},
-        {value:'false', label:'Not Sponsored'}
+        {value: true, label:'Sponsored'},
+        {value: false, label:'Not Sponsored'}
     ]
 
 
@@ -198,7 +207,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="goodwDog"
-                    value={editedDog.goodwDog ? 'true' : 'false'}
+                    value={editedDog.goodwDog ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -219,7 +228,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="goodwCat"
-                    value={editedDog.goodwCat ? 'true' : 'false'}
+                    value={editedDog.goodwCat ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -240,7 +249,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="goodwKid"
-                    value={editedDog.goodwKid ? 'true' : 'false'}
+                    value={editedDog.goodwKid ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -261,7 +270,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="crateTrained"
-                    value={editedDog.crateTrained ? 'true' : 'false'}
+                    value={editedDog.crateTrained ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -282,7 +291,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="houseTrained"
-                    value={editedDog.houseTrained ? 'true' : 'false'}
+                    value={editedDog.houseTrained ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -303,7 +312,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="objAggression"
-                    value={editedDog.objAggression ? 'true' : 'false'}
+                    value={editedDog.objAggression ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -335,7 +344,7 @@ function EditForm({selectedDog, handleUpdate}) {
                     required
                     className='form-dropdown'
                     name="specialNeeds"
-                    value={editedDog.specialNeeds ? 'true' : 'false'}
+                    value={editedDog.specialNeeds ? true : false}
                     onChange={handleChange}
                 >
                 {trueFalseOptions.map((option) => (
@@ -410,7 +419,7 @@ function EditForm({selectedDog, handleUpdate}) {
                 style={{width:223}}
                 size='small'
                 required
-                value={editedDog.sponsorshipStatus === 'Sponsored' ? 'true' : 'false' }
+                value={editedDog.sponsorshipStatus}
                 onChange={handleChange}
                 >
                 {sponsorshipOptions.map((option) => (

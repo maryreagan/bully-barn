@@ -155,8 +155,8 @@ function AddDog() {
         ]
 
         const trueFalseOptions= [
-            {value: 'true', label: 'Yes'},
-            {value: 'false', label: 'No'}
+            {value: true, label: 'Yes'},
+            {value: false, label: 'No'}
             
         ]
 
@@ -167,8 +167,8 @@ function AddDog() {
         ]
 
         const sponsorshipOptions = [
-            {value:'true', label:'Sponsored'},
-            {value:'false', label:'Not Sponsored'}
+            {value: true, label:'Sponsored'},
+            {value: false, label:'Not Sponsored'}
         ]
 
         return (
