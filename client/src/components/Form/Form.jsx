@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import "./Form.css";
-import {TextField, Button, InputAdornment, Paper} from '@mui/material'
+import {TextField, Button, InputAdornment} from '@mui/material'
 
 
 const Form = ({ selectedDog, setShowForm }) => {
