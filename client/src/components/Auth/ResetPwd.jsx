@@ -52,7 +52,7 @@ function ResetPwd() {
 
   return (
     <>
-      <div className="top-bar"></div>
+      <div className="background-wrapper">
       <div className="auth-container">
         <div className="login-container">
           <div>
@@ -65,9 +65,10 @@ function ResetPwd() {
               value={newPwd}
               onChange={(e) => setNewPwd(e.target.value)}
             />
-            <button onClick={handleReset}>Reset</button>
+            <button className='auth-button' onClick={handleReset}>Reset</button>
           </div>
         </div>
+      </div>
       </div>
     </>
   )

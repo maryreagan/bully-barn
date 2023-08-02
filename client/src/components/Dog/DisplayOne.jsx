@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import DeleteDog from './DeleteDog';
 import EditDog from './EditDog';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,17 +13,28 @@ import { scrollToTop } from '../../helpers/scrollToTop';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import { MdLens } from "react-icons/md";
+import { MdOutlinePending } from "react-icons/md"
+import FeedIcon from '@mui/icons-material/Feed'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+
+
 
 function DisplayOne() {
     const location = useLocation();
     const selectedDog = location.state;
     const navigate = useNavigate();
     const isAdmin = adminCheck()
+    const [showForm, setShowForm] = useState(false)
+    const token = localStorage.getItem('token')
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     const handleBackToAllDogs = () => {
         selectedDog.adoptionStatus === 'adopted'
         ? navigate('/adopted-dogs')
         : navigate('/');
+        setShowForm(false)
     };
 
     const handleDonateClick = async () => {
@@ -115,10 +126,30 @@ function DisplayOne() {
                                             ? '0 0 10px 5px rgba(0, 0, 187, 0.253)' //Pending   
                                             : '0 0 10px 5px rgba(0, 0, 255, 0.41)', // Default blue glow for available
                             }}>
+                            
                             <div id='img-dog-container'>
-                                <img src={selectedDog.image} alt={selectedDog.name} />
+                            
+                            {selectedDog.multipleImages && selectedDog.multipleImages.length > 0 && (
+                                    <Button className='scroll-btn' onClick={handlePreviousImage} disabled={currentImageIndex === 0} variant ='text' startIcon={<NavigateBeforeIcon />} style={{paddingTop: '4em'}}>
+                                    Previous
+                                    </Button>
+                                )}
+                                
+                                {currentImageIndex === 0 ? (
+                                    <img src={selectedDog.image} alt={selectedDog.name} />
+                                ):(
+                                    <img src={selectedDog.multipleImages[currentImageIndex - 1]} alt={`Dog ${currentImageIndex}`} />
+                                )}
+                                
+                            {selectedDog.multipleImages && selectedDog.multipleImages.length > 0 && (
+                                <Button className='scroll-btn' onClick={handleNextImage} disabled={currentImageIndex === selectedDog.multipleImages.length} variant='text'  endIcon={<NavigateNextIcon />} style={{paddingTop: '4em'}}>
+                                Next
+                                </Button>
+                            )}
                             </div>
-                            <p id='adoption-status'>{selectedDog.adoptionStatus}</p>
+                            
+                            <p id='adoption-status'>{selectedDog.adoptionStatus === "available" 
+                            ? <MdLens id="status-available-icon"/> : <MdOutlinePending id="status-pending-icon"/>}{selectedDog.adoptionStatus}</p>
 
                             <div id='dog-details'>
                                 <h1>{selectedDog.name}</h1>
@@ -139,9 +170,9 @@ function DisplayOne() {
 
                                     <div>
                                         <div className="sub-additional-info">
-                                            <p><span className="span-style">{selectedDog.goodwDog ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Other dogs</p>
-                                            <p><span className="span-style">{selectedDog.goodwCat ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Cats</p>
-                                            <p><span className="span-style">{selectedDog.goodwKid ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Children</p>
+                                            <p><span className="span-style">{selectedDog.goodwDog ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Good with other dogs</p>
+                                            <p><span className="span-style">{selectedDog.goodwCat ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Good with cats</p>
+                                            <p><span className="span-style">{selectedDog.goodwKid ? <CheckIcon className="yes-icon" /> : <CloseIcon className="no-icon" />}</span>Good with children</p>
                                             <div className="sub-additional-info">
                                                 <h4>Energy Level <span className="span-style">{selectedDog.energyLevel}</span></h4>
                                                 <h4>Crate Trained <span className="span-style">{selectedDog.crateTrained ? 'yes' : 'No'}</span></h4>
@@ -171,18 +202,38 @@ function DisplayOne() {
                                     <p id='fee-status'>Adoption Fee Paid</p>
                                 )}
                             </div>
-
                             <div id='payments'>
-                                {!selectedDog.isFeePaid && (
+                                {!selectedDog.isFeePaid && !selectedDog.sponsorshipStatus && (
                                     <>
                                         <button onClick={handleDonateClick}>Adoption Fee</button>
                                         {renderSponsorButton()}
                                     </>
                                 )}
                             </div>
+
+                            <div className='apply-here-container'>
+                                {selectedDog.adoptionStatus != 'adopted' &&
+                                <Paper elevation={6} style={{backgroundColor: 'rgb(159, 211, 199)'}} className='apply-paper'>
+                                    <p id='ready-to-apply'>Ready to Apply?</p>
+                                    {!token && <p id='login-text'>Login or Register to Access Application</p> }
+                                    {token &&
+                                        <Button
+                                        variant="contained"
+                                        startIcon={<FeedIcon />}
+                                        style={{backgroundColor:'rgb(62,132,116)', width: '75%'}}
+                                        onClick={()=> {
+                                            handleApplyHere()
+                                            handleScroll()
+                                        }
+                                        }
+                                        >Apply Here</Button>
+                                    }
+                                </Paper>
+                                }
+                            </div>
+                        
                         </div>
                     </div>
-
                 </div>
 
             );
@@ -190,11 +241,34 @@ function DisplayOne() {
         return null;
     };
 
+
+    const handleApplyHere = () => {
+        setShowForm(true) // show form when Apply Here button is clicked
+    }
+
+    const handleScroll = () => {
+        window.scrollTo({
+            top: 2000,
+            behavior: 'smooth',
+        })
+    }
+
+
+    const handlePreviousImage = () => {
+        setCurrentImageIndex((prevIndex) => prevIndex - 1);
+    };
+    
+    const handleNextImage = () => {
+        setCurrentImageIndex((prevIndex) => prevIndex + 1);
+    };
+
     return (
         <>
-            <div className="top-bar"></div>
-            {renderDogDetails()}
-            <Form selectedDog={selectedDog} />
+            <div className='display-form-container'>
+                <div className="top-bar"></div>
+                {renderDogDetails()}
+            {showForm && <Form selectedDog={selectedDog} showForm={showForm} setShowForm={setShowForm} />}
+            </div>
         </>
     );
 }

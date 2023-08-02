@@ -20,6 +20,7 @@ html, body, #root {
   width: 100%;
   background-color: #ececec;
   padding: 3rem;
+  z-index: 0;
 }
 
 h1 {

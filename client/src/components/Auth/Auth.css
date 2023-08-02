@@ -4,6 +4,28 @@
     box-sizing: border-box;
 }
 
+.background-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://images.pexels.com/photos/12890024/pexels-photo-12890024.jpeg?auto=compress&cs=tinysrgb&w=1600);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.background-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(191, 191, 191, 0.496);
+  }
+
 .auth-container {
     display: flex;
     justify-content: center;
@@ -12,17 +34,19 @@
 }
 
 .login-container {
-    background-color: #fff;
-    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    background-color: #f3f2f2;
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.681);
+    padding: 3rem;
     margin-bottom: 5em;
     max-width: 320px;
     width: 100%;
+    border-radius: .5em;
+    z-index: 1;
 }
 
 .login-container h2 {
     text-align: center;
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 20px;
 }
 
@@ -34,13 +58,16 @@
     border-radius: 4px;
 }
 
-.login-container button {
+.auth-button {
     width: 100%;
     padding: 10px;
-    background-color: #d9d9d9;
-    color: black;
+    background-color: #385170;
+    color: white;
+    font-weight: bold;
+    font-size: .95em;
     border: none;
     border-radius: 4px;
+    border: solid 1px black;
     cursor: pointer;
     margin-top: 14px;
     margin-top: 14px;
@@ -54,10 +81,13 @@
 .login-container p button {
     background: none;
     border: none;
-    color: #007bff;
+    color: #16bebe; 
+    font-weight: bold;
     cursor: pointer;
     padding: 0.5em;
+    font-size: 1em;
     margin: 0;
+    margin-top: -.5em;
 }
 
 .error-message {
@@ -79,12 +109,13 @@
     text-decoration: none;
     font-size: 0.9em;
     color: #000000;
-    margin-left: 10em;
+    margin-left: 6.6em;
 }
 
 .login-container #link-to-login {
     text-decoration: none;
-    color: #007bff;
+    color: #16bebe;
+    font-weight: bold;
 }
 
 .login-container #password-input {
@@ -92,7 +123,7 @@
 }
 
 .barn-logo {
-    max-width: 6em;
+    max-width: 7em;
     margin: 1.5em;
     position: fixed;
     top: 0;
@@ -102,4 +133,10 @@
 
 #reset-info {
     margin: 0 2em 1.7em 2em;
+}
+
+.arrow-back {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }
