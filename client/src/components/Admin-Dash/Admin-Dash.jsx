@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-    InputLabel,
-    Select,
-} from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { useNavigate } from "react-router-dom";
-import "./Admin-Dash.css";
-import DrawerNav from "./DrawerNav";
-import { adminCheck } from "../../helpers/adminCheck";
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  InputLabel,
+  Select,
+} from "@mui/material"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import { useNavigate } from "react-router-dom"
+import "./Admin-Dash.css"
+import DrawerNav from "./DrawerNav"
+import { adminCheck } from "../../helpers/adminCheck"
 
 const ApplicationsTable = () => {
     const navigate = useNavigate();
@@ -73,123 +73,116 @@ const ApplicationsTable = () => {
     }, [token, showArchived, approvalFilter, selectedApplication, feePaidFilter]);
 
 
-    const findDogById = (dogId) => {
-        return dogs.find((dog) => dog._id === dogId);
-    };
+  const findDogById = (dogId) => {
+    return dogs.find((dog) => dog._id === dogId)
+  }
 
-    const sortApplicationsByColumn = (column) => {
-        const sorted = [...applications].sort((a, b) => {
-            if (column === "name") {
-                const valueA = a.personalInformation.fullName.toLowerCase();
-                const valueB = b.personalInformation.fullName.toLowerCase();
-                return sortOrder === "asc"
-                    ? valueA.localeCompare(valueB)
-                    : valueB.localeCompare(valueA);
-            } else {
-                const dogA = findDogById(a.petPreferences.dogId);
-                const dogB = findDogById(b.petPreferences.dogId);
+  const sortApplicationsByColumn = (column) => {
+    const sorted = [...applications].sort((a, b) => {
+      if (column === "name") {
+        const valueA = a.personalInformation.fullName.toLowerCase()
+        const valueB = b.personalInformation.fullName.toLowerCase()
+        return sortOrder === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA)
+      } else {
+        const dogA = findDogById(a.petPreferences.dogId)
+        const dogB = findDogById(b.petPreferences.dogId)
 
-                if (!dogA || !dogB) return 0;
+        if (!dogA || !dogB) return 0
 
-                let valueA, valueB;
-                if (column === "caseWorker") {
-                    valueA = dogA.caseworker.toLowerCase();
-                    valueB = dogB.caseworker.toLowerCase();
-                } else if (column === "adoptionStatus") {
-                    valueA = dogA.adoptionStatus.toLowerCase();
-                    valueB = dogB.adoptionStatus.toLowerCase();
-                } else if (column === "sponsorshipStatus") {
-                    valueA = dogA.sponsorshipStatus ? "yes" : "no";
-                    valueB = dogB.sponsorshipStatus ? "yes" : "no";
-                } else if (column === "dogName") {
-                    valueA = getDogNameById(
-                        a.petPreferences.dogId
-                    ).toLowerCase();
-                    valueB = getDogNameById(
-                        b.petPreferences.dogId
-                    ).toLowerCase();
-                }
-
-                return sortOrder === "asc"
-                    ? valueA.localeCompare(valueB)
-                    : valueB.localeCompare(valueA);
-            }
-        });
-
-        if (sortColumn === column) {
-            if (column === "adoptionStatus") {
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            } else if (column === "sponsorshipStatus") {
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            } else {
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            }
-        } else {
-            setSortColumn(column);
-            setSortOrder("asc");
+        let valueA, valueB
+        if (column === "caseWorker") {
+          valueA = dogA.caseworker.toLowerCase()
+          valueB = dogB.caseworker.toLowerCase()
+        } else if (column === "adoptionStatus") {
+          valueA = dogA.adoptionStatus.toLowerCase()
+          valueB = dogB.adoptionStatus.toLowerCase()
+        } else if (column === "sponsorshipStatus") {
+          valueA = dogA.sponsorshipStatus ? "yes" : "no"
+          valueB = dogB.sponsorshipStatus ? "yes" : "no"
+        } else if (column === "dogName") {
+          valueA = getDogNameById(a.petPreferences.dogId).toLowerCase()
+          valueB = getDogNameById(b.petPreferences.dogId).toLowerCase()
         }
 
-        setApplications(sorted);
-    };
+        return sortOrder === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA)
+      }
+    })
 
-    const getDogNameById = (dogId) => {
-        const dog = dogs.find((dog) => dog._id === dogId);
-        return dog ? dog.name : "No information available";
-    };
+    if (sortColumn === column) {
+      if (column === "adoptionStatus") {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+      } else if (column === "sponsorshipStatus") {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+      } else {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+      }
+    } else {
+      setSortColumn(column)
+      setSortOrder("asc")
+    }
 
-    const getSortArrow = (column) => {
-        if (sortColumn === column) {
-            return sortOrder === "asc" ? (
-                <span>&uarr;</span>
-            ) : (
-                <span>&darr;</span>
-            );
-        } else {
-            return null;
-        }
-    };
+    setApplications(sorted)
+  }
 
-    const handleApplicationClick = (application) => {
-        setSelectedApplication(application);
-        console.log("Selected Dog ID:", application.petPreferences.dogId);
-    };
+  const getDogNameById = (dogId) => {
+    const dog = dogs.find((dog) => dog._id === dogId)
+    return dog ? dog.name : "No information available"
+  }
 
-    const resetFilters = () => {
-        setCaseworkerName("All");
-        setAdoptionStatus("All");
-        setSponsorshipStatus("All");
-        setSortColumn(null);
-        setSortOrder(null);
-        setApplications(originalApplications);
-    };
+  const getSortArrow = (column) => {
+    if (sortColumn === column) {
+      return sortOrder === "asc" ? <span>&uarr;</span> : <span>&darr;</span>
+    } else {
+      return null
+    }
+  }
 
-    const handleCaseworkerFilter = (selectedCaseworker) => {
-        if (selectedCaseworker === "All") {
-            resetFilters();
-        } else {
-            setSortColumn(null);
-            setSortOrder(null);
+  const handleApplicationClick = (application) => {
+    setSelectedApplication(application)
+    console.log("Selected Dog ID:", application.petPreferences.dogId)
+    console.log("APPLICATION CLICK", selectedApplication)
+  }
 
-            const filteredApps = originalApplications.filter((application) => {
-                const dog = findDogById(application.petPreferences.dogId);
-                return (
-                    dog &&
-                    dog.caseworker
-                        .toLowerCase()
-                        .includes(selectedCaseworker.toLowerCase())
-                );
-            });
-            setApplications(filteredApps);
-            setCaseworkerName(selectedCaseworker);
-        }
-    };
+  const resetFilters = () => {
+    setCaseworkerName("All")
+    setAdoptionStatus("All")
+    setSponsorshipStatus("All")
+    setSortColumn(null)
+    setSortOrder(null)
+    setApplications(originalApplications)
+  }
 
-    const handleAdoptionStatusFilter = (selectedStatus) => {
-        if (selectedStatus === "All") {
-            resetFilters();
-        } else {
-            setSortColumn(null);
-            setSortOrder(null);
+  const handleCaseworkerFilter = (selectedCaseworker) => {
+    if (selectedCaseworker === "All") {
+      resetFilters()
+    } else {
+      setSortColumn(null)
+      setSortOrder(null)
+
+      const filteredApps = originalApplications.filter((application) => {
+        const dog = findDogById(application.petPreferences.dogId)
+        return (
+          dog &&
+          dog.caseworker
+            .toLowerCase()
+            .includes(selectedCaseworker.toLowerCase())
+        )
+      })
+      setApplications(filteredApps)
+      setCaseworkerName(selectedCaseworker)
+    }
+  }
+
+  const handleAdoptionStatusFilter = (selectedStatus) => {
+    if (selectedStatus === "All") {
+      resetFilters()
+    } else {
+      setSortColumn(null)
+      setSortOrder(null)
 
             const filteredApps = originalApplications.filter((application) => {
                 const dog = findDogById(application.petPreferences.dogId);
@@ -204,29 +197,27 @@ const ApplicationsTable = () => {
         }
     };
 
-    const handleSponsorshipStatusFilter = (selectedStatus) => {
-        if (selectedStatus === "All") {
-            resetFilters();
-        } else {
-            setSortColumn(null);
-            setSortOrder(null);
+  const handleSponsorshipStatusFilter = (selectedStatus) => {
+    if (selectedStatus === "All") {
+      resetFilters()
+    } else {
+      setSortColumn(null)
+      setSortOrder(null)
 
-            const filteredApps = originalApplications.filter((application) => {
-                const dog = findDogById(application.petPreferences.dogId);
-                return (
-                    dog && dog.sponsorshipStatus === (selectedStatus === "Yes")
-                );
-            });
-            setApplications(filteredApps);
-            setSponsorshipStatus(selectedStatus);
-        }
-    };
+      const filteredApps = originalApplications.filter((application) => {
+        const dog = findDogById(application.petPreferences.dogId)
+        return dog && dog.sponsorshipStatus === (selectedStatus === "Yes")
+      })
+      setApplications(filteredApps)
+      setSponsorshipStatus(selectedStatus)
+    }
+  }
 
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null)
 
-    const handleMenuClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -806,8 +797,11 @@ const ApplicationsTable = () => {
                     </div>
                 </div>
             )}
+          </div>
         </div>
-    );
-};
+      )}
+    </div>
+  )
+}
 
-export default ApplicationsTable;
+export default ApplicationsTable

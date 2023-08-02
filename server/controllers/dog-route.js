@@ -26,47 +26,6 @@ const upload = multer({
     },
 }) 
 
-//POST a new dog 
-// router.post("/create", upload.single('image'), async (req,res) => {
-//     try{
-//         const imageBuffer = req.file.buffer.toString("base64")
-//         const {name, age, bio, gender, weight, energyLevel, goodwDog, goodwCat, goodwKid, crateTrained, houseTrained, objAggression, objAggressionDesc, specialNeeds, specialNeedsDesc, medication, caseworker, adoptionStatus, sponsorshipStatus, intakeType, intakeDate, adoptionFee} = req.body
-
-
-//         const s3Params = {
-//             Bucket: process.env.S3_BUCKET_NAME,
-//             Key: `${Date.now()} ${req.file.originalname}`,
-//             Body: Buffer.from(imageBuffer, "base64"),
-//             acl: 'public-read',
-//             ContentType: req.file.mimetype,
-//         }
-
-//         const data = await s3.upload(s3Params).promise()
-
-//         const newDog = new Dog({
-//             image: data.Location,
-//             name, age, bio, gender, weight, energyLevel,
-//             goodwDog, goodwCat, goodwKid, crateTrained, houseTrained,
-//             objAggression, objAggressionDesc,
-//             specialNeeds, specialNeedsDesc, medication,
-//             caseworker, adoptionStatus, sponsorshipStatus, 
-//             intakeType, intakeDate, adoptionFee
-//         })
-//         await newDog.save()
-
-//         res.status(201).json({
-//             message: `New Dog Added`,
-//             newDog
-//         })
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).json({
-//             message: `${err}`
-//         })
-//     }
-// })
-
-
 router.post("/create", upload.fields([
     {name: 'image', maxCount: 1},
     {name: 'multipleImages', maxCount: 5},
