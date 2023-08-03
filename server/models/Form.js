@@ -76,6 +76,10 @@ const ApplicationFormSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    sentApprovedEmail: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 module.exports = mongoose.model("applicationForm", ApplicationFormSchema);

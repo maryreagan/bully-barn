@@ -361,9 +361,23 @@ import { adminCheck } from "../../helpers/adminCheck"
     const formID = application._id
     const applicantName = selectedApplication.personalInformation.fullName
     const applicantEmail = selectedApplication.personalInformation.email
-    const paymentLink = "http://localhost:5173/"
-    const url = "http://127.0.0.1:4000/form/sendApprovedEmail"
+    const url1 = "http://127.0.0.1:4000/payment/create-checkout-session"
+    const url2 = "http://127.0.0.1:4000/form/sendApprovedEmail"
     const token = localStorage.getItem("token")
+
+    const response1 = await fetch(url1, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        dogId: dogID,
+        isSponsorship: false,
+      }),
+    })
+
+    const data1 = await response1.json()
+    const paymentLink = data1.url
 
     if (
         selectedApplication &&
@@ -372,7 +386,7 @@ import { adminCheck } from "../../helpers/adminCheck"
         applicantName &&
         paymentLink
     ) {
-        const response = await fetch(url, {
+      const response2 = await fetch(url2, {
         method: "POST",
         headers: new Headers({
             "Content-Type": "application/json",
@@ -385,16 +399,16 @@ import { adminCheck } from "../../helpers/adminCheck"
             paymentLink,
             formID,
         }),
-        })
-        const data = await response.json()
-        console.log(data)
+      })
+      const data2 = await response2.json()
+      console.log(data2)
 
         setApplications((prevApplications) =>
         prevApplications.map((app) =>
-            app._id === data.updatedForm._id ? data.updatedForm : app
+          app._id === selectedApplication._id ? data2.updatedForm : app
         )
-        )
-        setSelectedApplication(data.updatedForm)
+      )
+      setSelectedApplication(data2.updatedForm)
     } else {
         console.log("Information not found.")
     }
@@ -424,9 +438,9 @@ import { adminCheck } from "../../helpers/adminCheck"
 
     return (
     <div>
-        <DrawerNav />
-        <h2 id='applications-list'>Applications List</h2>
-        <IconButton onClick={handleMenuClick}>
+      <DrawerNav />
+      <h2 id="applications-list">Applications List</h2>
+      <IconButton onClick={handleMenuClick}>
         <FilterListIcon />
         </IconButton>
         <Menu
@@ -548,8 +562,8 @@ import { adminCheck } from "../../helpers/adminCheck"
             </Select>
             </div>
         </MenuItem>
-        </Menu>
-        <table id='main-table'>
+      </Menu>
+      <table id="main-table">
         <thead>
             <tr>
             <th
@@ -613,132 +627,132 @@ import { adminCheck } from "../../helpers/adminCheck"
     </tbody>
     </table>
 
-    {selectedApplication && (
-    <div>
-        <h2 className="selected-application-text">
-        Selected Application Details
-        </h2>
-        <div className="selected-application-details">
-        <div className="details-column">
-            <table id='sub-table-1'>
-            <tbody>
-                <tr>
-                <td>Full Name:</td>
-                <td>{selectedApplication.personalInformation.fullName}</td>
-                </tr>
-                <tr>
-                <td>Address:</td>
-                <td>
-                    {selectedApplication.personalInformation.fullAddress}
-                </td>
-                </tr>
-                <tr>
-                <td>Age:</td>
-                <td>{selectedApplication.personalInformation.age}</td>
-                </tr>
-                <tr>
-                <td>Phone Number:</td>
-                <td>
-                    {selectedApplication.personalInformation.phoneNumber}
-                </td>
-                </tr>
-                <tr>
-                <td>Email:</td>
-                <td>{selectedApplication.personalInformation.email}</td>
-                </tr>
-                <tr>
-                <td>Distance willing to travel:</td>
-                <td>
-                    {
-                    selectedApplication.petPreferences
-                        .distanceWillingToTravel
-                    }
-                </td>
-                </tr>
-                <tr>
-                <td>Current Employment Status:</td>
-                <td>
-                    {
-                    selectedApplication.employmentInformation
-                        .currentEmploymentStatus
-                    }
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
-        <div className="details-column">
-            <table id='sub-table-2'>
-            <tbody>
-                <tr>
-                <td>Employer Name:</td>
-                <td>
-                    {selectedApplication.employmentInformation.employerName}
-                </td>
-                </tr>
-                <tr>
-                <td>Job Title:</td>
-                <td>
-                    {selectedApplication.employmentInformation.jobTitle}
-                </td>
-                </tr>
-                <tr>
-                <td>Monthly Income:</td>
-                <td>
-                    {selectedApplication.employmentInformation.monthlyIncome}
-                </td>
-                </tr>
-                <tr>
-                <td>Home Condition:</td>
-                <td>{selectedApplication.homeInformation.homeCondition}</td>
-                </tr>
-                <tr>
-                <td>Type of Home:</td>
-                <td>{selectedApplication.homeInformation.typeOfHome}</td>
-                </tr>
-                <tr>
-                <td>Landlord Contact:</td>
-                <td>
-                    {selectedApplication.homeInformation.landlordContact}
-                </td>
-                </tr>
-                <tr>
-                <td>Monthly Rent/Mortgage:</td>
-                <td>
-                    {
-                    selectedApplication.homeInformation
-                        .monthlyRentOrMortgage
-                    }
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
-        </div>
-        {/* Buttons */}
-        <div className="buttons-container">
-        {/* Approve Button */}
-        {selectedApplication.sentApprovedEmail ? null : (
-            <>
-            {selectedApplication.approvalStatus ? (
-                <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleApprove(selectedApplication._id)}
-                >
-                Unapprove
-                </Button>
-            ) : (
-                <Button
-                variant="contained"
-                color="success"
-                onClick={() => handleApprove(selectedApplication._id)}
-                >
-                Approve
-                </Button>
+      {selectedApplication && (
+        <div>
+          <h2 className="selected-application-text">
+            Selected Application Details
+          </h2>
+          <div className="selected-application-details">
+            <div className="details-column">
+              <table id="sub-table-1">
+                <tbody>
+                  <tr>
+                    <td>Full Name:</td>
+                    <td>{selectedApplication.personalInformation.fullName}</td>
+                  </tr>
+                  <tr>
+                    <td>Address:</td>
+                    <td>
+                      {selectedApplication.personalInformation.fullAddress}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Age:</td>
+                    <td>{selectedApplication.personalInformation.age}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number:</td>
+                    <td>
+                      {selectedApplication.personalInformation.phoneNumber}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Email:</td>
+                    <td>{selectedApplication.personalInformation.email}</td>
+                  </tr>
+                  <tr>
+                    <td>Distance willing to travel:</td>
+                    <td>
+                      {
+                        selectedApplication.petPreferences
+                          .distanceWillingToTravel
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Current Employment Status:</td>
+                    <td>
+                      {
+                        selectedApplication.employmentInformation
+                          .currentEmploymentStatus
+                      }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="details-column">
+              <table id="sub-table-2">
+                <tbody>
+                  <tr>
+                    <td>Employer Name:</td>
+                    <td>
+                      {selectedApplication.employmentInformation.employerName}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Job Title:</td>
+                    <td>
+                      {selectedApplication.employmentInformation.jobTitle}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Monthly Income:</td>
+                    <td>
+                      {selectedApplication.employmentInformation.monthlyIncome}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Home Condition:</td>
+                    <td>{selectedApplication.homeInformation.homeCondition}</td>
+                  </tr>
+                  <tr>
+                    <td>Type of Home:</td>
+                    <td>{selectedApplication.homeInformation.typeOfHome}</td>
+                  </tr>
+                  <tr>
+                    <td>Landlord Contact:</td>
+                    <td>
+                      {selectedApplication.homeInformation.landlordContact}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Monthly Rent/Mortgage:</td>
+                    <td>
+                      {
+                        selectedApplication.homeInformation
+                          .monthlyRentOrMortgage
+                      }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {/* Buttons */}
+          <div className="buttons-container">
+            {/* Approve Button */}
+            {selectedApplication.sentApprovedEmail ? null : (
+              <>
+                {selectedApplication.approvalStatus ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleApprove(selectedApplication._id)}
+                  >
+                    Unapprove
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => handleApprove(selectedApplication._id)}
+                  >
+                    Approve
+                  </Button>
+                )}
+              </>
             )}
-            </>
-        )}
 
         {/* Archive Button */}
         {!selectedApplication.approvalStatus &&

@@ -10,11 +10,15 @@ const Dog = require("../models/Dog");
 // this endpoint will generate a unique session for the transaction
 router.post('/create-checkout-session', async (req, res) => {
     try {
-        console.log('create-checkout-session', req.body)
-        const { fee } = req.body; // Get the selected fee from the request body
-        const feeInCents = fee * 100; // Convert the fee to cents for Stripe
-
         const { dogId, isSponsorship } = req.body;
+        const foundDog = await Dog.findOne({ _id: dogId })
+
+        if (!foundDog) {
+            return res.status(404).json({ message: "Dog not found" });
+        }
+
+        const fee = foundDog.adoptionFee
+        const feeInCents = fee * 100; // Convert the fee to cents for Stripe
 
         // Create the checkout session with the selected fee
         const session = await stripe.checkout.sessions.create({
