@@ -386,6 +386,7 @@ import { adminCheck } from "../../helpers/adminCheck"
         applicantName &&
         paymentLink
     ) {
+
       const response2 = await fetch(url2, {
         method: "POST",
         headers: new Headers({
@@ -399,16 +400,17 @@ import { adminCheck } from "../../helpers/adminCheck"
             paymentLink,
             formID,
         }),
-      })
+
       const data2 = await response2.json()
       console.log(data2)
 
-        setApplications((prevApplications) =>
-        prevApplications.map((app) =>
-          app._id === selectedApplication._id ? data2.updatedForm : app
-        )
-      )
-      setSelectedApplication(data2.updatedForm)
+      setApplications((prevApplications) =>
+    prevApplications.map((app) =>
+      app._id === selectedApplication._id ? data2.updatedForm : app
+    )
+  );
+  setSelectedApplication(data2.updatedForm);
+
     } else {
         console.log("Information not found.")
     }
