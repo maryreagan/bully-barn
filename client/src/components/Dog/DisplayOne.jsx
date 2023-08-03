@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import DeleteDog from './DeleteDog';
 import EditDog from './EditDog';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -30,6 +30,7 @@ function DisplayOne() {
     const token = localStorage.getItem('token')
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [isSponsorship, setIsSponsorship] = useState(false)
+    const formWrapperRef = useRef(null)
 
     const handleBackToAllDogs = () => {
         selectedDog.adoptionStatus === 'adopted'
@@ -89,6 +90,18 @@ function DisplayOne() {
     const renderGenderIcon = (gender) => {
         return gender === "Female" ? <FemaleIcon /> : <MaleIcon />;
     };
+
+    const handleApplyHere = () => {
+        setShowForm(true) // show form when Apply Here button is clicked
+        console.log('show form' , showForm)
+    }
+
+    useEffect(() => {
+        console.log("formWrapperRef.current:", formWrapperRef.current)
+        if(formWrapperRef.current){
+            formWrapperRef.current.scrollIntoView({behavior:'smooth'})
+        }
+    }, [showForm])
 
     const renderSponsorButton = () => {
         if (!selectedDog.isFeePaid && !selectedDog.sponsorshipStatus) {
@@ -230,10 +243,8 @@ function DisplayOne() {
                                         startIcon={<FeedIcon />}
                                         style={{backgroundColor:'rgb(62,132,116)', width: '75%'}}
                                         onClick={()=> {
-                                            handleApplyHere()
-                                            handleScroll()
-                                        }
-                                        }
+                                            handleApplyHere();
+                                        }}
                                         >Apply Here</Button>
                                     }
                                 </Paper>
@@ -250,18 +261,6 @@ function DisplayOne() {
     };
 
 
-    const handleApplyHere = () => {
-        setShowForm(true) // show form when Apply Here button is clicked
-    }
-
-    const handleScroll = () => {
-        window.scrollTo({
-            top: 2000,
-            behavior: 'smooth',
-        })
-    }
-
-
     const handlePreviousImage = () => {
         setCurrentImageIndex((prevIndex) => prevIndex - 1);
     };
@@ -270,12 +269,20 @@ function DisplayOne() {
         setCurrentImageIndex((prevIndex) => prevIndex + 1);
     };
 
+    useEffect(() => {
+        console.log('showform', showForm)
+    })
+
     return (
         <>
             <div className='display-form-container'>
                 <div className="top-bar"></div>
                 {renderDogDetails()}
-            {showForm && <Form selectedDog={selectedDog} showForm={showForm} setShowForm={setShowForm} />}
+            {showForm && (
+                <div ref={formWrapperRef}>
+                    <Form selectedDog={selectedDog} showForm={showForm} setShowForm={setShowForm} />
+                </div>
+            )}
             </div>
         </>
     );

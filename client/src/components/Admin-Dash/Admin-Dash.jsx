@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-    InputLabel,
-    Select,
-} from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { useNavigate } from "react-router-dom";
-import "./Admin-Dash.css";
-import DrawerNav from "./DrawerNav";
-import { adminCheck } from "../../helpers/adminCheck";
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  InputLabel,
+  Select,
+} from "@mui/material"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import { useNavigate } from "react-router-dom"
+import "./Admin-Dash.css"
+import DrawerNav from "./DrawerNav"
+import { adminCheck } from "../../helpers/adminCheck"
 
 const ApplicationsTable = () => {
     const navigate = useNavigate();
@@ -27,167 +27,169 @@ const ApplicationsTable = () => {
     const [sponsorshipStatus, setSponsorshipStatus] = useState("All");
     const [caseworkerList, setCaseworkerList] = useState([]);
     const [originalApplications, setOriginalApplications] = useState([]);
+    const [showArchived, setShowArchived] = useState(false);
+    const [approvalFilter, setApprovalFilter] = useState(null);
+    const [feePaidFilter, setFeePaidFilter] = useState(null);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
-        fetch("http://localhost:4000/form/applications", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setApplications(data.applications);
-                setOriginalApplications(data.applications);
-            })
-            .catch((error) => {
-                console.error(error);
+        const fetchApplications = async () => {
+            const response = await fetch("http://localhost:4000/form/applications", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
             });
-
-        fetch("http://localhost:4000/dog")
-            .then((response) => response.json())
-            .then((data) => {
-                setDogs(data);
-                const uniqueCaseworkers = [
-                    ...new Set(data.map((dog) => dog.caseworker)),
-                ];
-                setCaseworkerList(uniqueCaseworkers);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
-    const findDogById = (dogId) => {
-        return dogs.find((dog) => dog._id === dogId);
-    };
-
-    const sortApplicationsByColumn = (column) => {
-        const sorted = [...applications].sort((a, b) => {
-            if (column === "name") {
-                const valueA = a.personalInformation.fullName.toLowerCase();
-                const valueB = b.personalInformation.fullName.toLowerCase();
-                return sortOrder === "asc"
-                    ? valueA.localeCompare(valueB)
-                    : valueB.localeCompare(valueA);
-            } else {
-                const dogA = findDogById(a.petPreferences.dogId);
-                const dogB = findDogById(b.petPreferences.dogId);
-
-                if (!dogA || !dogB) return 0;
-
-                let valueA, valueB;
-                if (column === "caseWorker") {
-                    valueA = dogA.caseworker.toLowerCase();
-                    valueB = dogB.caseworker.toLowerCase();
-                } else if (column === "adoptionStatus") {
-                    valueA = dogA.adoptionStatus.toLowerCase();
-                    valueB = dogB.adoptionStatus.toLowerCase();
-                } else if (column === "sponsorshipStatus") {
-                    valueA = dogA.sponsorshipStatus ? "yes" : "no";
-                    valueB = dogB.sponsorshipStatus ? "yes" : "no";
-                } else if (column === "dogName") {
-                    valueA = getDogNameById(
-                        a.petPreferences.dogId
-                    ).toLowerCase();
-                    valueB = getDogNameById(
-                        b.petPreferences.dogId
-                    ).toLowerCase();
-                }
-
-                return sortOrder === "asc"
-                    ? valueA.localeCompare(valueB)
-                    : valueB.localeCompare(valueA);
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
             }
-        });
+            const data = await response.json();
 
-        if (sortColumn === column) {
-            if (column === "adoptionStatus") {
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            } else if (column === "sponsorshipStatus") {
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            } else {
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            }
-        } else {
-            setSortColumn(column);
-            setSortOrder("asc");
-        }
-
-        setApplications(sorted);
-    };
-
-    const getDogNameById = (dogId) => {
-        const dog = dogs.find((dog) => dog._id === dogId);
-        return dog ? dog.name : "No information available";
-    };
-
-    const getSortArrow = (column) => {
-        if (sortColumn === column) {
-            return sortOrder === "asc" ? (
-                <span>&uarr;</span>
-            ) : (
-                <span>&darr;</span>
-            );
-        } else {
-            return null;
-        }
-    };
-
-    const handleApplicationClick = (application) => {
-        setSelectedApplication(application);
-        console.log("Selected Dog ID:", application.petPreferences.dogId);
-    };
-
-    const resetFilters = () => {
-        setCaseworkerName("All");
-        setAdoptionStatus("All");
-        setSponsorshipStatus("All");
-        setSortColumn(null);
-        setSortOrder(null);
-        setApplications(originalApplications);
-    };
-
-    const handleCaseworkerFilter = (selectedCaseworker) => {
-        if (selectedCaseworker === "All") {
-            resetFilters();
-        } else {
-            setSortColumn(null);
-            setSortOrder(null);
-
-            const filteredApps = originalApplications.filter((application) => {
+            const filteredApplications = data.applications.filter((application) => {
+                const matchesShowArchived = showArchived === null || application.archiveStatus === showArchived;
+                const matchesApprovalStatus = approvalFilter === null || application.approvalStatus === approvalFilter;
                 const dog = findDogById(application.petPreferences.dogId);
-                return (
-                    dog &&
-                    dog.caseworker
-                        .toLowerCase()
-                        .includes(selectedCaseworker.toLowerCase())
-                );
+                const matchesFeePaid = feePaidFilter === null || (dog && dog.isFeePaid === feePaidFilter);
+                return matchesShowArchived && matchesApprovalStatus && matchesFeePaid;
             });
-            setApplications(filteredApps);
-            setCaseworkerName(selectedCaseworker);
-        }
-    };
 
-    const handleAdoptionStatusFilter = (selectedStatus) => {
-        if (selectedStatus === "All") {
-            resetFilters();
-        } else {
-            setSortColumn(null);
-            setSortOrder(null);
+            setApplications(filteredApplications);
+            setOriginalApplications(data.applications);
+        };
+
+        const fetchDogs = async () => {
+            const response = await fetch("http://localhost:4000/dog");
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            setDogs(data);
+            const uniqueCaseworkers = [...new Set(data.map((dog) => dog.caseworker))];
+            setCaseworkerList(uniqueCaseworkers);
+        };
+
+        fetchApplications();
+        fetchDogs();
+    }, [token, showArchived, approvalFilter, selectedApplication, feePaidFilter]);
+
+
+  const findDogById = (dogId) => {
+    return dogs.find((dog) => dog._id === dogId)
+  }
+
+  const sortApplicationsByColumn = (column) => {
+    const sorted = [...applications].sort((a, b) => {
+      if (column === "name") {
+        const valueA = a.personalInformation.fullName.toLowerCase()
+        const valueB = b.personalInformation.fullName.toLowerCase()
+        return sortOrder === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA)
+      } else {
+        const dogA = findDogById(a.petPreferences.dogId)
+        const dogB = findDogById(b.petPreferences.dogId)
+
+        if (!dogA || !dogB) return 0
+
+        let valueA, valueB
+        if (column === "caseWorker") {
+          valueA = dogA.caseworker.toLowerCase()
+          valueB = dogB.caseworker.toLowerCase()
+        } else if (column === "adoptionStatus") {
+          valueA = dogA.adoptionStatus.toLowerCase()
+          valueB = dogB.adoptionStatus.toLowerCase()
+        } else if (column === "sponsorshipStatus") {
+          valueA = dogA.sponsorshipStatus ? "yes" : "no"
+          valueB = dogB.sponsorshipStatus ? "yes" : "no"
+        } else if (column === "dogName") {
+          valueA = getDogNameById(a.petPreferences.dogId).toLowerCase()
+          valueB = getDogNameById(b.petPreferences.dogId).toLowerCase()
+        }
+
+        return sortOrder === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA)
+      }
+    })
+
+    if (sortColumn === column) {
+      if (column === "adoptionStatus") {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+      } else if (column === "sponsorshipStatus") {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+      } else {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+      }
+    } else {
+      setSortColumn(column)
+      setSortOrder("asc")
+    }
+
+    setApplications(sorted)
+  }
+
+  const getDogNameById = (dogId) => {
+    const dog = dogs.find((dog) => dog._id === dogId)
+    return dog ? dog.name : "No information available"
+  }
+
+  const getSortArrow = (column) => {
+    if (sortColumn === column) {
+      return sortOrder === "asc" ? <span>&uarr;</span> : <span>&darr;</span>
+    } else {
+      return null
+    }
+  }
+
+  const handleApplicationClick = (application) => {
+    setSelectedApplication(application)
+    console.log("Selected Dog ID:", application.petPreferences.dogId)
+    console.log("APPLICATION CLICK", selectedApplication)
+  }
+
+  const resetFilters = () => {
+    setCaseworkerName("All")
+    setAdoptionStatus("All")
+    setSponsorshipStatus("All")
+    setSortColumn(null)
+    setSortOrder(null)
+    setApplications(originalApplications)
+  }
+
+  const handleCaseworkerFilter = (selectedCaseworker) => {
+    if (selectedCaseworker === "All") {
+      resetFilters()
+    } else {
+      setSortColumn(null)
+      setSortOrder(null)
+
+      const filteredApps = originalApplications.filter((application) => {
+        const dog = findDogById(application.petPreferences.dogId)
+        return (
+          dog &&
+          dog.caseworker
+            .toLowerCase()
+            .includes(selectedCaseworker.toLowerCase())
+        )
+      })
+      setApplications(filteredApps)
+      setCaseworkerName(selectedCaseworker)
+    }
+  }
+
+  const handleAdoptionStatusFilter = (selectedStatus) => {
+    if (selectedStatus === "All") {
+      resetFilters()
+    } else {
+      setSortColumn(null)
+      setSortOrder(null)
 
             const filteredApps = originalApplications.filter((application) => {
                 const dog = findDogById(application.petPreferences.dogId);
                 return (
                     dog &&
                     dog.adoptionStatus.toLowerCase() ===
-                        selectedStatus.toLowerCase()
+                    selectedStatus.toLowerCase()
                 );
             });
             setApplications(filteredApps);
@@ -195,29 +197,27 @@ const ApplicationsTable = () => {
         }
     };
 
-    const handleSponsorshipStatusFilter = (selectedStatus) => {
-        if (selectedStatus === "All") {
-            resetFilters();
-        } else {
-            setSortColumn(null);
-            setSortOrder(null);
+  const handleSponsorshipStatusFilter = (selectedStatus) => {
+    if (selectedStatus === "All") {
+      resetFilters()
+    } else {
+      setSortColumn(null)
+      setSortOrder(null)
 
-            const filteredApps = originalApplications.filter((application) => {
-                const dog = findDogById(application.petPreferences.dogId);
-                return (
-                    dog && dog.sponsorshipStatus === (selectedStatus === "Yes")
-                );
-            });
-            setApplications(filteredApps);
-            setSponsorshipStatus(selectedStatus);
-        }
-    };
+      const filteredApps = originalApplications.filter((application) => {
+        const dog = findDogById(application.petPreferences.dogId)
+        return dog && dog.sponsorshipStatus === (selectedStatus === "Yes")
+      })
+      setApplications(filteredApps)
+      setSponsorshipStatus(selectedStatus)
+    }
+  }
 
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null)
 
-    const handleMenuClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -318,7 +318,8 @@ const ApplicationsTable = () => {
                                 : app
                         )
                     );
-                    setSelectedApplication(data.updatedForm);
+                    // Deselect the application after archiving/unarchiving
+                    setSelectedApplication(null);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -347,11 +348,39 @@ const ApplicationsTable = () => {
                                 : app
                         )
                     );
-                    setSelectedApplication(data.updatedForm);
+                    // Deselect the application after archiving/unarchiving
+                    setSelectedApplication(null);
                 })
                 .catch((error) => {
                     console.error(error);
                 });
+        }
+    };
+
+    const handleShowArchivedChange = (event) => {
+        const value = event.target.value === "archived";
+        setShowArchived(value);
+    };
+
+    const handleApprovalStatusChange = (event) => {
+        const value = event.target.value;
+        if (value === "approved") {
+            setApprovalFilter(true);
+        } else if (value === "nonApproved") {
+            setApprovalFilter(false);
+        } else {
+            setApprovalFilter(null);
+        }
+    };
+
+    const handleFeePaidChange = (event) => {
+        const value = event.target.value;
+        if (value === "paid") {
+            setFeePaidFilter(true);
+        } else if (value === "notPaid") {
+            setFeePaidFilter(false);
+        } else {
+            setFeePaidFilter(null);
         }
     };
 
@@ -426,6 +455,50 @@ const ApplicationsTable = () => {
                             <MenuItem value="All">All</MenuItem>
                             <MenuItem value="Yes">Yes</MenuItem>
                             <MenuItem value="No">No</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="showArchived">Show Archived:</InputLabel>
+                        <Select
+                            id="showArchived"
+                            value={showArchived ? "archived" : "nonArchived"}
+                            onChange={handleShowArchivedChange}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="nonArchived">Non-Archived</MenuItem>
+                            <MenuItem value="archived">Archived</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="approvalStatus">Approval Status:</InputLabel>
+                        <Select
+                            id="approvalStatus"
+                            value={approvalFilter === true ? "approved" : approvalFilter === false ? "nonApproved" : "all"}
+                            onChange={handleApprovalStatusChange}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="all">All</MenuItem>
+                            <MenuItem value="approved">Approved</MenuItem>
+                            <MenuItem value="nonApproved">Non-Approved</MenuItem>
+                        </Select>
+                    </div>
+                </MenuItem>
+                <MenuItem>
+                    <div className="filter-option-container">
+                        <InputLabel htmlFor="feePaid">Fee Paid:</InputLabel>
+                        <Select
+                            id="feePaid"
+                            value={feePaidFilter === true ? "paid" : feePaidFilter === false ? "notPaid" : "all"}
+                            onChange={handleFeePaidChange}
+                            style={{ minWidth: "200px" }}
+                        >
+                            <MenuItem value="all">All</MenuItem>
+                            <MenuItem value="paid">Paid</MenuItem>
+                            <MenuItem value="notPaid">Not Paid</MenuItem>
                         </Select>
                     </div>
                 </MenuItem>
@@ -680,55 +753,55 @@ const ApplicationsTable = () => {
                     {/* Buttons */}
                     <div className="buttons-container">
                         {/* Approve Button */}
-                        {selectedApplication.approvalStatus ? (
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() =>
-                                    handleApprove(selectedApplication._id)
-                                }
-                            >
-                                Unapprove
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                color="success"
-                                onClick={() =>
-                                    handleApprove(selectedApplication._id)
-                                }
-                            >
-                                Approve
-                            </Button>
+                        {!selectedApplication.archiveStatus && (
+                            selectedApplication.approvalStatus ? (
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleApprove(selectedApplication._id)}
+                                >
+                                    Unapprove
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={() => handleApprove(selectedApplication._id)}
+                                >
+                                    Approve
+                                </Button>
+                            )
                         )}
 
                         {/* Archive Button */}
-                        {selectedApplication.archiveStatus ? (
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() =>
-                                    handleArchive(selectedApplication._id)
-                                }
-                            >
-                                Unarchive
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                color="success"
-                                onClick={() =>
-                                    handleArchive(selectedApplication._id)
-                                }
-                            >
-                                Archive
-                            </Button>
+                        {!selectedApplication.approvalStatus && (
+                            selectedApplication.archiveStatus ? (
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleArchive(selectedApplication._id)}
+                                >
+                                    Unarchive
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={() => handleArchive(selectedApplication._id)}
+                                >
+                                    Archive
+                                </Button>
+                            )
                         )}
+
                     </div>
                 </div>
             )}
+          </div>
         </div>
-    );
-};
+      )}
+    </div>
+  )
+}
 
-export default ApplicationsTable;
+export default ApplicationsTable

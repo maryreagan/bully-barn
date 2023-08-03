@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './AddDog.css'
 import {TextField, MenuItem, InputAdornment, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button} from '@mui/material'
 import DrawerNav from '../Admin-Dash/DrawerNav'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
 function AddDog() {
@@ -63,6 +64,22 @@ function AddDog() {
         }
     };
 
+    const handleRemoveImage = () => {
+        setDogData({
+            ...dogData,
+            image: null,
+        });
+        document.getElementById('image-input').value = '';
+    }
+
+    const handleRemoveImages = () => {
+        setDogData({
+            ...dogData,
+            multipleImages: null,
+        });
+        document.getElementById('multiple-images-input').value = '';
+    }
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -109,7 +126,8 @@ function AddDog() {
                 alert("Error Occured. Dog not added to database")
             } else {
                 alert('Dog Added Successfully')}
-
+                document.getElementById('image-input').value = '';
+                document.getElementById('multiple-images-input').value = '';
                 setDogData({
                     name: '',
                     age: '',
@@ -134,8 +152,13 @@ function AddDog() {
                     intakeDate: '',
                     adoptionFee: '',
                     image: null,
+                    multipleImages: null,
                 });
-                
+            window.scrollTo({
+                top:0,
+                behavior: 'smooth'
+            })
+            
         } catch (err) {
             console.log(err)
         }
@@ -539,7 +562,17 @@ function AddDog() {
                 name="image"
                 helperText='Image Upload'
                 onChange={handleImageChange}
+                InputProps={{ endAdornment: dogData.image && ( 
+                <InputAdornment position="end">
+                    <div>
+                        {/* <img src={URL.createObjectURL(dogData.image)} alt="Uploaded Dog" /> */}
+                        <HighlightOffIcon onClick={handleRemoveImage} style={{cursor: 'pointer'}}>Remove Image</HighlightOffIcon>
+                    </div>
+                </InputAdornment>
+                )}}
             />
+
+
 
             <TextField
                 className='form-input'
@@ -549,7 +582,15 @@ function AddDog() {
                 helperText='Upload Multiple Images'
                 onChange={handleImageChange}
                 multiple 
-                inputProps={{ accept: 'image/*', multiple: true }} // Add accept and multiple props
+                inputProps={{ accept: 'image/*', multiple: true }}
+                InputProps={{endAdornment: dogData.multipleImages && ( 
+                        <InputAdornment position="end">
+                            <div>
+                                {/* <img src={URL.createObjectURL(dogData.image)} alt="Uploaded Dog" /> */}
+                                <HighlightOffIcon onClick={handleRemoveImages} style={{cursor: 'pointer'}}>Remove Image</HighlightOffIcon>
+                            </div>
+                        </InputAdornment> )
+                        }} 
             />
 
         <Button 

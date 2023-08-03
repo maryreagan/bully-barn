@@ -40,8 +40,7 @@ function AdoptedDogs() {
   const displayAdopted = () => {
     return (
       adoptedDogs && adoptedDogs.map((dog) => (
-        <div className='dog-container' key={dog._id} >
-        <div className='dog-card adopted-card' onClick={() => {getOneDog(dog)}}>
+        <div className='dog-card adopted-card' key={dog._id} onClick={() => {getOneDog(dog)}}>
         <div className='head-adopted-card'>ADOPTED</div>
         <div className='img-container'>
           <img src={dog.image} alt={dog.name} />
@@ -54,7 +53,6 @@ function AdoptedDogs() {
           </p>
         </div>
       </div>
-      </div>
       ))
     );
   }
@@ -63,7 +61,9 @@ function AdoptedDogs() {
     <>
     <DrawerNav />
     <h1 className='adopted-header'>Adopted Dogs</h1>
+    <div className='dog-container' >
     {displayAdopted()}
+    </div>
     </>
   )
 }
