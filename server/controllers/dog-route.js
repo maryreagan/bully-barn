@@ -30,10 +30,9 @@ router.post("/create", upload.fields([
     {name: 'image', maxCount: 1},
     {name: 'multipleImages', maxCount: 5},
     ]), async (req,res) => {
-    try{
-        console.log(req.files)
+    
+        try{
         const imageFile = req.files['image'][0]
-        console.log('imageFile', imageFile)
         const imageBuffer = imageFile.buffer.toString("base64")
 
         const multipleImages = req.files['multipleImages']
@@ -52,8 +51,6 @@ router.post("/create", upload.fields([
         }
         dataSingle = await s3.upload(s3ParamsSingle).promise()
         }
-
-        console.log('dataSingle', dataSingle)
 
         if(multipleImages && multipleImages.length>0){
             for (const file of multipleImages){
