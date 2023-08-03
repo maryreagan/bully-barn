@@ -129,10 +129,10 @@ function DisplayOne() {
                             style={{
                                 boxShadow:
                                     selectedDog.sponsorshipStatus === true
-                                        ? '0 0 10px 5px rgba(52, 213, 213, 0.774)' // Sponsored
+                                        ? '0 0 10px 5px rgba(52, 213, 213, 0.774)' 
                                         : selectedDog.adoptionStatus === 'pending'
-                                            ? '0 0 10px 5px rgba(0, 0, 187, 0.253)' //Pending   
-                                            : '0 0 10px 5px rgba(0, 0, 255, 0.41)', // Default blue glow for available
+                                            ? '0 0 10px 5px rgba(0, 0, 187, 0.253)'   
+                                            : '0 0 10px 5px rgba(0, 0, 255, 0.41)', 
                             }}>
                             
                             <div id='img-dog-container'>
@@ -206,7 +206,7 @@ function DisplayOne() {
                                 <div id="display-fee-amount">
                                     <h4>Adoption Fee: ${selectedDog.adoptionFee}</h4>
                                 </div>
-                                {selectedDog.isFeePaid && (
+                                {selectedDog.isFeePaid || selectedDog.sponsorshipStatus && (
                                     <p id='fee-status'>Adoption Fee Paid</p>
                                 )}
                             </div>
