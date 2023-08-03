@@ -793,15 +793,13 @@ const ApplicationsTable = () => {
                                 </Button>
                             )
                         )}
-
                     </div>
                 </div>
             )}
-          </div>
         </div>
-      )}
-    </div>
-  )
-}
+    )}
+
+
+
 
 export default ApplicationsTable
