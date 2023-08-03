@@ -58,7 +58,6 @@ function DisplayOne() {
     };
 
     const handleSponsorPayment = async (isSponsorship) => {
-        console.log('isSponsorship', isSponsorship)
         try {
             const payload = {
                 fee: selectedDog.adoptionFee,
@@ -70,7 +69,6 @@ function DisplayOne() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Content-Encoding': 'identity',
                 },
                 body: JSON.stringify(payload),
             });
@@ -219,7 +217,7 @@ function DisplayOne() {
                                 <div id="display-fee-amount">
                                     <h4>Adoption Fee: ${selectedDog.adoptionFee}</h4>
                                 </div>
-                                {selectedDog.isFeePaid || selectedDog.sponsorshipStatus && (
+                                {(selectedDog.isFeePaid || selectedDog.sponsorshipStatus) && (
                                     <p id='fee-status'>Adoption Fee Paid</p>
                                 )}
                             </div>
