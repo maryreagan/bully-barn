@@ -13,6 +13,8 @@ function SuccessPage() {
                 const queryParams = new URLSearchParams(location.search);
                 const dogId = queryParams.get('dogId');
                 const isSponsorship = queryParams.get('isSponsorship') === 'true';
+                console.log('successpage', isSponsorship)
+                console.log('queryparams', queryParams)
 
                 if (!dogId) {
                     console.error('Error: No dogId found in the URL.');
@@ -25,7 +27,7 @@ function SuccessPage() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ dogId: dogId }),
+                    body: JSON.stringify({ dogId: dogId, isSponsorship: isSponsorship }),
                 });
                 console.log(isSponsorship ? 'Sponsorship successful! Sponsorship status updated.' : 'Payment successful! Dog status updated.');
             } catch (error) {
