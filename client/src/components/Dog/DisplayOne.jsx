@@ -39,24 +39,6 @@ function DisplayOne() {
         setShowForm(false)
     };
 
-    const handleDonateClick = async () => {
-        try {
-            const payload = `{"fee": ${selectedDog.adoptionFee}, "dogId": "${selectedDog._id}"}`;
-            const response = await fetch('http://localhost:4000/payment/create-checkout-session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Content-Encoding': 'identity',
-                },
-                body: payload,
-            });
-            const session = await response.json();
-            window.location = session.url; // Redirect to the Stripe checkout page
-        } catch (error) {
-            console.error('Error initiating payment:', error);
-        }
-    };
-
     const handleSponsorPayment = async (isSponsorship) => {
         try {
             const payload = {
@@ -196,17 +178,16 @@ function DisplayOne() {
                                                 <h4>Energy Level <span className="span-style">{selectedDog.energyLevel}</span></h4>
                                                 <h4>Crate Trained <span className="span-style">{selectedDog.crateTrained ? 'yes' : 'No'}</span></h4>
                                                 <h4>House Trained <span className="span-style">{selectedDog.houseTrained ? 'yes' : 'No'}</span></h4>
-                                                <h4>Reactivity to Objects <span className="span-style">{selectedDog.objAggression ? 'yes' : 'No'}</span></h4>
+                                                <h4>Reactivity to Objects <span className="span-style">{selectedDog.objAggression ? selectedDog.objAggressionDesc : 'No'}</span></h4>
                                             </div>
                                         </div>
                                     </div>
                                     <hr />
                                     <h2>More info about me</h2>
                                     <div>
-                                        <h4>Special Needs<span className="span-style">{selectedDog.specialNeeds !== "" ? "-" : selectedDog.specialNeedsDesc}</span></h4>
+                                        <h4>Special Needs<span className="span-style">{selectedDog.specialNeeds ? selectedDog.specialNeedsDesc : "-"}</span></h4>
                                         <h4>Medication <span className="span-style">{selectedDog.medication !== "" ? "-" : selectedDog.medication}</span></h4>
                                         <h4>Intake Type <span className="span-style">{selectedDog.intakeType}</span></h4>
-                                        <h4>Intake Date <span className="span-style">{selectedDog.intakeDate}</span></h4>
                                     </div>
 
                                 </section>
@@ -224,7 +205,6 @@ function DisplayOne() {
                             <div id='payments'>
                                 {!selectedDog.isFeePaid && !selectedDog.sponsorshipStatus && (
                                     <>
-                                        <button onClick={handleDonateClick}>Adoption Fee</button>
                                         {renderSponsorButton()}
                                     </>
                                 )}
