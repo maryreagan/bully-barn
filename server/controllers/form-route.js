@@ -188,13 +188,14 @@ router.post("/sendApprovedEmail", roleValidation, async (req, res) => {
 
     await sendApprovedEmail(applicantEmail, applicantName, dogName, paymentLink)
     existingForm.sentApprovedEmail = true
+    existingForm.markModified("sentApprovedEmail")
 
-    const updatedForm = await existingForm.save();
+    const updatedForm = await existingForm.save()
 
-        res.status(200).json({
-            message: "Approved email sent successfully",
-            updatedForm
-        });
+    res.status(200).json({
+      message: "Approved email sent successfully",
+      updatedForm,
+    })
   } catch (error) {
     console.error("Error sending email:", error)
     res.status(500).json({ error: "Failed to send email" })

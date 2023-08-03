@@ -5,17 +5,22 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const Dog = require("../models/Dog");
 
 
-
-
 // Create a Checkout Session
 // Every time a customer initiates the checkout process
 // this endpoint will generate a unique session for the transaction
 router.post('/create-checkout-session', async (req, res) => {
     try {
-        const { fee } = req.body; // Get the selected fee from the request body
-        const feeInCents = fee * 100; // Convert the fee to cents for Stripe
-
+        console.log('create-checkout-session', req.body)
         const { dogId } = req.body;
+        const foundDog = await Dog.findOne({_id: dogId})
+
+        if (!foundDog) {
+            return res.status(404).json({ message: "Dog not found" });
+        }
+
+        const isSponsorship = foundDog.sponsorshipStatus
+        const fee = foundDog.adoptionFee
+        const feeInCents = fee * 100; // Convert the fee to cents for Stripe
 
         // Create the checkout session with the selected fee
         const session = await stripe.checkout.sessions.create({
@@ -32,10 +37,11 @@ router.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: `http://localhost:5173/payment-status?success=true&dogId=${dogId}`,
+            success_url: `http://localhost:5173/payment-status?success=true&dogId=${dogId}&isSponsorship=${isSponsorship}`,
             cancel_url: 'http://localhost:5173/payment-status?canceled=true',
             metadata: {
                 dogId: dogId, // Include dogId as metadata in the session for webhook processing
+                isSponsorship: isSponsorship,
             },
         });
 
@@ -46,8 +52,10 @@ router.post('/create-checkout-session', async (req, res) => {
 });
 
 router.post("/update-dog-status", async (req, res) => {
+    console.log('update-dog-status', req.body)
     const { dogId, isSponsorship } = req.body;
-
+    console.log('server-sponsor', isSponsorship)
+    console.log('dogId', dogId)
     try {
         if (isSponsorship) {
             // If it's a sponsorship payment, update the sponsorshipStatus to true
