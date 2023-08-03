@@ -439,7 +439,7 @@ const ApplicationsTable = () => {
   return (
     <div>
       <DrawerNav />
-      <h2>Applications List</h2>
+      <h2 id="applications-list">Applications List</h2>
       <IconButton onClick={handleMenuClick}>
         <FilterListIcon />
       </IconButton>
@@ -563,7 +563,7 @@ const ApplicationsTable = () => {
           </div>
         </MenuItem>
       </Menu>
-      <table>
+      <table id="main-table">
         <thead>
           <tr>
             <th
@@ -634,7 +634,7 @@ const ApplicationsTable = () => {
           </h2>
           <div className="selected-application-details">
             <div className="details-column">
-              <table>
+              <table id="sub-table-1">
                 <tbody>
                   <tr>
                     <td>Full Name:</td>
@@ -682,7 +682,7 @@ const ApplicationsTable = () => {
               </table>
             </div>
             <div className="details-column">
-              <table>
+              <table id="sub-table-2">
                 <tbody>
                   <tr>
                     <td>Employer Name:</td>
