@@ -366,17 +366,18 @@ const ApplicationsTable = () => {
     const token = localStorage.getItem("token")
 
     const response1 = await fetch(url1, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify({
-          dogId: dogID
-        }),
-      })
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        dogId: dogID,
+        isSponsorship: false,
+      }),
+    })
 
-      const data1 = await response1.json()
-      const paymentLink = data1.url
+    const data1 = await response1.json()
+    const paymentLink = data1.url
 
     if (
       selectedApplication &&
@@ -403,11 +404,11 @@ const ApplicationsTable = () => {
       console.log(data2)
 
       setApplications((prevApplications) =>
-    prevApplications.map((app) =>
-      app._id === selectedApplication._id ? data2.updatedForm : app
-    )
-  );
-  setSelectedApplication(data2.updatedForm);
+        prevApplications.map((app) =>
+          app._id === selectedApplication._id ? data2.updatedForm : app
+        )
+      )
+      setSelectedApplication(data2.updatedForm)
     } else {
       console.log("Information not found.")
     }
