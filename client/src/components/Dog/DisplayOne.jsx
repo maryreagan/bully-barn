@@ -29,6 +29,7 @@ function DisplayOne() {
     const [showForm, setShowForm] = useState(false)
     const token = localStorage.getItem('token')
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [isSponsorship, setIsSponsorship] = useState(false)
 
     const handleBackToAllDogs = () => {
         selectedDog.adoptionStatus === 'adopted'
@@ -55,17 +56,22 @@ function DisplayOne() {
         }
     };
 
-    const handleSponsorPayment = async () => {
+    const handleSponsorPayment = async (isSponsorship) => {
+        console.log('isSponsorship', isSponsorship)
         try {
-            const payload = `{"fee": ${selectedDog.adoptionFee}, "dogId": "${selectedDog._id}", "isSponsorship": true}`;
-
+            const payload = {
+                fee: selectedDog.adoptionFee,
+                dogId: selectedDog._id,
+                isSponsorship: true,
+                }
+            console.log('payload', payload)
             const response = await fetch('http://localhost:4000/payment/create-checkout-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Content-Encoding': 'identity',
+                    //'Content-Encoding': 'identity',
                 },
-                body: payload,
+                body: JSON.stringify(payload),
             });
             const session = await response.json();
             window.location = session.url;
@@ -75,8 +81,10 @@ function DisplayOne() {
     };
 
     const handleSponsorClick = () => {
-        handleSponsorPayment();
+        setIsSponsorship(true)
+        handleSponsorPayment(true);
     };
+
 
     const renderGenderIcon = (gender) => {
         return gender === "Female" ? <FemaleIcon /> : <MaleIcon />;
