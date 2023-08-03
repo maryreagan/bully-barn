@@ -368,15 +368,15 @@ import { adminCheck } from "../../helpers/adminCheck"
     const response1 = await fetch(url1, {
         method: "POST",
         headers: new Headers({
-          "Content-Type": "application/json"
+            "Content-Type": "application/json"
         }),
         body: JSON.stringify({
-          dogId: dogID
+            dogId: dogID
         }),
-      })
+    })
 
-      const data1 = await response1.json()
-      const paymentLink = data1.url
+    const data1 = await response1.json()
+    const paymentLink = data1.url
 
     if (
         selectedApplication &&
@@ -386,7 +386,7 @@ import { adminCheck } from "../../helpers/adminCheck"
         paymentLink
     ) {
 
-      const response2 = await fetch(url2, {
+    const response2 = await fetch(url2, {
         method: "POST",
         headers: new Headers({
             "Content-Type": "application/json",
@@ -399,16 +399,17 @@ import { adminCheck } from "../../helpers/adminCheck"
             paymentLink,
             formID,
         }),
+    })
 
-      const data2 = await response2.json()
-      console.log(data2)
+    const data2 = await response2.json()
+    console.log(data2)
 
-      setApplications((prevApplications) =>
-    prevApplications.map((app) =>
-      app._id === selectedApplication._id ? data2.updatedForm : app
-    )
-  );
-  setSelectedApplication(data2.updatedForm);
+    setApplications((prevApplications) =>
+        prevApplications.map((app) =>
+        app._id === selectedApplication._id ? data2.updatedForm : app
+        )
+    );
+    setSelectedApplication(data2.updatedForm);
 
     } else {
         console.log("Information not found.")
