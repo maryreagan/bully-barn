@@ -361,9 +361,22 @@ const ApplicationsTable = () => {
     const formID = application._id
     const applicantName = selectedApplication.personalInformation.fullName
     const applicantEmail = selectedApplication.personalInformation.email
-    const paymentLink = "http://localhost:5173/"
-    const url = "http://127.0.0.1:4000/form/sendApprovedEmail"
+    const url1 = "http://127.0.0.1:4000/payment/create-checkout-session"
+    const url2 = "http://127.0.0.1:4000/form/sendApprovedEmail"
     const token = localStorage.getItem("token")
+
+    const response1 = await fetch(url1, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify({
+          dogId: dogID
+        }),
+      })
+
+      const data1 = await response1.json()
+      const paymentLink = data1.url
 
     if (
       selectedApplication &&
@@ -372,7 +385,7 @@ const ApplicationsTable = () => {
       applicantName &&
       paymentLink
     ) {
-      const response = await fetch(url, {
+      const response2 = await fetch(url2, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -386,15 +399,15 @@ const ApplicationsTable = () => {
           formID,
         }),
       })
-      const data = await response.json()
-      console.log(data)
+      const data2 = await response2.json()
+      console.log(data2)
 
       setApplications((prevApplications) =>
-        prevApplications.map((app) =>
-          app._id === data.updatedForm._id ? data.updatedForm : app
-        )
-      )
-      setSelectedApplication(data.updatedForm)
+    prevApplications.map((app) =>
+      app._id === selectedApplication._id ? data2.updatedForm : app
+    )
+  );
+  setSelectedApplication(data2.updatedForm);
     } else {
       console.log("Information not found.")
     }

@@ -188,6 +188,7 @@ router.post("/sendApprovedEmail", roleValidation, async (req, res) => {
 
     await sendApprovedEmail(applicantEmail, applicantName, dogName, paymentLink)
     existingForm.sentApprovedEmail = true
+    existingForm.markModified("sentApprovedEmail")
 
     const updatedForm = await existingForm.save()
 
