@@ -400,6 +400,7 @@ import { adminCheck } from "../../helpers/adminCheck"
             paymentLink,
             formID,
         }),
+      })
 
       const data2 = await response2.json()
       console.log(data2)
@@ -668,7 +669,7 @@ import { adminCheck } from "../../helpers/adminCheck"
                       {
                         selectedApplication.petPreferences
                           .distanceWillingToTravel
-                      }
+                      } miles
                     </td>
                   </tr>
                   <tr>
@@ -701,7 +702,7 @@ import { adminCheck } from "../../helpers/adminCheck"
                   <tr>
                     <td>Monthly Income:</td>
                     <td>
-                      {selectedApplication.employmentInformation.monthlyIncome}
+                      $ {selectedApplication.employmentInformation.monthlyIncome}
                     </td>
                   </tr>
                   <tr>
@@ -721,7 +722,7 @@ import { adminCheck } from "../../helpers/adminCheck"
                   <tr>
                     <td>Monthly Rent/Mortgage:</td>
                     <td>
-                      {
+                      $ {
                         selectedApplication.homeInformation
                           .monthlyRentOrMortgage
                       }
@@ -753,7 +754,7 @@ import { adminCheck } from "../../helpers/adminCheck"
                     Approve
                   </Button>
                 )}
-              </>
+                </>
             )}
 
         {/* Archive Button */}

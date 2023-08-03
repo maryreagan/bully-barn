@@ -46,7 +46,7 @@ function AddDog() {
     // handles the image upload and updates dogData
     const handleImageChange = (e) => {
         const {name, files} = e.target;
-        console.log(files)
+
         if (name === 'image'){
             setDogData({
                 ...dogData,

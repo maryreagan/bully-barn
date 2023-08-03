@@ -180,7 +180,7 @@ function DisplayOne() {
                                         {renderGenderIcon(selectedDog.gender)}
                                         <p>{selectedDog.gender}</p>
                                     </div>
-                                    <p>Weight {selectedDog.weight}</p>
+                                    <p>Weight {selectedDog.weight} lbs</p>
                                 </section>
                                 <section id='additional-info'>
                                     <div id='bio'>
