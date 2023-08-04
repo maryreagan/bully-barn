@@ -6,22 +6,42 @@ td {
     border-bottom: 1px solid #ddd;
 }
 
-table {
+#main-table{
     border-collapse: collapse;
-    width: 100%;
     border: 1px solid #ccc;
+    width: 95%;
+    margin-left: 43px;
+}
+
+#sub-table-1{
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    width: 95%;
+    margin-left: 43px;
+
+}
+
+#sub-table-2{
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    width: 95%;
+    margin-left: 10px;
+
 }
 
 thead th {
     border: 1px solid #ccc;
+
 }
 
 tbody td {
     border: 1px solid #ccc;
+
 }
 
 thead th span {
     margin-left: 8px;
+
 }
 
 tbody tr:hover {
@@ -35,6 +55,7 @@ tbody tr.selected {
 
 th span {
     float: right;
+
 }
 
 th:not(:last-child) {
@@ -48,13 +69,15 @@ tbody tr:not(:last-child) {
 .selected-application-details {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
 }
 
 .selected-application-text {
-    margin-top: 10px;
+    font-family: 'Fira Sans';
+    margin-top: 30px;
     margin-bottom: 10px;
+    margin-left: 40px;
 }
 
 .details-columns {
@@ -104,4 +127,11 @@ tbody td,
 
 .buttons-container button {
    margin: 0 1em 0 1em;
+}
+
+#applications-list{
+    font-family: 'Fira Sans';
+    margin-left: 40px;
+    margin-top: 20px;
+
 }

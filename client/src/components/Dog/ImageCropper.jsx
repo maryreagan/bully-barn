@@ -31,4 +31,4 @@
 // );
 // }
 
-export default ImageCropper;
+//export default ImageCropper;

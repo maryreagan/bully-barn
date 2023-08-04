@@ -89,7 +89,7 @@ function Chart() {
   // !bar chart info
   // gets number of applications for every dog by dogId
   const applicationCount = {}
-  isAdmin &&
+  isAdmin && 
     applicants.forEach((applicant) => {
       const dogId = applicant.petPreferences.dogId
       applicationCount[dogId] = (applicationCount[dogId] || 0) + 1
