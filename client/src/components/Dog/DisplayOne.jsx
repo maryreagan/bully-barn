@@ -46,7 +46,6 @@ function DisplayOne() {
                 dogId: selectedDog._id,
                 isSponsorship: true,
                 }
-            console.log('payload', payload)
             const response = await fetch('http://localhost:4000/payment/create-checkout-session', {
                 method: 'POST',
                 headers: {
@@ -73,11 +72,9 @@ function DisplayOne() {
 
     const handleApplyHere = () => {
         setShowForm(true) // show form when Apply Here button is clicked
-        console.log('show form' , showForm)
     }
 
     useEffect(() => {
-        console.log("formWrapperRef.current:", formWrapperRef.current)
         if(formWrapperRef.current){
             formWrapperRef.current.scrollIntoView({behavior:'smooth'})
         }
@@ -247,9 +244,9 @@ function DisplayOne() {
         setCurrentImageIndex((prevIndex) => prevIndex + 1);
     };
 
-    useEffect(() => {
-        console.log('showform', showForm)
-    })
+    // useEffect(() => {
+    //     console.log('showform', showForm)
+    // })
 
     return (
         <>

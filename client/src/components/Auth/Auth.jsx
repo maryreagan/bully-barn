@@ -54,7 +54,6 @@ const LoginComponent = () => {
 
             if (response.ok) {
                 // Login successful
-                console.log("Login successful:", data);
                 // Save the token and its expiration time to local storage
                 const expirationTime =
                     new Date().getTime() + 24 * 60 * 60 * 1000; // 24 hours in milliseconds

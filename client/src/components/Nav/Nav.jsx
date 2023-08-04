@@ -1,18 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { adminCheck } from '../../helpers/adminCheck'
 import './nav.css'
 
 function Nav() {
   const token = localStorage.getItem('token')
   const isAdmin = adminCheck()
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     // Clear the token and reset the login state
     localStorage.removeItem("token");
     localStorage.removeItem("tokenExpiration");
     localStorage.removeItem("administrator");
-    location.reload()
+    navigate('/')
     };
 
     return token ? (
@@ -29,7 +30,6 @@ function Nav() {
     <Link to="/" id='bb-logo'>Bully Barn</Link>
     <Link to='/about'>About Us</Link>
     <Link id='nav-logout' to='/auth'>Login</Link>
-    
     </nav>
   )
 }
