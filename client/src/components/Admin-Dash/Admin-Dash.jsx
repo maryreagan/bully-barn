@@ -365,7 +365,7 @@ import { adminCheck } from "../../helpers/adminCheck"
     const url2 = "http://127.0.0.1:4000/form/sendApprovedEmail"
     const token = localStorage.getItem("token")
 
-    const response1 = await fetch(url1, {
+    const response1 = await fetch(url1, { // Getting the payment link
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -386,8 +386,7 @@ import { adminCheck } from "../../helpers/adminCheck"
         applicantName &&
         paymentLink
     ) {
-
-      const response2 = await fetch(url2, {
+      const response2 = await fetch(url2, { // Sending the email
         method: "POST",
         headers: new Headers({
             "Content-Type": "application/json",
@@ -405,15 +404,14 @@ import { adminCheck } from "../../helpers/adminCheck"
       const data2 = await response2.json()
       console.log(data2)
 
-      setApplications((prevApplications) =>
-    prevApplications.map((app) =>
-      app._id === selectedApplication._id ? data2.updatedForm : app
-    )
-  );
-  setSelectedApplication(data2.updatedForm);
-
-    } else {
-        console.log("Information not found.")
+      setApplications((prevApplications) => // Updating the selected application
+        prevApplications.map((app) =>
+          app._id === selectedApplication._id ? data2.updatedForm : app
+        )
+      )
+      setSelectedApplication(data2.updatedForm)
+    } else { // If one or all of the required information is undefined/not valid
+      console.log("Information not found")
     }
     }
 
@@ -757,43 +755,43 @@ import { adminCheck } from "../../helpers/adminCheck"
                 </>
             )}
 
-        {/* Archive Button */}
-        {!selectedApplication.approvalStatus &&
-            (selectedApplication.archiveStatus ? (
-            <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleArchive(selectedApplication._id)}
-            >
-                Unarchive
-            </Button>
+            {/* Archive Button */}
+            {!selectedApplication.approvalStatus &&
+              (selectedApplication.archiveStatus ? (
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleArchive(selectedApplication._id)}
+                >
+                  Unarchive
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => handleArchive(selectedApplication._id)}
+                >
+                  Archive
+                </Button>
+              ))}
+            {/* Send Email Button */}
+            {selectedApplication.sentApprovedEmail ? (
+              <Button variant="contained" color="info">
+                Approved - Email Sent
+              </Button>
             ) : (
-            <Button
+              <Button
                 variant="contained"
                 color="success"
-                onClick={() => handleArchive(selectedApplication._id)}
-            >
-                Archive
-            </Button>
-            ))}
-
-        {selectedApplication.sentApprovedEmail ? (
-            <Button variant="contained" color="info">
-            Approved Email Sent
-            </Button>
-        ) : (
-            <Button
-            variant="contained"
-            color="success"
-            onClick={() => handleEmailSend()}
-            >
-            Send Approved Email
-            </Button>
-        )}
+                onClick={() => handleEmailSend()}
+              >
+                Send Approved Email
+              </Button>
+            )}
+          </div>
         </div>
+      )}
     </div>
-    )}
-</div>
-)
+  )
 }
 export default ApplicationsTable

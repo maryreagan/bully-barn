@@ -134,6 +134,7 @@ router.post("/forgot-password", async (req, res) => {
             return res.status(404).json({ message: "Email not found" });
         }
 
+        const fullName = `${user.firstName} ${user.lastName}`
         const resetToken = crypto.randomBytes(32).toString("hex");
         const resetPwdLink = `http://localhost:5173/reset-password/${resetToken}`;
 
@@ -142,7 +143,7 @@ router.post("/forgot-password", async (req, res) => {
         await user.save();
 
         try {
-            await sendForgotPwdEmail(user.email, resetPwdLink);
+            await sendForgotPwdEmail(user.email, fullName, resetPwdLink);
             res.status(200).json({ message: "Email sent" });
         } catch (err) {
             res.status(500).json({
