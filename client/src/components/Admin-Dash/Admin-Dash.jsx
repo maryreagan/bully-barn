@@ -365,7 +365,7 @@ const ApplicationsTable = () => {
     const url2 = "http://127.0.0.1:4000/form/sendApprovedEmail"
     const token = localStorage.getItem("token")
 
-    const response1 = await fetch(url1, {
+    const response1 = await fetch(url1, { // Getting the payment link
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -386,7 +386,7 @@ const ApplicationsTable = () => {
       applicantName &&
       paymentLink
     ) {
-      const response2 = await fetch(url2, {
+      const response2 = await fetch(url2, { // Sending the email
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -403,14 +403,14 @@ const ApplicationsTable = () => {
       const data2 = await response2.json()
       console.log(data2)
 
-      setApplications((prevApplications) =>
+      setApplications((prevApplications) => // Updating the selected application
         prevApplications.map((app) =>
           app._id === selectedApplication._id ? data2.updatedForm : app
         )
       )
       setSelectedApplication(data2.updatedForm)
-    } else {
-      console.log("Information not found.")
+    } else { // If one or all of the required information is undefined/not valid
+      console.log("Information not found")
     }
   }
 
@@ -773,10 +773,10 @@ const ApplicationsTable = () => {
                   Archive
                 </Button>
               ))}
-
+            {/* Send Email Button */}
             {selectedApplication.sentApprovedEmail ? (
               <Button variant="contained" color="info">
-                Approved Email Sent
+                Approved - Email Sent
               </Button>
             ) : (
               <Button
