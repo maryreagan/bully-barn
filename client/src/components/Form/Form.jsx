@@ -58,7 +58,7 @@ const Form = ({ selectedDog, setShowForm }) => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.message);
+
                 alert('Application Submitted Succesfully!')
                 setFormData({
                     personalInformation: {

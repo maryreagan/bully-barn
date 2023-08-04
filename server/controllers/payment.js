@@ -38,7 +38,7 @@ router.post('/create-checkout-session', async (req, res) => {
             success_url: `http://localhost:5173/payment-status?success=true&dogId=${dogId}&isSponsorship=${isSponsorship}`,
             cancel_url: 'http://localhost:5173/payment-status?canceled=true',
             metadata: {
-                dogId: dogId, // Include dogId as metadata in the session for webhook processing
+                dogId: dogId, 
                 isSponsorship: isSponsorship,
             },
         });
@@ -50,25 +50,21 @@ router.post('/create-checkout-session', async (req, res) => {
 });
 
 router.post("/update-dog-status", async (req, res) => {
-    console.log('update-dog-status', req.body)
+    
     const { dogId, isSponsorship } = req.body;
-    console.log('server-sponsor', isSponsorship)
-    console.log('dogId', dogId)
+    
     try {
         if (isSponsorship) {
             // If it's a sponsorship payment, update the sponsorshipStatus to true
             await Dog.findByIdAndUpdate(dogId, { sponsorshipStatus: true });
-            console.log('Sponsorship successful! Sponsorship status updated.');
         } else {
             // If it's an adoption fee payment, update the isFeePaid to true
             await Dog.findByIdAndUpdate(dogId, { isFeePaid: true });
-            console.log('Payment successful! Dog status updated.');
         }
         res.status(200).json({
             message: "Dog status updated successfully."
         });
     } catch (err) {
-        console.error('Error updating dog status:', err);
         res.status(500).json({ error: 'An error occurred while updating the dog status.' });
     }
 });
