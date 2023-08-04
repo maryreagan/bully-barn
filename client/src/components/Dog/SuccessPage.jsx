@@ -13,11 +13,8 @@ function SuccessPage() {
                 const queryParams = new URLSearchParams(location.search);
                 const dogId = queryParams.get('dogId');
                 const isSponsorship = queryParams.get('isSponsorship') === 'true';
-                console.log('successpage', isSponsorship)
-                console.log('queryparams', queryParams)
 
                 if (!dogId) {
-                    console.error('Error: No dogId found in the URL.');
                     navigate('/'); 
                     return;
                 }
@@ -29,7 +26,6 @@ function SuccessPage() {
                     },
                     body: JSON.stringify({ dogId: dogId, isSponsorship: isSponsorship }),
                 });
-                console.log(isSponsorship ? 'Sponsorship successful! Sponsorship status updated.' : 'Payment successful! Dog status updated.');
             } catch (error) {
                 console.error('Error updating dog status:', error);
             }
