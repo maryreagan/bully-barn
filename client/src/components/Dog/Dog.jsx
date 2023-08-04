@@ -43,7 +43,6 @@ function Dog() {
       });
 
       const data = await response.json();
-      console.log(data)
       setDogs(data);
     };
 
