@@ -40,6 +40,10 @@ function DisplayOne() {
     useEffect(() => {
         if (!selectedDog) {
             navigate('/')
+        } else {
+            setTimeout(() => {
+                scrollToTop()
+            }, 0)
         }
     }, [selectedDog])
 
@@ -100,7 +104,6 @@ function DisplayOne() {
         if (selectedDog) {
             return (
                 <div id='one-dog-container'>
-                {scrollToTop()}
                     <div id='button-container'>
                         <Button
                             variant='outlined'
