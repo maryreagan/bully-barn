@@ -756,7 +756,7 @@ import { adminCheck } from "../../helpers/adminCheck"
             )}
 
             {/* Archive Button */}
-            {!selectedApplication.approvalStatus &&
+            {
               (selectedApplication.archiveStatus ? (
                 <Button
                   variant="contained"
@@ -779,7 +779,7 @@ import { adminCheck } from "../../helpers/adminCheck"
               <Button variant="contained" color="info">
                 Approved - Email Sent
               </Button>
-            ) : (
+            ) : selectedApplication.approvalStatus && (
               <Button
                 variant="contained"
                 color="success"
