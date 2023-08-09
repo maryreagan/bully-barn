@@ -560,7 +560,7 @@ function AddDog() {
                 id='image-input'
                 type="file"
                 name="image"
-                helperText='Image Upload'
+                helperText='Image Upload - Main Image'
                 onChange={handleImageChange}
                 InputProps={{ endAdornment: dogData.image && ( 
                 <InputAdornment position="end">
