@@ -3,6 +3,7 @@ import "./Form.css";
 import {TextField, Button, InputAdornment} from '@mui/material'
 
 
+
 const Form = ({ selectedDog, setShowForm }) => {
     const dogId = selectedDog._id
 
@@ -45,6 +46,7 @@ const Form = ({ selectedDog, setShowForm }) => {
         }));
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -85,6 +87,7 @@ const Form = ({ selectedDog, setShowForm }) => {
                     },
                 });
                 setShowForm(false)
+
             } else {
                 const errorMessage = await response.text();
                 console.error("Error:", errorMessage);
