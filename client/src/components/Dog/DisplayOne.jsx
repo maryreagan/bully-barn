@@ -19,8 +19,6 @@ import FeedIcon from '@mui/icons-material/Feed'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
-
-
 function DisplayOne() {
     const location = useLocation();
     const selectedDog = location.state;
@@ -38,6 +36,12 @@ function DisplayOne() {
         : navigate('/');
         setShowForm(false)
     };
+
+    useEffect(() => {
+        if (!selectedDog) {
+            navigate('/')
+        }
+    }, [selectedDog])
 
     const handleSponsorPayment = async (isSponsorship) => {
         try {
