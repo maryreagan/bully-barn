@@ -251,9 +251,6 @@ function DisplayOne() {
         setCurrentImageIndex((prevIndex) => prevIndex + 1);
     };
 
-    // useEffect(() => {
-    //     console.log('showform', showForm)
-    // })
 
     return (
         <>

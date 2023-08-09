@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom"
 import "./Admin-Dash.css"
 import DrawerNav from "./DrawerNav"
 import { adminCheck } from "../../helpers/adminCheck"
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+
 
     const ApplicationsTable = () => {
         const navigate = useNavigate()
@@ -31,6 +33,7 @@ import { adminCheck } from "../../helpers/adminCheck"
         const [approvalFilter, setApprovalFilter] = useState(null)
         const [feePaidFilter, setFeePaidFilter] = useState(null)
         const token = localStorage.getItem("token")
+        const [selectedRow, setSelectedRow] = useState(null)
 
     useEffect(() => {
     const fetchApplications = async () => {
@@ -145,8 +148,7 @@ import { adminCheck } from "../../helpers/adminCheck"
 
     const handleApplicationClick = (application) => {
     setSelectedApplication(application)
-    console.log("Selected Dog ID:", application.petPreferences.dogId)
-    console.log("APPLICATION CLICK", selectedApplication)
+    setSelectedRow(application._id)
     }
 
     const resetFilters = () => {
@@ -611,7 +613,14 @@ import { adminCheck } from "../../helpers/adminCheck"
             }
             style={{ cursor: "pointer" }}
             >
-            <td>{application.personalInformation.fullName}</td>
+            <td>
+            <div style={{ display: "flex", alignItems: "center" }}>
+          {selectedRow === application._id && (
+            <CheckBoxIcon style={{ color: "#385170" }} />
+          )}
+          <span>{application.personalInformation.fullName}</span>
+          </div>
+          </td>
             <td>{dog ? dog.caseworker : "No information available"}</td>
             <td>{getDogNameById(application.petPreferences.dogId)}</td>
             <td>{dog ? dog.adoptionStatus : "No information available"}</td>

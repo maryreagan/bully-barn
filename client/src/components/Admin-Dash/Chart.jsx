@@ -71,7 +71,9 @@ function Chart() {
   // !piechart info
 
   const caseworkerCount = {}
-  dogs.forEach((dog) => {
+  dogs
+    .filter(dog => dog.adoptionStatus != 'adopted') // filter out adopted dogs 
+    .forEach((dog) => {
     const caseworker = dog.caseworker
     caseworkerCount[caseworker] = (caseworkerCount[caseworker] || 0) + 1
     // for every dog, save caseworker name in variable caseworker - then we add 1 to the caseworkerCount object at the caseworker value
@@ -89,10 +91,13 @@ function Chart() {
   // !bar chart info
   // gets number of applications for every dog by dogId
   const applicationCount = {}
-  isAdmin && 
-    applicants.forEach((applicant) => {
+  isAdmin &&
+    applicants
+      .filter(applicant => !applicant.archiveStatus) // filter out applications with archive Status set to true
+      .forEach((applicant) => {
       const dogId = applicant.petPreferences.dogId
       applicationCount[dogId] = (applicationCount[dogId] || 0) + 1
+
     })
 
   const barChartData = dogs.map((dog) => ({

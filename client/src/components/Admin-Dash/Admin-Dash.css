@@ -44,14 +44,16 @@ thead th span {
 
 }
 
+
 tbody tr:hover {
-    background-color: #f9f9f9;
+    background-color: #b5b3b3;
     cursor: pointer;
 }
 
 tbody tr.selected {
     background-color: #e0e0e0;
 }
+
 
 th span {
     float: right;
