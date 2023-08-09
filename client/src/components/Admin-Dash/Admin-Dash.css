@@ -131,6 +131,10 @@ tbody td,
    margin: 0 1em 0 1em;
 }
 
+.buttons-container button:first-of-type {
+    margin-left: 3em;
+ }
+
 #applications-list{
     font-family: 'Fira Sans';
     margin-left: 40px;

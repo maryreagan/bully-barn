@@ -765,7 +765,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
             )}
 
             {/* Archive Button */}
-            {!selectedApplication.approvalStatus &&
+            {
               (selectedApplication.archiveStatus ? (
                 <Button
                   variant="contained"
@@ -788,7 +788,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
               <Button variant="contained" color="info">
                 Approved - Email Sent
               </Button>
-            ) : (
+            ) : selectedApplication.approvalStatus && (
               <Button
                 variant="contained"
                 color="success"
