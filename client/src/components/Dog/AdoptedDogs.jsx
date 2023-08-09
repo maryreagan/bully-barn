@@ -59,7 +59,7 @@ function AdoptedDogs() {
 
   return (
     <>
-    <DrawerNav />
+    <DrawerNav  />
     <h1 className='adopted-header'>Adopted Dogs</h1>
     <div className='dog-container' >
     {displayAdopted()}

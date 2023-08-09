@@ -122,7 +122,7 @@ function Chart() {
     <>
       {isAdmin && (
         <div id="chart-container">
-          <DrawerNav />
+          <DrawerNav  />
 
           <div className="pie-table-container">
             <div id="piechart">

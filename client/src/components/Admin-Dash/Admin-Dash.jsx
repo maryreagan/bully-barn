@@ -439,7 +439,7 @@ import { adminCheck } from "../../helpers/adminCheck"
 
     return (
     <div>
-      <DrawerNav />
+      <DrawerNav  />
       <h2 id="applications-list">Applications List</h2>
       <IconButton onClick={handleMenuClick}>
         <FilterListIcon />
