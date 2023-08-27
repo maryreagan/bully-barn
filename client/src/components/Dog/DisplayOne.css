@@ -1,0 +1,218 @@
+#one-dog-container {
+    width: 99.1vw;
+}
+
+#all-details-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+#dog-details-container {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    height: auto;
+    background-color: #ccdee7;
+    border-radius: 20px;
+}
+
+#button-container {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+#side-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+#display-fee-amount h4 {
+    padding: 1em;
+    font-family: 'Playfair Display';
+    font-size: larger;
+    background: rgb(228, 228, 227);
+    border-radius: 5px;
+}
+
+#display-fee-amount span {
+    font-size: 30px;
+}
+
+#payments {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3em;
+    justify-content: center;
+    gap: 1em;
+}
+
+#payments button {
+    cursor: pointer;
+    height: 46px;
+    padding: 1em;
+    text-align: center;
+    background-color: #fff;
+    border: 3px solid #dbdbdb;
+    border-radius: 6px;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+}
+
+#payments button:hover {
+    background-color: #151515;
+    color: #FFF;
+    border: #151515;
+}
+
+#fee-status {
+    margin-top: 1em;
+    text-align: center;
+    color: red;
+}
+
+#img-dog-container img {
+    margin-top: 5em;
+    width: 23em;
+    height: 23em;
+    object-fit: cover;
+    border-radius: 1em;
+}
+
+#img-dog-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 6em;
+    align-items: center;
+}
+
+#status-available-icon {
+    vertical-align: middle;
+    color: green;
+}
+
+#status-pending-icon {
+    vertical-align: middle;
+    color: #3B6064;
+}
+
+#adoption-status {
+    margin-left: 2em;
+
+}
+
+#dog-details {
+    width: 100%;
+    padding: 0em 2em 2em 2em;
+}
+
+#dog-details h1 {
+    font-family: 'Playfair Display';
+    font-size: 3em;
+}
+
+#basic-info {
+    display: flex;
+    gap: 1em;
+    color: #a5aaac;
+    font-family: 'Comfortaa', cursive;
+    font-size: larger;
+    font-weight: 600;
+    margin-bottom: 2em;
+}
+
+#bio p {
+    margin-bottom: 4em;
+}
+
+hr {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.span-style {
+    font-weight: 200;
+    font-size: 1rem;
+    margin-left: 1em;
+}
+
+.sub-additional-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 4em;
+}
+
+#dog-details h4 {
+    margin-top: 1em;
+}
+
+#dog-gender {
+    display: flex;
+    align-items: center;
+}
+
+.yes-icon {
+    vertical-align: middle;
+    color: #D8973C
+}
+
+.no-icon {
+    vertical-align: middle;
+    color: #413C58;
+}
+
+/* Admin Box Styling */
+
+.admin-box {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-delete-paper {
+    width: 300px;
+    height: 250px;
+    margin-top: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#admin-text {
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+.apply-here-container{
+    margin-top: 60px;
+    width: 250px;
+    height: 200px;
+
+}
+
+.apply-paper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    height: 200px;
+    padding-top: 25px;
+    gap: 2em;
+}
+
+#ready-to-apply{
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Playfair Display'
+}
+
+#login-text{
+    text-align: center;
+}
+

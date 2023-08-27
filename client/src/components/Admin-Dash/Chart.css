@@ -1,0 +1,50 @@
+#chart-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4em;
+    background-color: whitesmoke
+}
+
+.pie-table-container{
+    display: flex;
+    gap: 15em;
+    justify-content: center;
+}
+
+
+#pie-title, #table-title, #bar-title{
+    text-align: center;
+}
+
+#bar-title{
+    padding-bottom: 15px;
+}
+
+#table-title{
+    padding-bottom: 25px;
+}
+
+
+
+/* Table stlying*/
+.table-header {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.table-cell {
+    padding: 8px;
+}
+
+
+.table {
+    font-size: 14px;
+
+}
+
+.table-container {
+    max-width: 500px;
+    margin: auto;
+}
